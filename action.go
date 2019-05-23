@@ -123,20 +123,13 @@ func (f *FPSAction) IOMetadata() *metadata.IOMetadata {
 	return f.ioMetadata
 }
 
-func (f *FPSAction) Run(context context.Context, inputs map[string]interface{}, handler action.ResultHandler) error {
+func (f *FPSAction) Run(context context.Context, inputs map[string]interface{}) (map[string]interface{}, error) {
 
-	go func() {
+	retData, err := f.inst.Run(inputs)
 
-		defer handler.Done()
-		retData, err := f.inst.Run(inputs)
+	if err != nil {
+		return nil, err
+	}
 
-		if err != nil {
-			handler.HandleResult(nil, err)
-		} else {
-			handler.HandleResult(retData, err)
-		}
-
-	}()
-
-	return nil
+	return retData, nil
 }
