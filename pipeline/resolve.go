@@ -28,7 +28,7 @@ func (r *OperationResolver) GetResolverInfo() *resolve.ResolverInfo {
 
 func (r *OperationResolver) Resolve(scope data.Scope, itemName, valueName string) (interface{}, error) {
 
-	value, exists := scope.GetValue("_O." + itemName + "." + valueName)
+	value, exists := scope.GetValue(itemName + "." + valueName)
 	if !exists {
 		return nil, fmt.Errorf("failed to resolve activity attr: '%s', not found in opeartion '%s'", valueName, itemName)
 	}

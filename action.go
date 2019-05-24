@@ -46,8 +46,9 @@ func (f *ActionFactory) Initialize(ctx action.InitContext) error {
 	}
 
 	mapperFactory := mapper.NewFactory(pipeline.GetDataResolver())
-	//fmt.Println(mapperFactory)
-	manager = pipeline.NewManager()
+
+	pipeline.DefaultManager = f.resManager
+
 	err := resource.RegisterLoader("fps", pipeline.NewResourceLoader(mapperFactory, pipeline.GetDataResolver()))
 
 	return err
@@ -111,7 +112,7 @@ func (f *ActionFactory) New(config *action.Config) (action.Action, error) {
 }
 
 func (f *FPSAction) Info() *action.Info {
-	fmt.Println("Implement me")
+	//fmt.Println("Implement me")
 	return nil
 }
 

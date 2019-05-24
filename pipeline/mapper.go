@@ -21,7 +21,7 @@ func GetMapperFactory() mapper.Factory {
 }
 
 func NewDefaultOperationOutputMapper(stage *Stage) mapper.Mapper {
-	attrNS := "_O." + stage.ID() + "."
+	attrNS := stage.ID() + "."
 	return &defaultOperationOutputMapper{attrNS: attrNS, metadata: stage.opt.Metadata()}
 }
 

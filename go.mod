@@ -1,6 +1,8 @@
 module github.com/project-flogo/fps
 
 require (
+	github.com/TIBCOSoftware/flogo-contrib v0.5.8 // indirect
+	github.com/TIBCOSoftware/flogo-lib v0.5.8 // indirect
 	github.com/project-flogo/core v0.9.0-rc.1
 	github.com/project-flogo/stream v0.1.0
 	github.com/sirupsen/logrus v1.4.1 // indirect

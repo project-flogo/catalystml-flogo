@@ -25,7 +25,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 	ctx.pipelineInput = input
 
 	ctx.currentOutput = input
-
+	output = make(map[string]interface{})
 	for _, stage := range inst.def.stages {
 
 		if stage.inputMapper != nil {
@@ -47,7 +47,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		results, err := stage.outputMapper.Apply(in)
 
 		for name, value := range results {
-
+			output[name] = value
 			ctx.currentOutput[name] = value
 		}
 
@@ -56,6 +56,6 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		}
 
 	}
-	return nil, nil
+	return output, nil
 
 }

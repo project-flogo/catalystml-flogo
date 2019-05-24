@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/project-flogo/core/app/resource"
 	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/data/resolve"
 	"github.com/project-flogo/core/support"
@@ -21,11 +22,11 @@ const (
 	uriSchemeHttp = "http://"
 )
 
-//var defaultManager *Manager
-//
-//func GetManager() *Manager {
-//	return defaultManager
-//}
+var DefaultManager *resource.Manager
+
+func GetManager() *resource.Manager {
+	return DefaultManager
+}
 
 type Manager struct {
 	pipelines map[string]*Definition
