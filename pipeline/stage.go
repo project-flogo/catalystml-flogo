@@ -45,22 +45,23 @@ func (ctx *initContextImpl) Logger() log.Logger {
 
 func NewStage(config *StageConfig, mf mapper.Factory, resolver resolve.CompositeResolver) (*Stage, error) {
 
-	if config.Ref == "" {
+	if config.Operation == "" {
 		return nil, fmt.Errorf("Operation not specified for Stage")
 	}
 
-	opt := operation.Get(config.Ref)
+	opt := operation.Get(config.Operation)
+
 	if opt == nil {
-		return nil, fmt.Errorf("unsupported Operation:" + config.Ref)
+		return nil, fmt.Errorf("unsupported Operation:" + config.Operation)
 	}
 
-	f := operation.GetFactory(config.Ref)
+	f := operation.GetFactory(config.Operation)
 
 	if f != nil {
 		initCtx := &initContextImpl{params: config.Config.Params, mFactory: mf}
 		pa, err := f(initCtx)
 		if err != nil {
-			return nil, fmt.Errorf("unable to create stage '%s' : %s", config.Ref, err.Error())
+			return nil, fmt.Errorf("unable to create stage '%s' : %s", config.Operation, err.Error())
 		}
 		opt = pa
 	}
@@ -110,14 +111,18 @@ func NewStage(config *StageConfig, mf mapper.Factory, resolver resolve.Composite
 
 	stage.inputMapper, err = mf.NewMapper(input)
 
+	if err != nil {
+		return nil, err
+	}
+
 	if config.Output == nil {
+		//If the output label is not defined use the default mapper ie. `id.Attr`
 		stage.outputMapper = NewDefaultOperationOutputMapper(stage)
 
 	} else {
-		stage.outputMapper, err = mf.NewMapper(config.Output)
-		if err != nil {
-			return nil, err
-		}
+		//If the output Label is defined use the new one.
+		stage.outputAttrs = config.Output
+		stage.outputMapper = NewOperationOutputMapper(stage)
 	}
 
 	return stage, nil

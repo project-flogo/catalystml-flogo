@@ -9,7 +9,7 @@ import (
 type DefinitionConfig struct {
 	Name     string               `json:"name"`
 	Metadata *metadata.IOMetadata `json:"metadata"`
-	Stages   []*StageConfig       `json:"stages"`
+	Stages   []*StageConfig       `json:"pipeline"`
 }
 
 func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve.CompositeResolver) (*Definition, error) {

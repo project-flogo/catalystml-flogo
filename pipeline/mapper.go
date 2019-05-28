@@ -43,3 +43,26 @@ func (m *defaultOperationOutputMapper) Apply(scope data.Scope) (map[string]inter
 
 	return output, nil
 }
+
+type newOperationOutputMapper struct {
+	metadata *operation.Metadata
+}
+
+func NewOperationOutputMapper(stage *Stage) mapper.Mapper {
+
+	return &newOperationOutputMapper{metadata: stage.opt.Metadata()}
+}
+
+func (m *newOperationOutputMapper) Apply(scope data.Scope) (map[string]interface{}, error) {
+
+	output := make(map[string]interface{}, len(m.metadata.Output))
+	for name := range m.metadata.Output {
+
+		value, ok := scope.GetValue(name)
+		if ok {
+			output[name] = value
+		}
+	}
+
+	return output, nil
+}

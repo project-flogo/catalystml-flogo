@@ -45,10 +45,19 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		in := &StageOutputScope{execCtx: ctx}
 
 		results, err := stage.outputMapper.Apply(in)
+		//fmt.Println("Stage Mapper..", stage.outputAttrs)
 
 		for name, value := range results {
-			output[name] = value
-			ctx.currentOutput[name] = value
+
+			_, ok := stage.outputAttrs[name]
+			if !ok {
+				output[name] = value
+				ctx.currentOutput[name] = value
+			} else {
+				output[stage.outputAttrs[name].(string)] = value
+				ctx.currentOutput[stage.outputAttrs[name].(string)] = value
+			}
+
 		}
 
 		if err != nil {
@@ -56,6 +65,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		}
 
 	}
+
 	return output, nil
 
 }
