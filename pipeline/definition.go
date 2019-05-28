@@ -2,19 +2,19 @@ package pipeline
 
 import (
 	"github.com/project-flogo/core/data/mapper"
-	"github.com/project-flogo/core/data/metadata"
 	"github.com/project-flogo/core/data/resolve"
 )
 
 type DefinitionConfig struct {
-	Name     string               `json:"name"`
-	Metadata *metadata.IOMetadata `json:"metadata"`
-	Stages   []*StageConfig       `json:"pipeline"`
+	Name   string          `json:"name"`
+	Stages []*StageConfig  `json:"pipeline"`
+	Input  []PipelineInput `json:"input"`
+	Output PipelineOutput  `json:"output"`
 }
 
 func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve.CompositeResolver) (*Definition, error) {
 
-	def := &Definition{name: config.Name, metadata: config.Metadata}
+	def := &Definition{name: config.Name, input: config.Input, output: config.Output}
 
 	for _, sconfig := range config.Stages {
 		stage, err := NewStage(sconfig, mf, resolver)
@@ -30,14 +30,10 @@ func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve
 }
 
 type Definition struct {
-	name     string
-	stages   []*Stage
-	metadata *metadata.IOMetadata
-}
-
-// Metadata returns IO metadata for the pipeline
-func (d *Definition) Metadata() *metadata.IOMetadata {
-	return d.metadata
+	name   string
+	stages []*Stage
+	input  []PipelineInput
+	output PipelineOutput
 }
 
 func (d *Definition) Name() string {

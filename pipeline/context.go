@@ -2,7 +2,6 @@ package pipeline
 
 import (
 	"github.com/project-flogo/core/data"
-	"github.com/project-flogo/core/data/metadata"
 	"github.com/project-flogo/core/support/log"
 )
 
@@ -70,9 +69,6 @@ func (eCtx *ExecutionContext) Name() string {
 	return eCtx.pipeline.def.name
 }
 
-func (eCtx *ExecutionContext) IOMetadata() *metadata.IOMetadata {
-	return eCtx.pipeline.def.metadata
-}
 func (eCtx *ExecutionContext) currentStage() *Stage {
 	//possibly keep pointer to state in ctx?
 	return eCtx.pipeline.def.stages[eCtx.stageId]

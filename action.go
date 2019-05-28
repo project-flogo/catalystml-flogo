@@ -27,7 +27,6 @@ type FPSAction struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Version     string `json:"version"`
-	ioMetadata  *metadata.IOMetadata
 	definition  *pipeline.Definition
 	inst        *pipeline.Instance
 }
@@ -94,8 +93,6 @@ func (f *ActionFactory) New(config *action.Config) (action.Action, error) {
 		fpsAction.definition = def
 	}
 
-	fpsAction.ioMetadata = fpsAction.definition.Metadata()
-
 	instId := ""
 
 	instLogger := logger
@@ -117,11 +114,11 @@ func (f *FPSAction) Info() *action.Info {
 }
 
 func (f *FPSAction) Metadata() *action.Metadata {
-	return actionMd
+	return nil
 }
 
 func (f *FPSAction) IOMetadata() *metadata.IOMetadata {
-	return f.ioMetadata
+	return nil
 }
 
 func (f *FPSAction) Run(context context.Context, inputs map[string]interface{}) (map[string]interface{}, error) {
