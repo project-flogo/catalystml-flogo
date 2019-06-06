@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	ResType = "fps"
+	ResType = "cam"
 )
 
 func NewResourceLoader(mapperFactory mapper.Factory, resolver resolve.CompositeResolver) resource.Loader {

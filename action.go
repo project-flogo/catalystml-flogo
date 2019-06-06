@@ -15,15 +15,15 @@ import (
 )
 
 func init() {
-	action.Register(&FPSAction{}, &ActionFactory{})
+	action.Register(&Action{}, &ActionFactory{})
 
 }
 
 var manager *pipeline.Manager
-var actionMd = action.ToMetadata(&Settings{})
+var actionMd = action.ToMetadata(&Settings{}, &Input{}, &Output{})
 var logger log.Logger
 
-type FPSAction struct {
+type Action struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Version     string `json:"version"`
@@ -48,7 +48,7 @@ func (f *ActionFactory) Initialize(ctx action.InitContext) error {
 
 	pipeline.DefaultManager = f.resManager
 
-	err := resource.RegisterLoader("fps", pipeline.NewResourceLoader(mapperFactory, pipeline.GetDataResolver()))
+	err := resource.RegisterLoader("cam", pipeline.NewResourceLoader(mapperFactory, pipeline.GetDataResolver()))
 
 	return err
 
@@ -62,35 +62,35 @@ func (f *ActionFactory) New(config *action.Config) (action.Action, error) {
 		return nil, err
 	}
 
-	fpsAction := &FPSAction{}
+	catalystMlAction := &Action{}
 
-	if settings.FpsURI == "" {
+	if settings.CatalystMlURI == "" {
 		return nil, fmt.Errorf("pipeline URI not specified")
 	}
 
-	if strings.HasPrefix(settings.FpsURI, resource.UriScheme) {
+	if strings.HasPrefix(settings.CatalystMlURI, resource.UriScheme) {
 
-		res := f.resManager.GetResource(settings.FpsURI)
+		res := f.resManager.GetResource(settings.CatalystMlURI)
 
 		if res != nil {
 			def, ok := res.Object().(*pipeline.Definition)
 			if !ok {
-				return nil, errors.New("unable to resolve fps: " + settings.FpsURI)
+				return nil, errors.New("unable to resolve fps: " + settings.CatalystMlURI)
 			}
-			fpsAction.definition = def
+			catalystMlAction.definition = def
 		} else {
-			return nil, errors.New("unable to resolve fps in else: " + settings.FpsURI)
+			return nil, errors.New("unable to resolve fps in else: " + settings.CatalystMlURI)
 		}
 	} else {
-		def, err := manager.GetPipeline(settings.FpsURI)
+		def, err := manager.GetPipeline(settings.CatalystMlURI)
 		if err != nil {
 			return nil, err
 		} else {
 			if def == nil {
-				return nil, errors.New("unable to resolve fps : " + settings.FpsURI)
+				return nil, errors.New("unable to resolve fps : " + settings.CatalystMlURI)
 			}
 		}
-		fpsAction.definition = def
+		catalystMlAction.definition = def
 	}
 
 	instId := ""
@@ -102,27 +102,26 @@ func (f *ActionFactory) New(config *action.Config) (action.Action, error) {
 	}
 
 	//note: single pipeline instance for the moment
-	inst := pipeline.NewInstance(fpsAction.definition, instId, instLogger)
-	fpsAction.inst = inst
+	inst := pipeline.NewInstance(catalystMlAction.definition, instId, instLogger)
+	catalystMlAction.inst = inst
 
-	return fpsAction, nil
+	return catalystMlAction, nil
 }
 
-func (f *FPSAction) Info() *action.Info {
+func (f *Action) Info() *action.Info {
 	//fmt.Println("Implement me")
 	return nil
 }
 
-func (f *FPSAction) Metadata() *action.Metadata {
+func (f *Action) Metadata() *action.Metadata {
+	return actionMd
+}
+
+func (f *Action) IOMetadata() *metadata.IOMetadata {
 	return nil
 }
 
-func (f *FPSAction) IOMetadata() *metadata.IOMetadata {
-	return nil
-}
-
-func (f *FPSAction) Run(context context.Context, inputs map[string]interface{}) (map[string]interface{}, error) {
-
+func (f *Action) Run(context context.Context, inputs map[string]interface{}) (map[string]interface{}, error) {
 	retData, err := f.inst.Run(inputs)
 
 	if err != nil {

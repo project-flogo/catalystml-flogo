@@ -1,6 +1,9 @@
 package pipeline
 
 import (
+	"fmt"
+
+	"github.com/project-flogo/core/data"
 	"github.com/project-flogo/core/support/log"
 )
 
@@ -25,6 +28,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 	ctx.pipelineInput = input
 
 	ctx.currentOutput = input
+
 	output = make(map[string]interface{})
 	for _, stage := range inst.def.stages {
 
@@ -37,6 +41,24 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 			}
 
 		}
+
+		//For the input of operation... check if the type of the value coming
+		//in matches to the type defined in input of the catalystML.
+		//Also do we need this ?
+		for key, val := range ctx.pipelineInput {
+			temp, ok := inst.def.input[key].(PipelineInput)
+			fmt.Println("Val...", val)
+			if !ok {
+				continue
+			}
+
+			definedType, _ := data.ToTypeEnum(temp.Type)
+			givenType, _ := data.GetType(val)
+			if definedType == givenType {
+				fmt.Println("matched....")
+			}
+		}
+
 		_, err := stage.opt.Eval(ctx)
 		if err != nil {
 			return nil, err
@@ -45,7 +67,6 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		in := &StageOutputScope{execCtx: ctx}
 
 		results, err := stage.outputMapper.Apply(in)
-		//fmt.Println("Stage Mapper..", stage.outputAttrs)
 
 		for name, value := range results {
 
@@ -64,6 +85,17 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 			return nil, err
 		}
 
+	}
+	if inst.def.output.Data != nil {
+		mf := GetMapperFactory()
+		outMapper, err := mf.NewMapper(inst.def.output.Data)
+
+		output, err = outMapper.Apply(&StageInputScope{execCtx: ctx})
+
+		fmt.Println("Output")
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return output, nil

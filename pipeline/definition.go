@@ -14,7 +14,7 @@ type DefinitionConfig struct {
 
 func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve.CompositeResolver) (*Definition, error) {
 
-	def := &Definition{name: config.Name, input: config.Input, output: config.Output}
+	def := &Definition{name: config.Name}
 
 	for _, sconfig := range config.Stages {
 		stage, err := NewStage(sconfig, mf, resolver)
@@ -25,6 +25,11 @@ func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve
 
 		def.stages = append(def.stages, stage)
 	}
+	def.input = make(map[string]interface{})
+
+	for _, val := range config.Input {
+		def.input[val.Label] = val
+	}
 
 	return def, nil
 }
@@ -32,7 +37,7 @@ func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve
 type Definition struct {
 	name   string
 	stages []*Stage
-	input  []PipelineInput
+	input  map[string]interface{}
 	output PipelineOutput
 }
 
