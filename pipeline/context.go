@@ -46,8 +46,7 @@ const (
 )
 
 type ExecutionContext struct {
-	pipeline      *Instance
-	discriminator string
+	pipeline *Instance
 
 	stageId int
 	status  ExecutionStatus

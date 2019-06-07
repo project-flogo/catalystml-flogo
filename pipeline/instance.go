@@ -1,6 +1,7 @@
 package pipeline
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/project-flogo/core/data"
@@ -24,7 +25,7 @@ func (inst *Instance) Id() string {
 }
 
 func (inst *Instance) Run(input map[string]interface{}) (output map[string]interface{}, err error) {
-	ctx := &ExecutionContext{discriminator: "discriminator", pipeline: inst}
+	ctx := &ExecutionContext{pipeline: inst}
 	ctx.pipelineInput = input
 
 	ctx.currentOutput = input
@@ -43,7 +44,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		}
 
 		//For the input of operation... check if the type of the value coming
-		//in matches to the type defined in input of the catalystML.
+		//in, matches to the type defined in input of the catalystML.
 		//Also do we need this ?
 		for key, val := range ctx.pipelineInput {
 			temp, ok := inst.def.input[key].(PipelineInput)
@@ -54,8 +55,8 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 			definedType, _ := data.ToTypeEnum(temp.Type)
 			givenType, _ := data.GetType(val)
-			if definedType == givenType {
-				fmt.Println("matched....")
+			if definedType != givenType {
+				return nil, errors.New("Type mismatch")
 			}
 		}
 
