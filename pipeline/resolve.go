@@ -1,17 +1,14 @@
 package pipeline
 
 import (
-	"fmt"
-
-	"github.com/project-flogo/core/data"
 	"github.com/project-flogo/core/data/resolve"
 )
 
 var pipelineRes = resolve.NewCompositeResolver(map[string]resolve.Resolver{
-	".":         &resolve.ScopeResolver{},
-	"env":       &resolve.EnvResolver{},
-	"property":  &resolve.PropertyResolver{},
-	"operation": &OperationResolver{}})
+	".":        &resolve.ScopeResolver{},
+	"env":      &resolve.EnvResolver{},
+	"property": &resolve.PropertyResolver{},
+})
 
 func GetDataResolver() resolve.CompositeResolver {
 	return pipelineRes
@@ -19,6 +16,7 @@ func GetDataResolver() resolve.CompositeResolver {
 
 var resolverInfo = resolve.NewResolverInfo(false, true)
 
+/*
 type OperationResolver struct {
 }
 
@@ -35,7 +33,7 @@ func (r *OperationResolver) Resolve(scope data.Scope, itemName, valueName string
 
 	return value, nil
 
-}
+}*/
 
 func resolveParamsValue(resolver resolve.CompositeResolver, params string, value interface{}) interface{} {
 

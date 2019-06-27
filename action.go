@@ -8,7 +8,6 @@ import (
 
 	"github.com/project-flogo/core/action"
 	"github.com/project-flogo/core/app/resource"
-	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/data/metadata"
 	"github.com/project-flogo/core/support/log"
 	"github.com/project-flogo/fps/pipeline"
@@ -44,13 +43,13 @@ func (f *ActionFactory) Initialize(ctx action.InitContext) error {
 		return nil
 	}
 
-	mapperFactory := mapper.NewFactory(pipeline.GetDataResolver())
+	//mapperFactory := mapper.NewFactory(pipeline.GetDataResolver())
 
 	pipeline.DefaultManager = f.resManager
 	var err error
 
 	if resource.GetLoader("cam") == nil {
-		err = resource.RegisterLoader("cam", pipeline.NewResourceLoader(mapperFactory, pipeline.GetDataResolver()))
+		err = resource.RegisterLoader("cam", pipeline.NewResourceLoader(nil, pipeline.GetDataResolver()))
 	}
 
 	return err

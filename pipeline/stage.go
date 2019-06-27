@@ -7,6 +7,7 @@ import (
 	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/data/resolve"
 	"github.com/project-flogo/core/support/log"
+
 	"github.com/project-flogo/fps/operation"
 )
 
@@ -116,7 +117,7 @@ func NewStage(config *StageConfig, mf mapper.Factory, resolver resolve.Composite
 	}
 
 	if config.Output == nil {
-		//If the output label is not defined use the default mapper ie. `id.Attr`
+		//If the output label is not defined use the default mapper ie. `$id`
 		stage.outputMapper = NewDefaultOperationOutputMapper(stage)
 
 	} else {
@@ -134,7 +135,7 @@ func (stage *Stage) ID() string {
 func isExpr(v interface{}) bool {
 	switch t := v.(type) {
 	case string:
-		if len(t) > 0 && t[0] == '=' {
+		if len(t) > 0 && t[0] == '$' {
 			return true
 		}
 	default:

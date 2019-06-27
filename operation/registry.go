@@ -24,6 +24,7 @@ func Register(operation Operation, f ...Factory) error {
 
 	ref := GetRef(operation)
 	ref = path.Base(ref)
+
 	if _, dup := operations[ref]; dup {
 		return fmt.Errorf("operation already registered: %s", ref)
 	}

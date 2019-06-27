@@ -43,9 +43,6 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 		}
 
-		//For the input of operation... check if the type of the value coming
-		//in, matches to the type defined in input of the catalystML.
-		//Also do we need this ?
 		for key, val := range ctx.pipelineInput {
 			temp, ok := inst.def.input[key].(PipelineInput)
 			fmt.Println("Val...", val)
