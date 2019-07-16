@@ -13,7 +13,7 @@ type Operation interface {
 
 	// Eval is called when an Activity is being evaluated.  Returning true indicates
 	// that the task is done.
-	Eval(ctx Context) (done bool, err error)
+	Eval(ctx Context) error
 }
 
 type Factory func(ctx InitContext) (Operation, error)

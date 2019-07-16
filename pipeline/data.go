@@ -8,6 +8,6 @@ type PipelineInput struct {
 }
 
 type PipelineOutput struct {
-	Type string                 `json:"type"`
-	Data map[string]interface{} `json:"data"`
+	Type string      `json:"type"`
+	Data interface{} `json:"data"`
 }

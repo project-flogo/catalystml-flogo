@@ -43,8 +43,6 @@ func (f *ActionFactory) Initialize(ctx action.InitContext) error {
 		return nil
 	}
 
-	//mapperFactory := mapper.NewFactory(pipeline.GetDataResolver())
-
 	pipeline.DefaultManager = f.resManager
 	var err error
 

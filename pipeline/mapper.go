@@ -16,7 +16,6 @@ var mapperFactory mapper.Factory
 	The DefaultOutputMapper is used when the output label is not mentioned
 	for the output from the operation and OperationOutputMapper is used when the
 	output label is defined
-
 */
 
 func SetMapperFactory(factory mapper.Factory) {
@@ -45,14 +44,14 @@ func (n *NewDefaultMapperFactory) NewMapper(mappings map[string]interface{}) (ma
 		if value != nil {
 			switch t := value.(type) {
 			case string:
-				if len(t) > 0 && (t[0] == '$' || t[0] == '[') {
+				if len(t) > 0 {
 
 					if strings.Contains(t, "[") {
 						defMapper[key] = fpsmapper.NewExpression(t)
 
 					} else {
 
-						defMapper[key] = t[1:]
+						defMapper[key] = t
 					}
 
 				}
@@ -89,12 +88,16 @@ func (m *defaultOperationOutputMapper) Apply(scope data.Scope) (map[string]inter
 
 		switch t := m.mappings[name].(type) {
 		case string:
-			value, ok := scope.GetValue(t)
+			if mapper.IsLiteral(t) {
+				output[name] = t
+			} else {
+				value, ok := scope.GetValue(t[1:])
 
-			if ok {
-
-				output[name] = value
+				if ok {
+					output[name] = value
+				}
 			}
+
 		case []fpsmapper.DerefernceStruct:
 
 			val, err := fpsmapper.Resolve(t, scope)

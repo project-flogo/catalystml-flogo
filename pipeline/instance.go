@@ -1,7 +1,6 @@
 package pipeline
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/project-flogo/core/data"
@@ -45,19 +44,19 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 		for key, val := range ctx.pipelineInput {
 			temp, ok := inst.def.input[key].(PipelineInput)
-			fmt.Println("Val...", val)
+			//fmt.Println("Val...", val)
 			if !ok {
 				continue
 			}
 
 			definedType, _ := data.ToTypeEnum(temp.Type)
-			givenType, _ := data.GetType(val)
+			givenType, _ := data.GetType(val.(map[string]interface{})[temp.Label])
 			if definedType != givenType {
-				return nil, errors.New("Type mismatch")
+				return nil, fmt.Errorf("Type mismatch in input. Defined type [%s] passed type [%s]", definedType, givenType)
 			}
 		}
 
-		_, err := stage.opt.Eval(ctx)
+		err := stage.opt.Eval(ctx)
 		if err != nil {
 			return nil, err
 		}
@@ -84,15 +83,36 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		}
 
 	}
+
 	if inst.def.output.Data != nil {
 		mf := GetMapperFactory()
-		outMapper, err := mf.NewMapper(inst.def.output.Data)
+		mappings := make(map[string]interface{})
+		switch t := inst.def.output.Data.(type) {
+		case map[string]interface{}:
+			for key, val := range t {
+				mappings[key] = val
+			}
+		default:
+			mappings["data"] = inst.def.output.Data
+		}
 
-		output, err = outMapper.Apply(&StageInputScope{execCtx: ctx})
+		outMapper, err := mf.NewMapper(mappings)
+		output, err = outMapper.Apply(&StageOutputScope{output: output, execCtx: ctx})
 
-		fmt.Println("Output")
 		if err != nil {
 			return nil, err
+		}
+		var definedType data.Type
+		if inst.def.output.Type == "dataframe" || inst.def.output.Type == "map" {
+			definedType, _ = data.ToTypeEnum("object")
+		} else {
+			definedType, _ = data.ToTypeEnum(inst.def.output.Type)
+		}
+
+		givenType, _ := data.GetType(output)
+
+		if definedType != givenType {
+			return nil, fmt.Errorf("Type mismatch in output. Defined type [%s] passed type [%s]", definedType, givenType)
 		}
 	}
 

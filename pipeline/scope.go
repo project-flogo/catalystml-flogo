@@ -1,6 +1,8 @@
 package pipeline
 
-import "errors"
+import (
+	"errors"
+)
 
 type ScopeId int
 
@@ -56,12 +58,18 @@ func (s *StageInputScope) GetValueByScope(scopeId ScopeId, name string) (value i
 // SimpleScope is a basic implementation of a scope
 type StageOutputScope struct {
 	execCtx *ExecutionContext
+	output  map[string]interface{}
 }
 
 func (s *StageOutputScope) GetValue(name string) (value interface{}, exists bool) {
 	attrs := s.execCtx.currentOutput
 
 	attr, found := attrs[name]
+
+	if found {
+		return attr, true
+	}
+	attr, found = s.output[name]
 
 	if found {
 		return attr, true

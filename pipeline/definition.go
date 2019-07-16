@@ -14,7 +14,7 @@ type DefinitionConfig struct {
 
 func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve.CompositeResolver) (*Definition, error) {
 
-	def := &Definition{name: config.Name}
+	def := &Definition{name: config.Name, output: config.Output}
 
 	for _, sconfig := range config.Stages {
 		stage, err := NewStage(sconfig, mf, resolver)

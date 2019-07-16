@@ -93,6 +93,7 @@ func NewStage(config *StageConfig, mf mapper.Factory, resolver resolve.Composite
 	for k, v := range config.Input {
 		if !isExpr(v) {
 			fieldMetaddata, ok := opt.Metadata().Input[k]
+
 			if ok {
 				v, err := coerce.ToType(v, fieldMetaddata.Type())
 				if err != nil {
@@ -104,6 +105,7 @@ func NewStage(config *StageConfig, mf mapper.Factory, resolver resolve.Composite
 				input[k] = v
 			}
 		} else {
+
 			input[k] = v
 		}
 

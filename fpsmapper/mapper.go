@@ -30,7 +30,6 @@ func NewExpression(str string) []DerefernceStruct {
 
 		derefStructs = append(derefStructs, derefStruct)
 	}
-	//fmt.Println("def..", derefStructs)
 
 	return derefStructs
 }
