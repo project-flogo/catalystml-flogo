@@ -88,10 +88,10 @@ func (m *defaultOperationOutputMapper) Apply(scope data.Scope) (map[string]inter
 
 		switch t := m.mappings[name].(type) {
 		case string:
-			if mapper.IsLiteral(t) {
+			if t[0] != '$' {
 				output[name] = t
 			} else {
-				value, ok := scope.GetValue(t[1:])
+				value, ok := scope.GetValue(m.mappings[name].(string)[1:])
 
 				if ok {
 					output[name] = value

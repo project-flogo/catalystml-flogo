@@ -44,7 +44,6 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 		for key, val := range ctx.pipelineInput {
 			temp, ok := inst.def.input[key].(PipelineInput)
-			//fmt.Println("Val...", val)
 			if !ok {
 				continue
 			}
@@ -65,12 +64,18 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 		results, err := stage.outputMapper.Apply(in)
 
+		if err != nil {
+			return nil, err
+		}
+
 		for name, value := range results {
 
 			_, ok := stage.outputAttrs[name]
 			if !ok {
 				output[name] = value
-				ctx.currentOutput[name] = value
+				//Change the key of output of operation to the id.
+
+				ctx.currentOutput[name] = ctx.currentOutput[value.(string)]
 			} else {
 				output[stage.outputAttrs[name].(string)] = value
 				ctx.currentOutput[stage.outputAttrs[name].(string)] = value
@@ -78,15 +83,12 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 		}
 
-		if err != nil {
-			return nil, err
-		}
-
 	}
 
 	if inst.def.output.Data != nil {
 		mf := GetMapperFactory()
 		mappings := make(map[string]interface{})
+
 		switch t := inst.def.output.Data.(type) {
 		case map[string]interface{}:
 			for key, val := range t {
