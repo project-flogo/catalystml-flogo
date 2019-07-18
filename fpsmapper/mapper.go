@@ -8,6 +8,9 @@ import (
 	"github.com/project-flogo/core/data/coerce"
 )
 
+type CamMapper struct {
+	defStructs []DerefernceStruct
+}
 type DerefernceStruct struct {
 	Id    string
 	Index string

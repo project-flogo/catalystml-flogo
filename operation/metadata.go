@@ -1,5 +1,6 @@
 package operation
 
+/*
 import (
 	"encoding/json"
 
@@ -64,4 +65,4 @@ func ToMetadata(mdStructs ...interface{}) *Metadata {
 	}
 
 	return &Metadata{Params: params, IOMetadata: &metadata.IOMetadata{Input: input, Output: output}}
-}
+}*/

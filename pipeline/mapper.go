@@ -7,7 +7,6 @@ import (
 	"github.com/project-flogo/core/data/mapper"
 
 	"github.com/project-flogo/fps/fpsmapper"
-	"github.com/project-flogo/fps/operation"
 )
 
 var mapperFactory mapper.Factory
@@ -44,7 +43,7 @@ func (n *NewDefaultMapperFactory) NewMapper(mappings map[string]interface{}) (ma
 		if value != nil {
 			switch t := value.(type) {
 			case string:
-				if len(t) > 0 {
+				if len(t) > 0 && t[0] == '$' {
 
 					if strings.Contains(t, "[") {
 						defMapper[key] = fpsmapper.NewExpression(t)
@@ -54,6 +53,8 @@ func (n *NewDefaultMapperFactory) NewMapper(mappings map[string]interface{}) (ma
 						defMapper[key] = t
 					}
 
+				} else {
+					defMapper[key] = t
 				}
 			default:
 				defMapper[key] = t
@@ -69,10 +70,7 @@ func NewDefaultOperationOutputMapper(stage *Stage) mapper.Mapper {
 
 	defMapper := make(map[string]interface{})
 
-	for key, _ := range stage.opt.Metadata().Output {
-
-		defMapper[stage.ID()] = key
-	}
+	defMapper[stage.ID()] = "$" + stage.ID()
 	return &defaultOperationOutputMapper{mappings: defMapper}
 }
 
@@ -111,29 +109,6 @@ func (m *defaultOperationOutputMapper) Apply(scope data.Scope) (map[string]inter
 			output[name] = t
 		}
 
-	}
-
-	return output, nil
-}
-
-type newOperationOutputMapper struct {
-	metadata *operation.Metadata
-}
-
-func NewOperationOutputMapper(stage *Stage) mapper.Mapper {
-
-	return &newOperationOutputMapper{metadata: stage.opt.Metadata()}
-}
-
-func (m *newOperationOutputMapper) Apply(scope data.Scope) (map[string]interface{}, error) {
-
-	output := make(map[string]interface{}, len(m.metadata.Output))
-	for name := range m.metadata.Output {
-
-		value, ok := scope.GetValue(name)
-		if ok {
-			output[name] = value
-		}
 	}
 
 	return output, nil

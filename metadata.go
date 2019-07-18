@@ -8,7 +8,7 @@ type Settings struct {
 }
 
 type Input struct {
-	Input map[string]interface{} `md:"input"`
+	Input interface{} `md:"input"`
 }
 
 type Output struct {
@@ -23,12 +23,7 @@ func (i *Input) ToMap() map[string]interface{} {
 
 func (i *Input) FromMap(values map[string]interface{}) error {
 
-	var err error
-
-	i.Input, err = coerce.ToObject(values["input"])
-	if err != nil {
-		return err
-	}
+	i.Input = values["input"]
 
 	return nil
 }

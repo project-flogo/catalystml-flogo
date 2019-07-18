@@ -1,0 +1,101 @@
+{
+    "name": "SampleFPSApp",
+    "type": "flogo:app",
+    "version": "0.0.1",
+    "description": "",
+    "appModel": "1.0.0",
+    "imports": [
+        "github.com/project-flogo/contrib/trigger/timer",
+        "github.com/project-flogo/fps",
+        "github.com/project-flogo/operation/math"
+    ],
+    "triggers": [
+      {
+        "id": "csv_trigger_zero",
+        "ref": "github.com/project-flogo/contrib/trigger/timer",
+        "settings": null,
+        "handlers": [
+          {
+            "settings": {
+              "startDelay": "1s"
+            },
+            "actions": [
+              {
+                "ref": "#fps",
+                "settings": {
+                 "catalystMlURI": "res://cam:gather"
+                },
+                "input" : {
+                  "input": "3"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "resources": [
+      {
+        "id": "cam:gather",
+        "data": {
+          "input": [
+            {
+              "type":"string",
+              "label": "input"  
+            },
+            {
+              "type":"list",
+              "label":"blah"
+            }
+          ],
+          "pipeline": [
+            {
+              "id" : "math1",
+              "operation": "math",
+              "params": {
+                "sample":2,
+                "listOfKeys":["0_0","1_0","2_0","amag_0","0_1","1_1","2_1","amag_1"]
+              },
+              "input": {
+                "inputSample": "$input"
+              }
+
+            },
+            {
+              "id" : "math2",
+              "operation": "math",
+              "params": {
+                "sample":2
+              },
+              "input": {
+                "inputSample": "$math1['sample']",
+                "inputMap": "$math1"
+              }
+            }
+          ],
+          "output" :{
+            "type" : "dataframe",
+            "data" : {
+              "feat1":"$math2"
+            }
+          }
+        }
+      }
+    ],
+    "actions": [
+      {
+        "ref": "github.com/project-flogo/fps",
+        "settings": {
+          "catalystMlURI": "res://cam:gather"
+        },
+        "input" : {
+          "input" : "3"
+        },
+        "comments":"Some Comment",
+        "id": "gather"
+      }
+    ]
+  }
+  
+
+  
