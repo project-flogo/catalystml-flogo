@@ -1,0 +1,27 @@
+{
+    "title":"math",
+    "desc":"Just executes correctly",
+    "input":[
+	        {
+                "name":"InputSample", 
+                "type":"int", 
+                "description":"something", 
+                "optional":false
+            }
+	    ],
+    "params":[
+        {
+            "name":"Sample", 
+            "type":"float64", 
+            "description":"something", 
+            "optional":false
+        },
+        {
+            "name":"ListOfKeys", 
+            "type":"[]any", 
+            "description":"something", 
+            "optional":false
+        }
+    ],
+    "output":"object"
+}
