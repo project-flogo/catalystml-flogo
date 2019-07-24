@@ -36,7 +36,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	a.logger.Info("Executing operation...", input.InputSample, a.params.Sample)
 	out := make(map[string]interface{})
 
-	out["sample"] = 26
+	out["sample"] = input.InputSample
 
 	out["OutputArray"] = []interface{}{1, 2, 3, 4, 5}
 

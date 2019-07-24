@@ -32,6 +32,28 @@ func GetMapperFactory() mapper.Factory {
 type NewDefaultMapperFactory struct {
 }
 
+func NewDefaultOperationOutputMapper(stage *Stage) mapper.Mapper {
+
+	defMapper := make(map[string]interface{})
+
+	//defMapper[stage.output] = "$" + stage.output
+	t := stage.output
+
+	if len(t) > 0 {
+
+		if strings.Contains(t, "[") {
+			//defMapper[key] = fpsmapper.NewExpression(t)
+
+		} else {
+
+			defMapper[t] = t
+		}
+
+	}
+
+	return &defaultOperationOutputMapper{mappings: defMapper}
+}
+
 func (n *NewDefaultMapperFactory) NewMapper(mappings map[string]interface{}) (mapper.Mapper, error) {
 
 	if len(mappings) == 0 {
@@ -66,14 +88,6 @@ func (n *NewDefaultMapperFactory) NewMapper(mappings map[string]interface{}) (ma
 	return &defaultOperationOutputMapper{mappings: defMapper}, nil
 }
 
-func NewDefaultOperationOutputMapper(stage *Stage) mapper.Mapper {
-
-	defMapper := make(map[string]interface{})
-
-	defMapper[stage.ID()] = "$" + stage.ID()
-	return &defaultOperationOutputMapper{mappings: defMapper}
-}
-
 type defaultOperationOutputMapper struct {
 	mappings map[string]interface{}
 }
@@ -87,6 +101,7 @@ func (m *defaultOperationOutputMapper) Apply(scope data.Scope) (map[string]inter
 		switch t := m.mappings[name].(type) {
 		case string:
 			if t[0] != '$' {
+
 				output[name] = t
 			} else {
 				value, ok := scope.GetValue(m.mappings[name].(string)[1:])

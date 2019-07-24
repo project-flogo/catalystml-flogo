@@ -63,10 +63,12 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 			return nil, err
 		}
 
-		scope.SetValue(stage.ID(), stageOutput)
-		inst.logger.Debug("Setting operation outputs: ", stageOutput)
+		scope.SetValue(stage.output, stageOutput)
+		inst.logger.Debugf("Setting output for %v operation outputs: %v ", stage.output, stageOutput)
 
 		_, err = stage.outputMapper.Apply(scope)
+
+		inst.logger.Debug("Scope after operation...", scope)
 
 		if err != nil {
 			return nil, err

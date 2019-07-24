@@ -1,7 +1,10 @@
 package pipeline
 
 import (
-	"errors"
+	"strconv"
+	"strings"
+
+	"github.com/project-flogo/core/data/path"
 )
 
 type scopeImpl struct {
@@ -26,13 +29,36 @@ func (s *scopeImpl) GetValue(name string) (value interface{}, exists bool) {
 	return val, true
 }
 
+//Check if the name resolves to existing values in scope
+//If not then set a new value
 func (s *scopeImpl) SetValue(name string, value interface{}) error {
 
-	_, ok := s.values[name]
-	if ok {
-		return errors.New("Value exist")
+	if strings.Contains(name, "[") {
+
+		path.SetValue(s.values, getPath(name), 76)
+
+	} else {
+		s.values[name] = value
 	}
-	s.values[name] = value
 
 	return nil
+}
+
+func getPath(name string) string {
+	var result string
+	for _, val := range strings.Split(name, "[") {
+		temp := strings.TrimFunc(val, func(r rune) bool {
+			if r == '\'' || r == ']' {
+				return true
+			}
+			return false
+		})
+		if _, err := strconv.Atoi(temp); err == nil {
+			result = result + "[" + temp + "]"
+		} else {
+			result = result + "." + temp
+		}
+
+	}
+	return result
 }

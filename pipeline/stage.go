@@ -11,7 +11,6 @@ import (
 )
 
 type Stage struct {
-	id  string
 	opt operation.Operation
 
 	params map[string]interface{}
@@ -20,6 +19,7 @@ type Stage struct {
 
 	inputMapper  mapper.Mapper
 	outputMapper mapper.Mapper
+	output       string
 }
 
 type StageConfig struct {
@@ -67,7 +67,10 @@ func NewStage(config *StageConfig, mf mapper.Factory, resolver resolve.Composite
 	}
 
 	stage := &Stage{}
-	stage.id = config.Id
+	if config.Output == "" {
+		return nil, fmt.Errorf("Output not defined for operation %s", config.Operation)
+	}
+	stage.output = config.Output
 	stage.opt = opt
 
 	input := make(map[string]interface{})
@@ -89,9 +92,6 @@ func NewStage(config *StageConfig, mf mapper.Factory, resolver resolve.Composite
 	stage.outputMapper = NewDefaultOperationOutputMapper(stage)
 
 	return stage, nil
-}
-func (stage *Stage) ID() string {
-	return stage.id
 }
 
 func isExpr(v interface{}) bool {
