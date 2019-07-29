@@ -1,100 +1,64 @@
 package pipeline
 
 import (
-	"errors"
+	"strconv"
+	"strings"
+
+	"github.com/project-flogo/core/data/path"
 )
 
-type ScopeId int
-
-const (
-	ScopeDefault ScopeId = iota
-	ScopePipeline
-	ScopePassthru
-)
-
-type MultiScope interface {
-	GetValueByScope(scope string, name string) (value interface{}, exists bool)
+type scopeImpl struct {
+	values map[string]interface{}
 }
 
-type StageInputScope struct {
-	execCtx *ExecutionContext
+func NewPipelineScope(input map[string]interface{}) *scopeImpl {
+
+	if input != nil {
+		return &scopeImpl{values: input}
+	}
+	values := make(map[string]interface{})
+	return &scopeImpl{values: values}
 }
 
-func (s *StageInputScope) GetValue(name string) (value interface{}, exists bool) {
+func (s *scopeImpl) GetValue(name string) (value interface{}, exists bool) {
+	val, ok := s.values[name]
 
-	attrs := s.execCtx.currentOutput
+	if !ok {
+		return nil, false
+	}
+	return val, true
+}
 
-	attr, found := attrs[name]
+//Check if the name resolves to existing values in scope
+//If not then set a new value
+func (s *scopeImpl) SetValue(name string, value interface{}) error {
 
-	if found {
-		return attr, true
+	if strings.Contains(name, "[") {
+
+		path.SetValue(s.values, getPath(name), value)
+
+	} else {
+		s.values[name] = value
 	}
 
-	return attr, found
+	return nil
 }
 
-func (s *StageInputScope) SetValue(name string, value interface{}) error {
-	return errors.New("read-only scope")
-}
+func getPath(name string) string {
+	var result string
+	for _, val := range strings.Split(name, "[") {
+		temp := strings.TrimFunc(val, func(r rune) bool {
+			if r == '\'' || r == ']' {
+				return true
+			}
+			return false
+		})
+		if _, err := strconv.Atoi(temp); err == nil {
+			result = result + "[" + temp + "]"
+		} else {
+			result = result + "." + temp
+		}
 
-func (s *StageInputScope) GetValueByScope(scopeId ScopeId, name string) (value interface{}, exists bool) {
-
-	attrs := s.execCtx.currentOutput
-
-	switch scopeId {
-	case ScopePipeline:
-		attrs = s.execCtx.pipelineInput
 	}
-
-	attr, found := attrs[name]
-
-	if found {
-		return attr, true
-	}
-
-	return attr, found
-}
-
-// SimpleScope is a basic implementation of a scope
-type StageOutputScope struct {
-	execCtx *ExecutionContext
-	output  map[string]interface{}
-}
-
-func (s *StageOutputScope) GetValue(name string) (value interface{}, exists bool) {
-	attrs := s.execCtx.currentOutput
-
-	attr, found := attrs[name]
-
-	if found {
-		return attr, true
-	}
-	attr, found = s.output[name]
-
-	if found {
-		return attr, true
-	}
-
-	return attr, found
-}
-
-func (s *StageOutputScope) SetValue(name string, value interface{}) error {
-	return errors.New("read-only scope")
-}
-
-func (s *StageOutputScope) GetValueByScope(scopeId ScopeId, name string) (value interface{}, exists bool) {
-	attrs := s.execCtx.currentOutput
-
-	switch scopeId {
-	case ScopePipeline:
-		attrs = s.execCtx.pipelineInput
-	}
-
-	attr, found := attrs[name]
-
-	if found {
-		return attr, true
-	}
-
-	return attr, found
+	return result
 }

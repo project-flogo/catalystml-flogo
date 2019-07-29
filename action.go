@@ -122,6 +122,7 @@ func (f *Action) IOMetadata() *metadata.IOMetadata {
 }
 
 func (f *Action) Run(context context.Context, inputs map[string]interface{}) (map[string]interface{}, error) {
+
 	retData, err := f.inst.Run(inputs)
 
 	if err != nil {

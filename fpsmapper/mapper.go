@@ -1,6 +1,7 @@
 package fpsmapper
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -8,6 +9,9 @@ import (
 	"github.com/project-flogo/core/data/coerce"
 )
 
+type CamMapper struct {
+	defStructs []DerefernceStruct
+}
 type DerefernceStruct struct {
 	Id    string
 	Index string
@@ -69,4 +73,52 @@ func removeChars(r rune) bool {
 		return true
 	}
 	return false
+}
+
+func Apply(deStructs []DerefernceStruct, scope data.Scope, value interface{}) {
+
+	var temp interface{}
+	var err error
+	size := len(deStructs)
+	fmt.Println("Size...", size)
+	for key, val := range deStructs {
+		fmt.Println("l...", key, val, err)
+		/*var temp2 []interface{}
+		var temp3 map[string]interface{}
+
+		if temp == nil {
+			temp, _ = scope.GetValue(val.Id)
+		}
+		temp2, err = coerce.ToArray(temp)
+		if err != nil {
+			temp3, err = coerce.ToObject(temp)
+			if err != nil {
+				//return nil, err
+			}
+			var ok bool
+
+			temp, ok = temp3[val.Index]
+			if key == size-1 {
+
+				fmt.Println("Val inde...", val.Index, key)
+				fmt.Println("Setting...", temp3[val.Index], value)
+				temp3[val.Index] = value
+			}
+			if !ok {
+				//return nil, err
+			}
+
+		} else {
+			index, _ := strconv.Atoi(val.Index)
+			temp = temp2[index]
+			if key == size-1 {
+				temp2[index] = val
+				fmt.Println("Setting...", temp2[index], value)
+			}
+		}*/
+
+	}
+	fmt.Println("Scope:", temp, value)
+	//return temp, nil
+
 }

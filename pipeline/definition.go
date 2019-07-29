@@ -7,7 +7,7 @@ import (
 
 type DefinitionConfig struct {
 	Name   string          `json:"name"`
-	Stages []*StageConfig  `json:"pipeline"`
+	Stages []*StageConfig  `json:"structure"`
 	Input  []PipelineInput `json:"input"`
 	Output PipelineOutput  `json:"output"`
 }

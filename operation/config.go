@@ -5,5 +5,5 @@ type Config struct {
 	Operation string                 `json:"operation"`
 	Params    map[string]interface{} `json:"params,omitempty"`
 	Input     map[string]interface{} `json:"input,omitempty"`
-	Output    map[string]interface{} `json:"output,omitempty"`
+	Output    string                 `json:"output,required"`
 }

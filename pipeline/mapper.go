@@ -7,7 +7,6 @@ import (
 	"github.com/project-flogo/core/data/mapper"
 
 	"github.com/project-flogo/fps/fpsmapper"
-	"github.com/project-flogo/fps/operation"
 )
 
 var mapperFactory mapper.Factory
@@ -33,6 +32,28 @@ func GetMapperFactory() mapper.Factory {
 type NewDefaultMapperFactory struct {
 }
 
+func NewDefaultOperationOutputMapper(stage *Stage) mapper.Mapper {
+
+	defMapper := make(map[string]interface{})
+
+	//defMapper[stage.output] = "$" + stage.output
+	t := stage.output
+
+	if len(t) > 0 {
+
+		if strings.Contains(t, "[") {
+			//defMapper[key] = fpsmapper.NewExpression(t)
+
+		} else {
+
+			defMapper[t] = t
+		}
+
+	}
+
+	return &defaultOperationOutputMapper{mappings: defMapper}
+}
+
 func (n *NewDefaultMapperFactory) NewMapper(mappings map[string]interface{}) (mapper.Mapper, error) {
 
 	if len(mappings) == 0 {
@@ -44,7 +65,7 @@ func (n *NewDefaultMapperFactory) NewMapper(mappings map[string]interface{}) (ma
 		if value != nil {
 			switch t := value.(type) {
 			case string:
-				if len(t) > 0 {
+				if len(t) > 0 && t[0] == '$' {
 
 					if strings.Contains(t, "[") {
 						defMapper[key] = fpsmapper.NewExpression(t)
@@ -54,6 +75,8 @@ func (n *NewDefaultMapperFactory) NewMapper(mappings map[string]interface{}) (ma
 						defMapper[key] = t
 					}
 
+				} else {
+					defMapper[key] = t
 				}
 			default:
 				defMapper[key] = t
@@ -63,17 +86,6 @@ func (n *NewDefaultMapperFactory) NewMapper(mappings map[string]interface{}) (ma
 	}
 
 	return &defaultOperationOutputMapper{mappings: defMapper}, nil
-}
-
-func NewDefaultOperationOutputMapper(stage *Stage) mapper.Mapper {
-
-	defMapper := make(map[string]interface{})
-
-	for key, _ := range stage.opt.Metadata().Output {
-
-		defMapper[stage.ID()] = key
-	}
-	return &defaultOperationOutputMapper{mappings: defMapper}
 }
 
 type defaultOperationOutputMapper struct {
@@ -89,6 +101,7 @@ func (m *defaultOperationOutputMapper) Apply(scope data.Scope) (map[string]inter
 		switch t := m.mappings[name].(type) {
 		case string:
 			if t[0] != '$' {
+
 				output[name] = t
 			} else {
 				value, ok := scope.GetValue(m.mappings[name].(string)[1:])
@@ -111,29 +124,6 @@ func (m *defaultOperationOutputMapper) Apply(scope data.Scope) (map[string]inter
 			output[name] = t
 		}
 
-	}
-
-	return output, nil
-}
-
-type newOperationOutputMapper struct {
-	metadata *operation.Metadata
-}
-
-func NewOperationOutputMapper(stage *Stage) mapper.Mapper {
-
-	return &newOperationOutputMapper{metadata: stage.opt.Metadata()}
-}
-
-func (m *newOperationOutputMapper) Apply(scope data.Scope) (map[string]interface{}, error) {
-
-	output := make(map[string]interface{}, len(m.metadata.Output))
-	for name := range m.metadata.Output {
-
-		value, ok := scope.GetValue(name)
-		if ok {
-			output[name] = value
-		}
 	}
 
 	return output, nil
