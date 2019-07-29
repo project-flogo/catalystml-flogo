@@ -35,7 +35,7 @@ func (s *scopeImpl) SetValue(name string, value interface{}) error {
 
 	if strings.Contains(name, "[") {
 
-		path.SetValue(s.values, getPath(name), 76)
+		path.SetValue(s.values, getPath(name), value)
 
 	} else {
 		s.values[name] = value

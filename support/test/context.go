@@ -9,21 +9,6 @@ import (
 	"github.com/project-flogo/fps/operation"
 )
 
-func NewOperationContext(md *operation.Metadata) *OperationContext {
-
-	optContext := &OperationContext{name: "sample"}
-	optContext.inputs = make(map[string]interface{})
-	optContext.outputs = make(map[string]interface{})
-	for name, tv := range md.Input {
-		optContext.inputs[name] = tv.Value()
-	}
-	for name, tv := range md.Output {
-		optContext.outputs[name] = tv.Value()
-	}
-
-	return optContext
-}
-
 type OperationContext struct {
 	inputs  map[string]interface{}
 	outputs map[string]interface{}

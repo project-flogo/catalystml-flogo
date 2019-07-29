@@ -2,6 +2,8 @@ package pipeline
 
 import (
 	"fmt"
+	"strconv"
+	"time"
 
 	"github.com/project-flogo/core/data"
 	"github.com/project-flogo/core/support/log"
@@ -28,6 +30,8 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 	scope := NewPipelineScope(input)
 
+	start := time.Now()
+
 	//Check the type of the input of the pipeline.
 	for key, _ := range inst.def.input {
 
@@ -44,9 +48,9 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 	}
 
 	//Execute the pipeline.
-	for _, stage := range inst.def.stages {
+	for key, stage := range inst.def.stages {
 
-		inst.logger.Debug("Operation Input Mapper: ", stage.inputMapper)
+		inst.logger.Debugf("Operation Input Mapper for stage [%v]: [%v]", stage.name+"-"+strconv.Itoa(key), stage.inputMapper)
 		if stage.inputMapper != nil {
 
 			currentInput, err = stage.inputMapper.Apply(scope)
@@ -56,7 +60,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 		}
 
-		inst.logger.Debug("Executing operation with inputs: ", currentInput)
+		inst.logger.Debugf("Executing operation [%v] with inputs: [%v]", stage.name+"-"+strconv.Itoa(key), currentInput)
 		stageOutput, err := stage.opt.Eval(currentInput)
 
 		if err != nil {
@@ -64,11 +68,11 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		}
 
 		scope.SetValue(stage.output, stageOutput)
-		inst.logger.Debugf("Setting output for %v operation outputs: %v ", stage.output, stageOutput)
+		inst.logger.Debugf("Setting output for [%v] operation outputs: [%v] ", stage.name+"-"+strconv.Itoa(key), stageOutput)
 
 		_, err = stage.outputMapper.Apply(scope)
 
-		inst.logger.Debug("Scope after operation...", scope)
+		inst.logger.Debugf("Scope after operation [%v] : [%v]", stage.name+"-"+strconv.Itoa(key), scope)
 
 		if err != nil {
 			return nil, err
@@ -109,7 +113,9 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 			return nil, fmt.Errorf("Type mismatch in output. Defined type [%s] passed type [%s]", definedType, givenType)
 		}
 	}
-	inst.logger.Debug("Output of the action is...", output)
+	inst.logger.Infof("The output took %v to calculate", time.Since(start))
+
+	inst.logger.Info("Output of the action is...", output)
 	return output, nil
 
 }
