@@ -82,7 +82,6 @@ func NewStage(config *StageConfig, mf mapper.Factory, resolver resolve.Composite
 	for k, v := range config.Input {
 
 		input[k] = v
-
 	}
 	var err error
 

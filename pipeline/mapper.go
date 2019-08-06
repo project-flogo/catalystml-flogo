@@ -76,7 +76,9 @@ func (n *NewDefaultMapperFactory) NewMapper(mappings map[string]interface{}) (ma
 					}
 
 				} else {
+
 					defMapper[key] = t
+
 				}
 			default:
 				defMapper[key] = t
@@ -97,7 +99,15 @@ func (m *defaultOperationOutputMapper) Apply(scope data.Scope) (map[string]inter
 	output := make(map[string]interface{}, len(m.mappings))
 
 	for name := range m.mappings {
+		if name == "function" {
+			mf := GetMapperFactory()
 
+			funcInputMapper, _ := mf.NewMapper(m.mappings["function"].(map[string]interface{})["input"].(map[string]interface{}))
+
+			m.mappings["function"].(map[string]interface{})["input"], _ = funcInputMapper.Apply(scope)
+			output["function"] = m.mappings["function"]
+
+		}
 		switch t := m.mappings[name].(type) {
 		case string:
 			if t[0] != '$' {
