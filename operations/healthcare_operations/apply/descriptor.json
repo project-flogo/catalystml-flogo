@@ -1,0 +1,22 @@
+{
+    "title":"removestop",
+    "desc":"removes Stop words from a string",
+    "input":[
+	        {
+                "str":"str", 
+                "type":"string", 
+                "description":"the string to have stop words removed from", 
+                "optional":false
+            }
+	    ],
+    "params":[
+        {
+            "str":"lang", 
+            "type":"string", 
+            "description":"The language to be used, based on ISO 639-1 codes https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes", 
+            "default":"en",
+            "optional":true
+        }
+    ],
+    "output":"string"
+}
