@@ -13,7 +13,7 @@ func TestSample(t *testing.T) {
 	inputs["data"] = map[string]interface{}{"state":[]interface{}{"CA","NC","TX"},"sample":"sampleSomething"}
 	
 	
-	params := Params{Columns: []interface{}{"state"}}
+	params := Params{Columns: "state"}
 
 	optInitConext := test.NewOperationInitContext(params, nil)
 	opt, err := New(optInitConext)
