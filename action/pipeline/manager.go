@@ -46,20 +46,21 @@ func NewManager() *Manager {
 	manager := &Manager{}
 	manager.pipelines = make(map[string]*Definition)
 	manager.pipelineProvider = &BasicRemotePipelineProvider{}
+	manager.remotePipelines = make(map[string]*Definition)
 
 	return manager
 }
 
 func (m *Manager) GetPipeline(uri string) (*Definition, error) {
-
+	
 	if m.remotePipelines == nil {
 		m.remotePipelines = make(map[string]*Definition)
 	}
-
+	
 	pDef, exists := m.remotePipelines[uri]
 
 	if !exists {
-
+		
 		pConfig, err := m.pipelineProvider.GetPipeline(uri)
 		if err != nil {
 			return nil, err

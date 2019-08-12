@@ -69,7 +69,6 @@ func (f *ActionFactory) New(config *action.Config) (action.Action, error) {
 	}
 
 	if strings.HasPrefix(settings.CatalystMlURI, resource.UriScheme) {
-
 		res := f.resManager.GetResource(settings.CatalystMlURI)
 
 		if res != nil {
@@ -82,6 +81,8 @@ func (f *ActionFactory) New(config *action.Config) (action.Action, error) {
 			return nil, errors.New("unable to resolve fps in else: " + settings.CatalystMlURI)
 		}
 	} else {
+		manager = pipeline.NewManager()
+
 		def, err := manager.GetPipeline(settings.CatalystMlURI)
 		if err != nil {
 			return nil, err

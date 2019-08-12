@@ -23,7 +23,7 @@
               {
                 "ref": "#action",
                 "settings": {
-                 "catalystMlURI": "res://cam:gather"
+                 "catalystMlURI": "file://samplecml.json"
                 },
                 "input" : {
                   "input": "3"
@@ -38,6 +38,13 @@
       {
         "id": "cam:gather",
         "data": {
+          "name":"Sample CML Pipeline",
+          "description":"Demonstrates sample operation in pipeline",
+          "model":{
+            "framework":"Tensorflow",
+            "tags":"serve",
+            "signatureDefs":"def_signature"
+          },
           "input": [
             {
               "type":"string",
