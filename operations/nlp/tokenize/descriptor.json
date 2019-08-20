@@ -1,0 +1,14 @@
+{
+    "title":"tokenize",
+    "desc":"Seperates a string into words.",
+    "input":[
+	        {
+                "str":"s0", 
+                "type":"string", 
+                "description":"string", 
+                "optional":false
+            }
+	    ],
+    "params":[],
+    "output":"array[string]"
+}

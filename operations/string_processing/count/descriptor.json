@@ -1,0 +1,21 @@
+{
+    "title":"count",
+    "desc":"count number of times substring appears in string",
+    "input":[
+	        {
+                "str":"s0", 
+                "type":"string", 
+                "description":"the string to be searched within", 
+                "optional":false
+            },
+            {
+                "str":"s1", 
+                "type":"string", 
+                "description":"the substring being searched for", 
+                "optional":false
+            }
+	    ],
+    "params":[
+    ],
+    "output":"int"
+}
