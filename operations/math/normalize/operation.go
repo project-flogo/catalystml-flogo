@@ -1,8 +1,6 @@
 package normalize
 
 import (
-	"fmt"
-
 	"github.com/project-flogo/cml/action/operation"
 	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/support/log"
@@ -38,7 +36,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		}
 		result = (val - in.Min) / (in.Value - in.Min)
 	}
-	fmt.Println("Norm is...", result)
+
 	a.logger.Debug("Norm is..", result)
 
 	return result, err
@@ -75,17 +73,4 @@ func calulate1D(array []interface{}, value float32, min float32) (result []inter
 	}
 
 	return array
-}
-
-func calulate2D(array []interface{}, value float32, min float32) (result []interface{}) {
-
-	for _, i := range array {
-
-		val, _ := coerce.ToArray(i)
-		result = append(result, calulate1D(val, value, min))
-	}
-
-	//return math.Sqrt(result)
-
-	return result
 }
