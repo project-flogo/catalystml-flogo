@@ -11,10 +11,6 @@ import (
 
 )
 
-func init() {
-	_ = operation.Register(&Operation{}, New)
-}
-
 type Operation struct {
 	params *Params
 }
