@@ -11,10 +11,6 @@ import (
 	"github.com/project-flogo/core/support/log"
 )
 
-func init() {
-	_ = operation.Register(&Operation{}, New)
-}
-
 type Operation struct {
 	params *Params
 	logger log.Logger

@@ -7,9 +7,6 @@ import (
 	"github.com/project-flogo/cml/action/operation"
 )
 
-func init() {
-	_ = operation.Register(&Operation{})
-}
 
 type Operation struct {
 }
