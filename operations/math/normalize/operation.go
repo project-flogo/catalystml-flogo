@@ -1,6 +1,8 @@
 package normalize
 
 import (
+	"fmt"
+
 	"github.com/project-flogo/cml/action/operation"
 	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/support/log"
@@ -36,19 +38,28 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		}
 		result = (val - in.Min) / (in.Value - in.Min)
 	}
-
+	fmt.Println("Norm is...", result)
 	a.logger.Debug("Norm is..", result)
 
 	return result, err
 
 }
-func calculateNorm(array []interface{}, value float32, min float32) (result interface{}, err error) {
+func calculateNorm(array []interface{}, value float32, min float32) (result []interface{}, err error) {
 
+	//Check if the first element of the array
+	//can be coerced to Float32
 	_, err = coerce.ToFloat32(array[0])
 
 	if err != nil {
-		return calulate2D(array, value, min), nil
+		//If not.. consider it as an array and call itself.
+		for i := 0; i < len(array); i++ {
+			arr, _ := coerce.ToArray(array[i])
+			temp, _ := calculateNorm(arr, value, min)
+			result = append(result, temp)
+		}
+		return result, nil
 	}
+
 	temp := calulate1D(array, value, min)
 	return temp, nil
 
