@@ -44,11 +44,9 @@ func transpose(matrix []interface{}) (result []interface{}, err error) {
 	var transpose []interface{}
 
 	for rowIndex, row := range matrix {
-		//fmt.Println("Row : ", row)
 		rowArray := row.([]interface{})
 		if nil == transpose {
 			transpose = make([]interface{}, len(rowArray))
-			//fmt.Println("matrix : ", len(matrix), ", transpose : ", len(transpose))
 		}
 
 		if len(rowArray) != len(transpose) {
@@ -56,7 +54,6 @@ func transpose(matrix []interface{}) (result []interface{}, err error) {
 		}
 
 		for columnIndex, column := range rowArray {
-			//fmt.Println("Column : ", column)
 			var newRow []interface{}
 			if 0 == rowIndex {
 				newRow = make([]interface{}, len(matrix))

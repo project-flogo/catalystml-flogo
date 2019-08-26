@@ -2,13 +2,9 @@ package pivot
 
 import (
 	"bytes"
-	"crypto/md5"
-	"encoding/binary"
-	"encoding/json"
-	"errors"
 
 	"github.com/project-flogo/cml/action/operation"
-	"github.com/project-flogo/core/data/coerce"
+	"github.com/project-flogo/cml/operations/common"
 	"github.com/project-flogo/core/data/metadata"
 	"github.com/project-flogo/core/support/log"
 )
@@ -66,7 +62,7 @@ func (this *Operation) pivot(dataFrame map[string][]interface{}) (result map[str
 	}
 
 	newDataFrame := make(map[string][]interface{})
-	aggregatedTupleMap := make(map[Index]map[string]DataState)
+	aggregatedTupleMap := make(map[common.Index]map[string]common.DataState)
 	tuple := make(map[string]interface{})
 	var key []interface{}
 	for i := 0; i < tupleSize; i++ {
@@ -81,16 +77,16 @@ func (this *Operation) pivot(dataFrame map[string][]interface{}) (result map[str
 			key[j] = tuple[keyElement]
 		}
 
-		index := NewIndex(key)
+		index := common.NewIndex(key)
 		aggregatedTuple := aggregatedTupleMap[index]
 		if nil == aggregatedTuple {
-			aggregatedTuple = make(map[string]DataState)
+			aggregatedTuple = make(map[string]common.DataState)
 		}
 
 		for _, keyElement := range this.params.Index {
 			data := aggregatedTuple[keyElement]
 			if nil == data {
-				data = &Data{}
+				data = &common.Data{}
 				aggregatedTuple[keyElement] = data
 			}
 			data.Update(tuple[keyElement])
@@ -108,7 +104,7 @@ func (this *Operation) pivot(dataFrame map[string][]interface{}) (result map[str
 
 func (this *Operation) aggregate(
 	tuple map[string]interface{},
-	aggregatedTuple map[string]DataState,
+	aggregatedTuple map[string]common.DataState,
 	newDataFrame map[string][]interface{},
 ) {
 	for valueColumn, functionNames := range this.params.Aggregate {
@@ -116,7 +112,7 @@ func (this *Operation) aggregate(
 			dataKey := this.dataKey(tuple, functionName, valueColumn)
 			function := aggregatedTuple[dataKey]
 			if nil == function {
-				function = getFunction(functionName)
+				function = common.GetFunction(functionName)
 				aggregatedTuple[dataKey] = function
 			}
 			err := function.Update(tuple[valueColumn])
@@ -145,7 +141,7 @@ func (this *Operation) dataKey(
 }
 
 func (this *Operation) transform(
-	tupleMap map[Index]map[string]DataState,
+	tupleMap map[common.Index]map[string]common.DataState,
 	newDataFrame map[string][]interface{}) (result map[string][]interface{}, err error) {
 	counter := 0
 	for _, tuple := range tupleMap {
@@ -162,189 +158,4 @@ func (this *Operation) transform(
 	}
 
 	return newDataFrame, nil
-}
-
-type DataState interface {
-	Update(newData interface{}) error
-	Value() interface{}
-}
-
-func getFunction(functionName string) DataState {
-	var function DataState
-	if "sum" == functionName {
-		function = &Sum{}
-	} else if "count" == functionName {
-		function = &Count{}
-	} else if "mean" == functionName {
-		function = &Mean{}
-	} else if "min" == functionName {
-		function = &Min{}
-	} else if "max" == functionName {
-		function = &Max{}
-	}
-	return function
-}
-
-type Data struct {
-	data interface{}
-}
-
-func (this *Data) Value() interface{} {
-	return this.data
-}
-
-func (this *Data) Update(newData interface{}) error {
-	this.data = newData
-	return nil
-}
-
-type Sum struct {
-	data float64
-}
-
-func (this *Sum) Value() interface{} {
-	return this.data
-}
-
-func (this *Sum) Update(newData interface{}) error {
-	delta, _ := coerce.ToFloat64(newData)
-	this.data += delta
-	return nil
-}
-
-type Count struct {
-	counter int
-}
-
-func (this *Count) Value() interface{} {
-	return this.counter
-}
-
-func (this *Count) Update(newData interface{}) error {
-	this.counter += 1
-	return nil
-}
-
-type Mean struct {
-	sum   float64
-	count float64
-}
-
-func (this *Mean) Value() interface{} {
-	return this.sum / this.count
-}
-
-func (this *Mean) Update(newData interface{}) error {
-	this.count += 1
-	delta, err := coerce.ToFloat64(newData)
-	if nil != err {
-		return err
-	}
-	this.sum += delta
-	return nil
-}
-
-type Min struct {
-	min interface{}
-}
-
-func (this *Min) Value() interface{} {
-	return this.min
-}
-
-func (this *Min) Update(newData interface{}) error {
-	if nil == this.min {
-		this.min = newData
-		return nil
-	}
-
-	result, err := compare(newData, this.min)
-
-	if nil != err {
-		return err
-	}
-
-	if 0 > result {
-		this.min = newData
-	}
-	return nil
-}
-
-type Max struct {
-	max interface{}
-}
-
-func (this *Max) Value() interface{} {
-	return this.max
-}
-
-func (this *Max) Update(newData interface{}) error {
-	if nil == this.max {
-		this.max = newData
-		return nil
-	}
-
-	result, err := compare(newData, this.max)
-
-	if nil != err {
-		return err
-	}
-
-	if 0 < result {
-		this.max = newData
-	}
-	return nil
-}
-
-func compare(data1 interface{}, data2 interface{}) (int, error) {
-
-	switch data1.(type) {
-	case float64:
-		delta1float64, _ := coerce.ToFloat64(data1)
-		delta2float64, err := coerce.ToFloat64(data2)
-		if nil != err {
-			return 0, err
-		}
-		delta := delta1float64 - delta2float64
-		switch {
-		case delta > 0:
-			return 1, nil
-		case delta == 0:
-			return 0, nil
-		case delta < 0:
-			return -1, nil
-		}
-	case int:
-		delta1int, _ := coerce.ToInt(data1)
-		delta2int, err := coerce.ToInt(data2)
-		if nil != err {
-			return 0, err
-		}
-		delta := delta1int - delta2int
-		switch {
-		case delta > 0:
-			return 1, nil
-		case delta == 0:
-			return 0, nil
-		case delta < 0:
-			return -1, nil
-		}
-	}
-
-	return 0, errors.New("Unable to compare, Uknown type!")
-}
-
-type Index struct {
-	Id uint64
-}
-
-func NewIndex(elements []interface{}) Index {
-	keyBytes := []byte{}
-	for _, element := range elements {
-		elementBytes, _ := json.Marshal(element)
-		keyBytes = append(keyBytes, elementBytes...)
-	}
-	hasher := md5.New()
-	hasher.Write(keyBytes)
-	return Index{Id: binary.BigEndian.Uint64(hasher.Sum(nil))}
 }
