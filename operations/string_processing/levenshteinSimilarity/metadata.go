@@ -6,10 +6,6 @@ import (
 	"github.com/project-flogo/core/data/coerce"
 )
 
-type Params struct {
-	// Axis int `md:"axis"`
-}
-
 type Input struct {
 	S0 string `md:"s0"`
 	S1 string `md:"s1"`

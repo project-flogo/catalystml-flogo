@@ -16,7 +16,7 @@ func TestXOnly(t *testing.T) {
 
 	p := Params{Xsize: 100, Ysize: 0, Algo: "Linear"}
 
-	file := "/Users/avanderg@tibco.com/working/coffee_carafe_demo/Jabil_Image_Classification/dataset2/Cup/Image6.png"
+	file := "../test_image.jpg"
 	f, err := os.Open(file)
 	if err != nil {
 		fmt.Printf("Error Oopening file: %v\n", err)

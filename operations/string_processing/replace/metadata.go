@@ -2,9 +2,6 @@ package replace
 
 import "github.com/project-flogo/core/data/coerce"
 
-type Params struct {
-}
-
 type Input struct {
 	S0 string `md:"s0"`
 	S1 string `md:"s1"`

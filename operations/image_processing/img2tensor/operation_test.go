@@ -20,7 +20,7 @@ func TestFalse(t *testing.T) {
 
 	p := Params{RemoveAlpha: false, IncludeBatch: false}
 
-	file := "/Users/avanderg@tibco.com/working/coffee_carafe_demo/Jabil_Image_Classification/dataset2/Cup/Image6.png"
+	file := "../test_image.jpg"
 	f, err := os.Open(file)
 	if err != nil {
 		fmt.Printf("Error Opening file: %v\n", err)

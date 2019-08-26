@@ -115,8 +115,5 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		return singleimg, nil
 
 	}
-	// fmt.Println(img)
-
-	// a.logger.Info("Output of resize", out)
 
 }

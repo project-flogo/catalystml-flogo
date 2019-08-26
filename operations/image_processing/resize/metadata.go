@@ -1,8 +1,8 @@
 package resize
 
 import (
+	"bytes"
 	"image"
-	// "github.com/project-flogo/core/data/coerce"
 )
 
 type Params struct {
@@ -23,7 +23,8 @@ type Input struct {
 
 func (i *Input) FromMap(values map[string]interface{}) error {
 
-	i.Img = values["img"].(image.Image)
+	i.Img, _, _ = image.Decode(bytes.NewReader(values["img"].([]byte)))
+	//i.Img = values["img"].(image.Image)
 
 	return nil
 }
