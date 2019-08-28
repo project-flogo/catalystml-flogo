@@ -8,4 +8,3 @@ require (
 
 replace github.com/project-flogo/cml/action => ../../action
 
-replace github.com/project-flogo/core v0.9.3 => /Users/skothari-tibco/Documents/core
