@@ -15,8 +15,6 @@ type Operation struct {
 	params *Params
 }
 
-var OperationMd = operation.ToMetadata(&Params{}, &Input{}, &Output{})
-
 func New(ctx operation.InitContext) (operation.Operation, error) {
 	p := &Params{}
 
@@ -27,10 +25,6 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 	}
 
 	return &Operation{params: p}, nil
-}
-
-func (a *Operation) Metadata() *operation.Metadata {
-	return OperationMd
 }
 
 func (a *Operation) Eval(ctx operation.Context)  error {

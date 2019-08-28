@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/project-flogo/cml/action/types"
+
 	"github.com/project-flogo/core/data"
 	"github.com/project-flogo/core/support/log"
 )
@@ -40,11 +42,12 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 			continue
 		}
 
-		definedType, _ := data.ToTypeEnum(temp.Type)
-		givenType, _ := data.GetType(input[key])
-		if definedType != givenType {
-			return nil, fmt.Errorf("Type mismatch in input. Defined type [%s] passed type [%s]", definedType, givenType)
+		err = types.ValidateType(temp.Type, input[key])
+
+		if err != nil {
+			return nil, err
 		}
+
 	}
 
 	//Execute the pipeline.

@@ -4,13 +4,8 @@ import (
 	"image"
 	_ "image/jpeg"
 
-	"github.com/project-flogo/cml/action/operation"
 	"github.com/project-flogo/core/support/log"
 )
-
-func init() {
-	_ = operation.Register(&Operation{}, New)
-}
 
 type Operation struct {
 	logger log.Logger
