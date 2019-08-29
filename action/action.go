@@ -20,7 +20,6 @@ func init() {
 
 var manager *pipeline.Manager
 var actionMd = action.ToMetadata(&Settings{}, &Input{}, &Output{})
-var logger log.Logger
 
 type Action struct {
 	Name        string `json:"name"`
@@ -36,8 +35,6 @@ type ActionFactory struct {
 
 func (f *ActionFactory) Initialize(ctx action.InitContext) error {
 	f.resManager = ctx.ResourceManager()
-
-	logger = log.ChildLogger(log.RootLogger(), "fps-logger")
 
 	if manager != nil {
 		return nil
@@ -96,14 +93,12 @@ func (f *ActionFactory) New(config *action.Config) (action.Action, error) {
 
 	instId := ""
 
-	instLogger := logger
-
 	if log.CtxLoggingEnabled() {
 		//instLogger = log.ChildLoggerWithFields(logger, log.String("pipelineName", fpsAction.definition.Name()), log.String("pipelineId", instId))
 	}
 
 	//note: single pipeline instance for the moment
-	inst := pipeline.NewInstance(catalystMlAction.definition, instId, instLogger)
+	inst := pipeline.NewInstance(catalystMlAction.definition, instId,log.ChildLogger(log.RootLogger(), "fps-logger"))
 	catalystMlAction.inst = inst
 
 	return catalystMlAction, nil

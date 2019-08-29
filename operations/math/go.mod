@@ -7,3 +7,4 @@ require (
 )
 
 replace github.com/project-flogo/cml/action => ../../action
+
