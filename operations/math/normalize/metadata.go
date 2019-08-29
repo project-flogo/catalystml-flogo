@@ -13,8 +13,10 @@ type Input struct {
 func (i *Input) FromMap(values map[string]interface{}) error {
 
 	var err error
-	i.Data = values["data"]
-
+	i.Data, err = coerce.ToArray(values["data"])
+	if err != nil {
+		return err
+	}
 	i.Value, err = coerce.ToFloat32(values["value"])
 	if err != nil {
 		return err

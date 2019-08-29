@@ -26,6 +26,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	var result interface{}
 
+	a.logger.Info("Executing operation Normalization")
 	a.logger.Debug("Array is...", in.Data)
 	if _, ok := in.Data.([]interface{}); ok {
 		result, err = calculateNorm(in.Data.([]interface{}), in.Value, in.Min)
@@ -38,6 +39,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	}
 
 	a.logger.Debug("Norm is..", result)
+	a.logger.Info("Normalization finished")
 
 	return result, err
 

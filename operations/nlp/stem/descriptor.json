@@ -1,0 +1,23 @@
+{
+    "title":"Stem",
+    "desc":"gets stem of a word",
+    "input":[
+	        {
+                "str":"str", 
+                "type":"string", 
+                "description":"word to have endings removed", 
+                "optional":false
+            }
+	    ],
+    "params":[
+        {
+            "str":"algo", 
+            "type":"string", 
+            "description":"The algorithm to be used", 
+            "default":"Porter",
+            "allowed":["Snowball","Porter"],
+            "optional":true
+        }
+    ],
+    "output":"string"
+}
