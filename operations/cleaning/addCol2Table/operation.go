@@ -8,7 +8,6 @@ import (
 )
 
 type Operation struct {
-	// params *Params
 	logger log.Logger
 }
 
