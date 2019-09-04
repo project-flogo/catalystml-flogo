@@ -16,7 +16,6 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 }
 
 func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
-	fmt.Println("JKSDHFSFLKDJSf")
 	//To get the inputs in the desired types.
 	input := &Input{}
 
@@ -28,7 +27,6 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	arr0 := inputs["arr0"].([]string)
 	arr1 := inputs["arr1"].([]string)
 
-	fmt.Println("London")
 	// making hash to check against for if it is in
 	checkmap := make(map[interface{}]bool)
 	for _, val := range arr1 {
