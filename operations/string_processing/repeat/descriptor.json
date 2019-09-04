@@ -1,0 +1,20 @@
+{
+    "title":"repeat",
+    "desc":"Repeat returns a new string consisting of count copies of the string s",
+    "input":[
+        {
+            "name":"s", 
+            "type":"string", 
+            "description":"string to be repeated", 
+            "optional":false
+        },
+        {
+            "name":"i", 
+            "type":"int", 
+            "description":"the number of repeats", 
+            "optional":false
+        }
+	],
+    "params":[],
+    "output":"string"
+}

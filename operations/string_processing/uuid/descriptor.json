@@ -1,0 +1,7 @@
+{
+    "title":"uuid",
+    "desc":"UUID generates a random UUID according to RFC 4122",
+    "input":[],
+    "params":[],
+    "output":"string"
+}
