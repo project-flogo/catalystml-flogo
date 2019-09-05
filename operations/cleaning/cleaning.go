@@ -5,6 +5,8 @@ import (
 	"github.com/project-flogo/cml/operations/cleaning/addCol2Table"
 	"github.com/project-flogo/cml/operations/cleaning/apply"
 	"github.com/project-flogo/cml/operations/cleaning/dropCol"
+	"github.com/project-flogo/cml/operations/cleaning/ifnotin"
+	"github.com/project-flogo/cml/operations/cleaning/ifin"
 	"github.com/project-flogo/cml/operations/cleaning/replaceValue"
 	"github.com/project-flogo/cml/operations/cleaning/set"
 )
@@ -15,4 +17,6 @@ func init() {
 	_ = operation.Register(&replaceValue.Operation{}, replaceValue.New)
 	_ = operation.Register(&addCol2Table.Operation{}, addCol2Table.New)
 	_ = operation.Register(&set.Operation{}, set.New)
+	_ = operation.Register(&ifnotin.Operation{}, ifnotin.New)
+	_ = operation.Register(&ifin.Operation{}, ifin.New)
 }

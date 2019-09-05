@@ -1,13 +1,14 @@
-package addCol2Table
+package tolower
 
 import (
-	"fmt"
+	"strings"
 
 	"github.com/project-flogo/cml/action/operation"
 	"github.com/project-flogo/core/support/log"
 )
 
 type Operation struct {
+	// params *Params
 	logger log.Logger
 }
 
@@ -17,26 +18,15 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 }
 
 func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
+
 	//To get the inputs in the desired types.
 	input := &Input{}
 	input.FromMap(inputs)
 
-	col := input.Col.([]interface{})
-	matrix := input.Matrix.([][]interface{})
+	a.logger.Info("Executing operation tolower...", input.Str)
 
-	a.logger.Info("Executing operation...", matrix, col)
-
-	out := matrix
-	if len(col) == len(matrix) {
-
-		for i, row := range matrix {
-			out[i] = append(row, col[i])
-		}
-	} else {
-		return out, fmt.Errorf("matrix and array of different lengths %d and %d", len(matrix), len(col))
-	}
-
-	fmt.Println(out)
+	out := strings.ToLower(input.Str)
+	a.logger.Debug("result of tolower...", out)
 
 	return out, nil
 }
