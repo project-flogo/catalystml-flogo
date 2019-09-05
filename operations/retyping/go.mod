@@ -1,4 +1,4 @@
-module github.com/project-flogo/cml/operations/math
+module github.com/project-flogo/cml/operations/retyping
 
 require (
 	github.com/project-flogo/cml/action v0.0.0
