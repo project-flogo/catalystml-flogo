@@ -1,9 +1,9 @@
-# contains
+# matchregex
 
 ## Overview
 
 ### Description
-whether substring exists in string
+Match input against regular expression
 
 ### Implementation details
 Uses the strings.Contains library/function from golang.
