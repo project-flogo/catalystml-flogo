@@ -3,12 +3,15 @@ package norm
 import (
 	"math"
 
-	"github.com/project-flogo/cml/action/operation"
 	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/data/metadata"
 	"github.com/project-flogo/core/support/log"
+	"github.com/project-flogo/fps/operation"
 )
 
+func init() {
+	_ = operation.Register(&Operation{}, New)
+}
 
 type Operation struct {
 	params *Params
@@ -27,7 +30,7 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 	return &Operation{params: p, logger: ctx.Logger()}, nil
 }
 
-func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
+func (this *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	var err error
 	in := &Input{}
 
@@ -38,47 +41,72 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	var result interface{}
 
-	a.logger.Debug("Array is...", in.Data)
-	result, err = calculateNorm(in.Data.([]interface{}), 1)
+	if !in.isFlat {
+		this.logger.Info("Matrix is...", in.Data)
+		if 0 != this.params.Axis && 1 != this.params.Axis {
+			this.logger.Info("Invalid axis...", this.params.Axis, ", will set to default...0")
+			this.params.Axis = 0
+		} else {
+			this.logger.Info("Axis is...", this.params.Axis)
+		}
+	} else {
+		this.logger.Info("Matrix is...", in.Data.([]interface{})[0])
+		this.logger.Info("Flat array axis won't apply.")
+		this.params.Axis = -1
+	}
 
-	a.logger.Info("Norm is..", result)
+	result, err = norm(in.Data.([]interface{}), this.params.Axis)
+
+	if nil != err {
+		return nil, err
+	}
+
+	if in.isFlat {
+		result = result.([]interface{})[0]
+	}
+
+	this.logger.Info("Norm is..", result)
 
 	return result, err
 }
 
-func calculateNorm(array []interface{}, axis int) (result interface{}, err error) {
+func norm(matrix []interface{}, axis int) ([]interface{}, error) {
 
-	_, err = coerce.ToFloat64(array[0])
+	var result []interface{}
+	var dataAssigningIndex int
 
-	if err != nil {
-		return calulate2D(array, axis), nil
+	for rowIndex, row := range matrix {
+		rowArray := row.([]interface{})
+		for columnIndex, column := range rowArray {
+			data, _ := coerce.ToFloat64(column)
+			if 1 == axis {
+				if nil == result {
+					result = make([]interface{}, len(matrix))
+				}
+				dataAssigningIndex = rowIndex
+			} else if 0 == axis {
+				if nil == result {
+					result = make([]interface{}, len(rowArray))
+				}
+				dataAssigningIndex = columnIndex
+			} else {
+				if nil == result {
+					result = make([]interface{}, 1)
+				}
+				dataAssigningIndex = 0
+			}
+
+			if nil == result[dataAssigningIndex] {
+				result[dataAssigningIndex] = data * data
+			} else {
+				result[dataAssigningIndex] = result[dataAssigningIndex].(float64) + data*data
+			}
+
+		}
 	}
-	temp := calulate1D(array)
-	return []interface{}{temp}, nil
 
-}
-
-func calulate1D(array []interface{}) (result float64) {
-
-	for _, val := range array {
-
-		i, _ := coerce.ToFloat64(val)
-
-		result = result + i*i
+	for index, _ := range result {
+		result[index] = math.Sqrt(result[index].(float64))
 	}
-
-	return math.Sqrt(result)
-}
-
-func calulate2D(array []interface{}, axis int) (result []interface{}) {
-
-	for _, i := range array {
-
-		val, _ := coerce.ToArray(i)
-		result = append(result, calulate1D(val))
-	}
-
-	//return math.Sqrt(result)
-
-	return result
+	return result, nil
 }
