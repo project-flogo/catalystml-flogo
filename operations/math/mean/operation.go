@@ -24,7 +24,7 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 	return &Operation{params: p, logger: ctx.Logger()}, nil
 }
 
-func (this *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
+func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	var err error
 	in := &Input{}
@@ -37,15 +37,15 @@ func (this *Operation) Eval(inputs map[string]interface{}) (interface{}, error) 
 	var result interface{}
 
 	if !in.isFlat {
-		this.logger.Info("Matrix is...", in.Data)
-		this.logger.Info("Axis is...", this.params.Axis)
+		operation.logger.Info("Matrix is...", in.Data)
+		operation.logger.Info("Axis is...", operation.params.Axis)
 	} else {
-		this.logger.Info("Matrix is...", in.Data.([]interface{})[0])
-		this.logger.Info("Flat array axis won't apply.")
-		this.params.Axis = -1
+		operation.logger.Info("Matrix is...", in.Data.([]interface{})[0])
+		operation.logger.Info("Flat array axis won't apply.")
+		operation.params.Axis = -1
 	}
 
-	result, err = mean(in.Data.([]interface{}), this.params.Axis)
+	result, err = mean(in.Data.([]interface{}), operation.params.Axis)
 
 	if nil != err {
 		return nil, err
@@ -55,7 +55,7 @@ func (this *Operation) Eval(inputs map[string]interface{}) (interface{}, error) 
 		result = result.([]interface{})[0]
 	}
 
-	this.logger.Info("Mean is..", result)
+	operation.logger.Info("Mean is..", result)
 
 	return result, err
 }

@@ -23,7 +23,7 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 	return &Operation{params: p, logger: ctx.Logger()}, nil
 }
 
-func (this *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
+func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	var err error
 	in := &Input{}
 
@@ -34,25 +34,25 @@ func (this *Operation) Eval(inputs map[string]interface{}) (interface{}, error) 
 
 	var result interface{}
 
-	this.logger.Info("Left dataFrame is : ", in.Left)
-	this.logger.Info("Right dataFrame is : ", in.Right)
-	this.logger.Info("Left Index map is : ", in.LeftIndex)
-	this.logger.Info("Right Index map is : ", in.RightIndex)
-	this.logger.Info("Parameter is : ", this.params)
+	operation.logger.Info("Left dataFrame is : ", in.Left)
+	operation.logger.Info("Right dataFrame is : ", in.Right)
+	operation.logger.Info("Left Index map is : ", in.LeftIndex)
+	operation.logger.Info("Right Index map is : ", in.RightIndex)
+	operation.logger.Info("Parameter is : ", operation.params)
 
-	result, err = this.join(
+	result, err = operation.join(
 		in.Left.(map[string][]interface{}),
 		in.Right.(map[string][]interface{}),
 		in.LeftIndex.([]string),
 		in.RightIndex.([]string),
 	)
 
-	this.logger.Info("Joined dataFrame is : ", result)
+	operation.logger.Info("Joined dataFrame is : ", result)
 
 	return result, err
 }
 
-func (this *Operation) join(
+func (operation *Operation) join(
 	leftDataFrame map[string][]interface{},
 	rightDataFrame map[string][]interface{},
 	leftIndex []string,
@@ -63,7 +63,7 @@ func (this *Operation) join(
 	dataFrame02 := rightDataFrame
 	index01 := leftIndex
 	index02 := rightIndex
-	if "right" == this.params.How {
+	if "right" == operation.params.How {
 		dataFrame02 = leftDataFrame
 		dataFrame01 = rightDataFrame
 		index02 = leftIndex
@@ -92,7 +92,7 @@ func (this *Operation) join(
 			tuple[fieldname] = filedsArray[i]
 		}
 		dataSet02[GetKey(index02, tuple)] = tuple
-		this.logger.Debug("Tuple - ", tuple, ", DataSet02 - ", dataSet02)
+		operation.logger.Debug("Tuple - ", tuple, ", DataSet02 - ", dataSet02)
 	}
 
 	tupleSize = -1
@@ -113,29 +113,29 @@ func (this *Operation) join(
 		key := GetKey(index02, tuple)
 		tuple02 := dataSet02[key]
 		dataSet02[key] = nil
-		if 0 != len(tuple02) || "inner" != this.params.How {
+		if 0 != len(tuple02) || "inner" != operation.params.How {
 			dataSet[GetKey(index01, tuple)] = tuple
 			for fieldname, fieldvalue := range tuple02 {
 				tuple[fieldname] = fieldvalue
 			}
 		}
 
-		this.logger.Debug("Tuple - tuple01 = ", tuple, ", tuple02 = ", tuple02, ", len(tuple02) = ", len(tuple02))
+		operation.logger.Debug("Tuple - tuple01 = ", tuple, ", tuple02 = ", tuple02, ", len(tuple02) = ", len(tuple02))
 	}
 
-	if "outer" == this.params.How {
+	if "outer" == operation.params.How {
 		for key, tuple := range dataSet02 {
 			if nil != tuple {
 				dataSet[key] = tuple
 			}
 		}
 	}
-	this.logger.Info("DataSet - ", dataSet)
+	operation.logger.Info("DataSet - ", dataSet)
 
-	return this.dataSetToDataFrame(dataSet, dataFrame)
+	return operation.dataSetToDataFrame(dataSet, dataFrame)
 }
 
-func (this *Operation) dataSetToDataFrame(
+func (operation *Operation) dataSetToDataFrame(
 	dataSet map[common.Index]map[string]interface{},
 	newDataFrame map[string][]interface{}) (result map[string][]interface{}, err error) {
 

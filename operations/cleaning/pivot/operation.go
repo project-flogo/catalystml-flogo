@@ -25,7 +25,7 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 	return &Operation{params: p, logger: ctx.Logger()}, nil
 }
 
-func (this *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
+func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	var err error
 	in := &Input{}
 
@@ -36,17 +36,17 @@ func (this *Operation) Eval(inputs map[string]interface{}) (interface{}, error) 
 
 	var result interface{}
 
-	this.logger.Info("Input dataFrame is : ", in.Data)
-	this.logger.Info("Parameter is : ", this.params)
+	operation.logger.Info("Input dataFrame is : ", in.Data)
+	operation.logger.Info("Parameter is : ", operation.params)
 
-	result, err = this.pivot(in.Data.(map[string][]interface{}))
+	result, err = operation.pivot(in.Data.(map[string][]interface{}))
 
-	this.logger.Info("Pivoted dataFrame is : ", result)
+	operation.logger.Info("Pivoted dataFrame is : ", result)
 
 	return result, err
 }
 
-func (this *Operation) pivot(dataFrame map[string][]interface{}) (result map[string][]interface{}, err error) {
+func (operation *Operation) pivot(dataFrame map[string][]interface{}) (result map[string][]interface{}, err error) {
 
 	/* check tuple size */
 	tupleSize := -1
@@ -68,8 +68,8 @@ func (this *Operation) pivot(dataFrame map[string][]interface{}) (result map[str
 		}
 
 		/* build key for output data*/
-		key = make([]interface{}, len(this.params.Index))
-		for j, keyElement := range this.params.Index {
+		key = make([]interface{}, len(operation.params.Index))
+		for j, keyElement := range operation.params.Index {
 			key[j] = tuple[keyElement]
 		}
 
@@ -79,7 +79,7 @@ func (this *Operation) pivot(dataFrame map[string][]interface{}) (result map[str
 			aggregatedTuple = make(map[string]common.DataState)
 		}
 
-		for _, keyElement := range this.params.Index {
+		for _, keyElement := range operation.params.Index {
 			data := aggregatedTuple[keyElement]
 			if nil == data {
 				data = &common.Data{}
@@ -89,23 +89,23 @@ func (this *Operation) pivot(dataFrame map[string][]interface{}) (result map[str
 			newDataFrame[keyElement] = nil
 		}
 
-		this.aggregate(tuple, aggregatedTuple, newDataFrame)
+		operation.aggregate(tuple, aggregatedTuple, newDataFrame)
 		aggregatedTupleMap[index] = aggregatedTuple
 
-		this.logger.Debug("Tuple - ", tuple, ", aggregatedTuple - ", aggregatedTuple)
+		operation.logger.Debug("Tuple - ", tuple, ", aggregatedTuple - ", aggregatedTuple)
 	}
 
-	return this.transform(aggregatedTupleMap, newDataFrame)
+	return operation.transform(aggregatedTupleMap, newDataFrame)
 }
 
-func (this *Operation) aggregate(
+func (operation *Operation) aggregate(
 	tuple map[string]interface{},
 	aggregatedTuple map[string]common.DataState,
 	newDataFrame map[string][]interface{},
 ) {
-	for valueColumn, functionNames := range this.params.Aggregate {
+	for valueColumn, functionNames := range operation.params.Aggregate {
 		for _, functionName := range functionNames {
-			dataKey := this.dataKey(tuple, functionName, valueColumn)
+			dataKey := operation.dataKey(tuple, functionName, valueColumn)
 			function := aggregatedTuple[dataKey]
 			if nil == function {
 				function = common.GetFunction(functionName)
@@ -113,20 +113,20 @@ func (this *Operation) aggregate(
 			}
 			err := function.Update(tuple[valueColumn])
 			if nil != err {
-				this.logger.Info("Error : ", err)
+				operation.logger.Info("Error : ", err)
 			}
 			newDataFrame[dataKey] = nil
 		}
 	}
 }
 
-func (this *Operation) dataKey(
+func (operation *Operation) dataKey(
 	tuple map[string]interface{},
 	functionName string,
 	valueColumn string,
 ) string {
 	var groupKey bytes.Buffer
-	for _, group := range this.params.Columns {
+	for _, group := range operation.params.Columns {
 		groupKey.WriteString(tuple[group].(string))
 		groupKey.WriteString("_")
 	}
@@ -136,7 +136,7 @@ func (this *Operation) dataKey(
 	return groupKey.String()
 }
 
-func (this *Operation) transform(
+func (operation *Operation) transform(
 	tupleMap map[common.Index]map[string]common.DataState,
 	newDataFrame map[string][]interface{}) (result map[string][]interface{}, err error) {
 	counter := 0

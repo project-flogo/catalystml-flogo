@@ -25,7 +25,7 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 	return &Operation{params: p, logger: ctx.Logger()}, nil
 }
 
-func (this *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
+func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	var err error
 	in := &Input{}
 
@@ -34,11 +34,11 @@ func (this *Operation) Eval(inputs map[string]interface{}) (interface{}, error) 
 		return nil, err
 	}
 
-	this.logger.Info("before : in.Text = ", in.Text, ", in.Separator = ", in.Separator)
+	operation.logger.Info("before : in.Text = ", in.Text, ", in.Separator = ", in.Separator)
 
 	stringArray := strings.Split(in.Text, in.Separator)
 
-	this.logger.Info("after : stringArray = ", stringArray)
+	operation.logger.Info("after : stringArray = ", stringArray)
 
 	return stringArray, nil
 }

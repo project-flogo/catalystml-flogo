@@ -25,7 +25,7 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 	return &Operation{params: p, logger: ctx.Logger()}, nil
 }
 
-func (this *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
+func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	var err error
 	in := &Input{}
 
@@ -36,17 +36,17 @@ func (this *Operation) Eval(inputs map[string]interface{}) (interface{}, error) 
 
 	var result interface{}
 
-	this.logger.Info("Input dataFrame is : ", in.Data)
-	this.logger.Info("Parameter is : ", this.params)
+	operation.logger.Info("Input dataFrame is : ", in.Data)
+	operation.logger.Info("Parameter is : ", operation.params)
 
-	result, err = this.groupBy(in.Data.(map[string][]interface{}))
+	result, err = operation.groupBy(in.Data.(map[string][]interface{}))
 
-	this.logger.Info("Grouped dataFrame is : ", result)
+	operation.logger.Info("Grouped dataFrame is : ", result)
 
 	return result, err
 }
 
-func (this *Operation) groupBy(dataFrame map[string][]interface{}) (result map[string][]interface{}, err error) {
+func (operation *Operation) groupBy(dataFrame map[string][]interface{}) (result map[string][]interface{}, err error) {
 
 	/* check tuple size */
 	tupleSize := -1
@@ -65,34 +65,34 @@ func (this *Operation) groupBy(dataFrame map[string][]interface{}) (result map[s
 			tuple[fieldname] = filedsArray[i]
 		}
 
-		outputKeyValue := tuple[this.params.Index[this.params.Level]].(string)
+		outputKeyValue := tuple[operation.params.Index[operation.params.Level]].(string)
 		data := groupedData[outputKeyValue]
 		if nil == data {
-			data = common.GetFunction(this.params.Function)
+			data = common.GetFunction(operation.params.Function)
 			groupedData[outputKeyValue] = data
 		}
-		data.Update(tuple[this.params.Target])
+		data.Update(tuple[operation.params.Target])
 
-		this.logger.Debug("Tuple - ", tuple, ", groupedData - ", groupedData)
+		operation.logger.Debug("Tuple - ", tuple, ", groupedData - ", groupedData)
 	}
 
-	return this.tupleToDataFrame(groupedData)
+	return operation.tupleToDataFrame(groupedData)
 }
 
-func (this *Operation) groupedKey() string {
+func (operation *Operation) groupedKey() string {
 	var groupKey bytes.Buffer
-	groupKey.WriteString(this.params.Function)
+	groupKey.WriteString(operation.params.Function)
 	groupKey.WriteString("_")
-	groupKey.WriteString(this.params.Target)
+	groupKey.WriteString(operation.params.Target)
 	return groupKey.String()
 }
 
-func (this *Operation) tupleToDataFrame(
+func (operation *Operation) tupleToDataFrame(
 	groupedData map[string]common.DataState) (result map[string][]interface{}, err error) {
 	newDataFrame := make(map[string][]interface{})
 	tupleSize := len(groupedData)
-	dataKey := this.params.Index[this.params.Level]
-	groupedKey := this.groupedKey()
+	dataKey := operation.params.Index[operation.params.Level]
+	groupedKey := operation.groupedKey()
 	newDataFrame[dataKey] = make([]interface{}, tupleSize)
 	newDataFrame[groupedKey] = make([]interface{}, tupleSize)
 
