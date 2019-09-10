@@ -3,7 +3,7 @@ package norm
 import (
 	"testing"
 
-	"github.com/project-flogo/fps/support/test"
+	"github.com/project-flogo/cml/action/support/test"
 	"github.com/stretchr/testify/assert"
 )
 
