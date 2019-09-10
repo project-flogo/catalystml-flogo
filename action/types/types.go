@@ -12,7 +12,10 @@ func ValidateType(t string, val interface{}) error {
 
 	if t == "image" {
 		_, _, err := image.Decode(bytes.NewReader(val.([]byte)))
-		return fmt.Errorf("Type mismatch in input. Error in inferning image type %v", err)
+		if err != nil {
+			return fmt.Errorf("Type mismatch in input. Error in inferning image type %v", err)
+		}
+		return nil
 	}
 
 	definedType, _ := data.ToTypeEnum(t)
