@@ -9,10 +9,6 @@ import (
 	"github.com/project-flogo/fps/operation"
 )
 
-func init() {
-	_ = operation.Register(&Operation{}, New)
-}
-
 type Operation struct {
 	params *Params
 	logger log.Logger
