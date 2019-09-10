@@ -1,14 +1,13 @@
-package resize
+package img2tensor
 
 import (
-	"bytes"
 	"image"
+	// "github.com/project-flogo/core/data/coerce"
 )
 
 type Params struct {
-	Xsize int    `md:"xsize",required=false`
-	Ysize int    `md:"ysize",required=false`
-	Algo  string `md:"algo",allowed=["Lanczos","NearestNeighbor","Linear", "CatmullRom"],required=false`
+	RemoveAlpha bool `md:"removeAlpha",required=false`
+	IncludeBatch bool `md:"includeBatch", required=false`
 }
 
 type Config struct {
@@ -23,8 +22,7 @@ type Input struct {
 
 func (i *Input) FromMap(values map[string]interface{}) error {
 
-	i.Img, _, _ = image.Decode(bytes.NewReader(values["img"].([]byte)))
-	//i.Img = values["img"].(image.Image)
+	i.Img = values["img"].(image.Image)
 
 	return nil
 }

@@ -1,0 +1,20 @@
+{
+    "title":"lastindex",
+    "desc":"LastIndex returns the index of the last instance of substr in s, or -1 if substr is not present in s",
+    "input":[
+        {
+            "name":"s0", 
+            "type":"string", 
+            "description":"string", 
+            "optional":false
+        },
+        {
+            "name":"s1", 
+            "type":"string", 
+            "description":"substring", 
+            "optional":false
+        }
+    ],
+    "params":[],
+    "output":"int"
+}

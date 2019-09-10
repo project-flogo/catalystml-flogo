@@ -52,12 +52,14 @@ func (ctx *initContextImpl) Logger() log.Logger {
 func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	catchkey := "&item"
 
+	//To get the inputs in the desired types.
 	input := &Input{}
 
-	//fmt.Println("Calling Apply", catchkey)
-
-	moa := a.params.MapOrArray
+	moa := a.params.MapOrArray //moa = Map or Array
 	input.FromMap(inputs)
+
+	a.logger.Debug("inputs", inputs)
+	a.logger.Info("Executing operation apply to...", input.Function.Operation)
 
 	opt := operation.Get(input.Function.Operation)
 	if opt == nil {

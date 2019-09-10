@@ -1,0 +1,32 @@
+{
+    "title":"replace",
+    "desc":"Replace returns a copy of the string s with the first n non-overlapping instances of old replaced by new. If n < 0, there is no limit on the number of replacements.",
+    "input":[
+	        {
+                "name":"s0", 
+                "type":"string", 
+                "description":"string", 
+                "optional":false
+            },
+	        {
+                "name":"s1", 
+                "type":"string", 
+                "description":"string to be replaced", 
+                "optional":false
+            },
+	        {
+                "name":"s2", 
+                "type":"string", 
+                "description":"string to replace with", 
+                "optional":false
+            },
+	        {
+                "name":"i", 
+                "type":"integer", 
+                "description":"number of possible replacements, default all", 
+                "optional":true
+            }
+	    ],
+    "params":[],
+    "output":"string"
+}
