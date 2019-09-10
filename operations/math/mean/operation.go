@@ -1,8 +1,6 @@
-package norm
+package mean
 
 import (
-	"math"
-
 	"github.com/project-flogo/cml/action/operation"
 	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/data/metadata"
@@ -27,6 +25,7 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 }
 
 func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
+
 	var err error
 	in := &Input{}
 
@@ -39,19 +38,14 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 
 	if !in.isFlat {
 		operation.logger.Info("Matrix is...", in.Data)
-		if 0 != operation.params.Axis && 1 != operation.params.Axis {
-			operation.logger.Info("Invalid axis...", operation.params.Axis, ", will set to default...0")
-			operation.params.Axis = 0
-		} else {
-			operation.logger.Info("Axis is...", operation.params.Axis)
-		}
+		operation.logger.Info("Axis is...", operation.params.Axis)
 	} else {
 		operation.logger.Info("Matrix is...", in.Data.([]interface{})[0])
 		operation.logger.Info("Flat array axis won't apply.")
 		operation.params.Axis = -1
 	}
 
-	result, err = norm(in.Data.([]interface{}), operation.params.Axis)
+	result, err = mean(in.Data.([]interface{}), operation.params.Axis)
 
 	if nil != err {
 		return nil, err
@@ -61,14 +55,15 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 		result = result.([]interface{})[0]
 	}
 
-	operation.logger.Info("Norm is..", result)
+	operation.logger.Info("Mean is..", result)
 
 	return result, err
 }
 
-func norm(matrix []interface{}, axis int) ([]interface{}, error) {
+func mean(matrix []interface{}, axis int) ([]interface{}, error) {
 
 	var result []interface{}
+	var size int
 	var dataAssigningIndex int
 
 	for rowIndex, row := range matrix {
@@ -77,32 +72,35 @@ func norm(matrix []interface{}, axis int) ([]interface{}, error) {
 			data, _ := coerce.ToFloat64(column)
 			if 1 == axis {
 				if nil == result {
+					size = len(rowArray)
 					result = make([]interface{}, len(matrix))
 				}
 				dataAssigningIndex = rowIndex
 			} else if 0 == axis {
 				if nil == result {
+					size = len(matrix)
 					result = make([]interface{}, len(rowArray))
 				}
 				dataAssigningIndex = columnIndex
 			} else {
 				if nil == result {
+					size = len(matrix) * len(rowArray)
 					result = make([]interface{}, 1)
 				}
 				dataAssigningIndex = 0
 			}
 
 			if nil == result[dataAssigningIndex] {
-				result[dataAssigningIndex] = data * data
+				result[dataAssigningIndex] = data
 			} else {
-				result[dataAssigningIndex] = result[dataAssigningIndex].(float64) + data*data
+				result[dataAssigningIndex] = result[dataAssigningIndex].(float64) + data
 			}
 
 		}
 	}
 
 	for index, _ := range result {
-		result[index] = math.Sqrt(result[index].(float64))
+		result[index] = result[index].(float64) / float64(size)
 	}
 	return result, nil
 }
