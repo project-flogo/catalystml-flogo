@@ -1,0 +1,20 @@
+{
+    "title":"matchregex",
+    "desc":"whether substring exists in string",
+    "input":[
+        {
+            "name":"s0", 
+            "type":"string", 
+            "description":"string", 
+            "optional":false
+        },
+        {
+            "name":"s1", 
+            "type":"string", 
+            "description":"substring", 
+            "optional":false
+        }
+    ],
+    "params":[],
+    "output":"boolean"
+}
