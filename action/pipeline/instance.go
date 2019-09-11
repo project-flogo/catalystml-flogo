@@ -117,6 +117,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		definedType, _ = data.ToTypeEnum(inst.def.output.Type)
 		
 		for key, _ := range output {
+			
 			givenType, _ := data.GetType(output[key])
 
 			if definedType != givenType {
