@@ -107,7 +107,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		if inst.def.output.Type == "dataframe" || inst.def.output.Type == "map" {
 			definedType, _ = data.ToTypeEnum("object")
 		} else {
-			definedType, _ = data.ToTypeEnum(inst.def.output.Type)
+			return output, nil
 		}
 
 		givenType, _ := data.GetType(output)
