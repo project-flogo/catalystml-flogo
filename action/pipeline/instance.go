@@ -128,7 +128,6 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 	}
 	inst.logger.Infof("The output took %v to calculate", time.Since(start))
 
-	inst.logger.Info("Output of the action is...", output)
 	return output, nil
 
 }
