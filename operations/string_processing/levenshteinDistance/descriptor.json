@@ -1,0 +1,20 @@
+{
+    "title":"levenshteinDistance",
+    "desc":"Add a column to a matrix",
+    "input":[
+	        {
+                "name":"s0", 
+                "type":"string", 
+                "description":"1 string to get distance of", 
+                "optional":false
+            },
+	        {
+                "name":"s1", 
+                "type":"string", 
+                "description":"1 string to get distance of", 
+                "optional":false
+            }
+	    ],
+    "params":[],
+    "output":"int"
+}

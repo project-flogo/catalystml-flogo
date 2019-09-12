@@ -1,0 +1,15 @@
+{
+    "title":"set",
+    "desc":"gets unordered array of unique values from original array",
+    "input":[
+	        {
+                "str":"arr", 
+                "type":"array", 
+                "description":"the array to be turned into set", 
+                "optional":false
+            }
+	    ],
+    "params":[
+    ],
+    "output":"array"
+}

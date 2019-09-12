@@ -1,0 +1,26 @@
+{
+    "title":"concat",
+    "desc":"join two strings together",
+    "input":[
+        {
+            "name":"s0", 
+            "type":"string", 
+            "description":"first string", 
+            "optional":false
+        },
+        {
+            "name":"s1", 
+            "type":"string", 
+            "description":"second string", 
+            "optional":false
+        },
+        {
+            "name":"slist", 
+            "type":"array", 
+            "description":"list of strings", 
+            "optional":false
+        }
+    ],
+    "params":[],
+    "output":"string"
+}

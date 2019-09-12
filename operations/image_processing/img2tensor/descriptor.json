@@ -1,0 +1,29 @@
+{
+    "title":"img2tensor",
+    "desc":"converts an image type to an array of arrays",
+    "input":[
+	        {
+                "str":"img", 
+                "type":"image", 
+                "description":"the image to be converted, jpg,png, or gif", 
+                "optional":false
+            }
+	    ],
+    "params":[
+        {
+            "str":"removeAlpha", 
+            "type":"bool", 
+            "description":"Most images have 4 values per pixel r,b,g,alpha, where alpha is something like transparency - alpha is not used in most ML cases.  True means remove alpha while converting.", 
+            "default":false,
+            "optional":true
+        },
+        {
+            "str":"includeBatch", 
+            "type":"bool", 
+            "description":"Often ML requires a dimension for batch (multiple images), if true dimensions = 4 with first dimension the batch, otherwise this produces a 3-D tensor (width, height, color).", 
+            "default":false,
+            "optional":true
+        }
+    ],
+    "output":"image"
+}

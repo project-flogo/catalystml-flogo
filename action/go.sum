@@ -2,6 +2,7 @@ github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSs
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/project-flogo/core v0.9.0-rc.1 h1:0dALJoxHI/T4Ao340cHfNg5Yf5uM/bT4Y7u+5UYXfIQ=
 github.com/project-flogo/core v0.9.0-rc.1/go.mod h1:dzmBbQfNNC0g0KClKYQxxGJLe53MHafg75Vhmw2TW8U=
+github.com/project-flogo/core v0.9.3 h1:uZXHR9j1Byqt+x3faNnOqB8NlEfwE2gpCh40iQ+44oA=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/xeipuuv/gojsonschema v1.1.0/go.mod h1:5yf86TLmAcydyeJq5YvxkGPE2fm/u4myDekKRoLuqhs=
