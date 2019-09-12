@@ -11,6 +11,97 @@ import (
 	"github.com/project-flogo/core/data/coerce"
 )
 
+type DataFrame map[string][]interface{}
+
+func ToDataFrame(data interface{}) (DataFrame, error) {
+	// This function takes an slices, matrix, tensors, and maps to a dataframe, does not handle other type caases
+
+	out := make(DataFrame)
+	var err error
+
+	switch v := data.(type) {
+	case []interface{}, [][]interface{}, [][][]interface{}, [][][][]interface{}, [][][][][]interface{}:
+		//Test dimensionality of matrix
+		fmt.Println("data in is a slice", v)
+		vcon, err := ToInterfaceArray(v)
+		if err != nil {
+			return nil, err
+		}
+
+		e := 0
+		for i, val := range vcon {
+			s := fmt.Sprintf("%d", i)
+			switch w := val.(type) {
+			case string, int, int32, int64, float32, float64, bool:
+				out[s] = []interface{}{w}
+				e = 1
+			default:
+				break
+			}
+		}
+		if e == 1 {
+			return out, nil
+		}
+
+		var tmp [][]interface{}
+		for _, row := range vcon {
+			var tmpr []interface{}
+			for _, colval := range row.([]interface{}) {
+				tmpr = append(tmpr, colval) //vcon[i].([]interface{})[j]
+			}
+			tmp = append(tmp, tmpr)
+		}
+
+		for i := 0; i < len(tmp[0]); i++ {
+			var arr []interface{}
+			for j := range tmp {
+				arr = append(arr, tmp[j][i])
+			}
+			s := fmt.Sprintf("%d", i)
+			out[s] = arr
+		}
+
+	case map[string]interface{}:
+		fmt.Println("data in is a map", v)
+
+		l := -1
+		for key, val := range v {
+			s := key
+
+			// out[s], l, err = blah(val, l)
+			switch va := val.(type) {
+			case string, int, int32, int64, float32, float64, bool:
+
+				if l == -1 || l == 1 {
+					l = 1
+				} else {
+					return nil, fmt.Errorf("length of columns not consistent")
+				}
+				out[s] = []interface{}{va}
+			default:
+				cur, _ := ToInterfaceArray(va)
+				lcur := len(cur)
+				if l == -1 || l == lcur {
+					l = lcur
+				} else {
+					return nil, fmt.Errorf("length of columns not consistent")
+				}
+				out[s] = cur
+
+			}
+
+			if err != nil {
+				return nil, err
+			}
+
+		}
+	default:
+		return nil, fmt.Errorf("only slices/matrices/tensors and maps are accepted types")
+	}
+
+	return out, nil
+}
+
 type Index struct {
 	Id uint64
 }
