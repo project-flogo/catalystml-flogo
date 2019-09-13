@@ -1,0 +1,19 @@
+{
+    "title":"multPairWise",
+    "desc":"for matrices of the same shape multiply corresponding values",
+    "input":[
+	        {
+                "str":"matrix0", 
+                "type":"array", 
+                "description":"first matrix", 
+                "optional":false
+            },
+            {
+                "str":"matrix1", 
+                "type":"array", 
+                "description":"second matrix.", 
+                "optional":false
+            }
+	    ],
+    "output":"array"
+}
