@@ -106,19 +106,28 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		var definedType data.Type
 		if inst.def.output.Type == "dataframe" || inst.def.output.Type == "map" {
 			definedType, _ = data.ToTypeEnum("object")
-		} else {
-			definedType, _ = data.ToTypeEnum(inst.def.output.Type)
-		}
+			
+			givenType, _ := data.GetType(output)
 
-		givenType, _ := data.GetType(output)
+			if definedType != givenType {
+				return nil, fmt.Errorf("Type mismatch in output. Defined type [%s] passed type [%s]", definedType, givenType)
+			}
+		} 
+		
+		definedType, _ = data.ToTypeEnum(inst.def.output.Type)
+		
+		for key, _ := range output {
+			
+			givenType, _ := data.GetType(output[key])
 
-		if definedType != givenType {
-			return nil, fmt.Errorf("Type mismatch in output. Defined type [%s] passed type [%s]", definedType, givenType)
+			if definedType != givenType {
+				return nil, fmt.Errorf("Type mismatch in output. Defined type [%s] passed type [%s]", definedType, givenType)
+			}
 		}
+			
 	}
 	inst.logger.Infof("The output took %v to calculate", time.Since(start))
 
-	inst.logger.Info("Output of the action is...", output)
 	return output, nil
 
 }
