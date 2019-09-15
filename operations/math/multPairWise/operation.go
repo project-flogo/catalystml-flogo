@@ -4,7 +4,9 @@ import (
 	"fmt"
 
 	"github.com/project-flogo/cml/action/operation"
+
 	"github.com/project-flogo/core/data/coerce"
+
 	"github.com/project-flogo/core/support/log"
 )
 
@@ -23,6 +25,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input.FromMap(inputs)
 
 	a.logger.Info("Executing operation multPairWise ...")
+
 	if inputs["matrix0"] == nil || inputs["matrix1"] == nil {
 		return nil, nil
 	}
@@ -32,7 +35,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	out, err := mtxmultpairwise(mtx0, mtx1)
 	if err != nil {
 		return nil, err
-	}
+
+  }
 
 	a.logger.Info("Output of multPairWise ", out)
 	return out, nil
@@ -48,6 +52,7 @@ func mtxmultpairwise(mtx0 []interface{}, mtx1 []interface{}) ([]interface{}, err
 
 	var err error
 	var mtxOut []interface{}
+
 
 	for i := 0; i < len(mtx0); i++ {
 		switch v := mtx0[i].(type) {
@@ -74,3 +79,4 @@ func mtxmultpairwise(mtx0 []interface{}, mtx1 []interface{}) ([]interface{}, err
 	}
 	return mtxOut, err
 }
+

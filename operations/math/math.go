@@ -3,6 +3,7 @@ package math
 import (
 	"github.com/project-flogo/cml/action/operation"
 	"github.com/project-flogo/cml/operations/math/mean"
+	"github.com/project-flogo/cml/operations/math/multPairWise"
 	"github.com/project-flogo/cml/operations/math/norm"
 	"github.com/project-flogo/cml/operations/math/normalize"
 	"github.com/project-flogo/cml/operations/math/scale"
