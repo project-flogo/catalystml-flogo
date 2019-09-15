@@ -2,7 +2,7 @@ package oneHotEncoding
 
 import (
 	"testing"
-
+	"fmt"
 	"github.com/project-flogo/cml/action/support/test"
 	"github.com/stretchr/testify/assert"
 )
@@ -13,12 +13,13 @@ func TestSample(t *testing.T) {
 	inputs["data"] = map[string]interface{}{"state":[]interface{}{"CA","NC","TX"},"sample":"sampleSomething"}
 	
 	
-	params := Params{Columns: "state"}
+	params := Params{Columns: []interface{}{"state"}}
 
 	optInitConext := test.NewOperationInitContext(params, nil)
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 	
-	_, err = opt.Eval(inputs)
+	result, err := opt.Eval(inputs)
+	fmt.Println("Result..", result)
 	assert.Nil(t, err)
 }

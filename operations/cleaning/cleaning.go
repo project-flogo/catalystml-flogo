@@ -9,7 +9,7 @@ import (
 	"github.com/project-flogo/cml/operations/cleaning/ifin"
 	"github.com/project-flogo/cml/operations/cleaning/ifnotin"
 	"github.com/project-flogo/cml/operations/cleaning/join"
-	"github.com/project-flogo/cml/operations/cleaning/pivot"
+	"github.com/project-flogo/cml/operations/cleaning/concatMap"
 	"github.com/project-flogo/cml/operations/cleaning/replaceValue"
 	"github.com/project-flogo/cml/operations/cleaning/set"
 	"github.com/project-flogo/cml/operations/cleaning/transpose"
@@ -25,6 +25,6 @@ func init() {
 	_ = operation.Register(&ifin.Operation{}, ifin.New)
 	_ = operation.Register(&groupBy.Operation{}, groupBy.New)
 	_ = operation.Register(&join.Operation{}, join.New)
-	_ = operation.Register(&pivot.Operation{}, pivot.New)
+	_ = operation.Register(&concatMap.Operation{}, concatMap.New)
 	_ = operation.Register(&transpose.Operation{}, transpose.New)
 }
