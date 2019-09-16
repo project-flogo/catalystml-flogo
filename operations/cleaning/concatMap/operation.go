@@ -1,6 +1,7 @@
 package concatMap
 
 import (
+
 	"github.com/project-flogo/cml/action/operation"
 	
 	"github.com/project-flogo/core/support/log"
@@ -32,5 +33,6 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		}
 
 	}
+
 	return result, nil
 }

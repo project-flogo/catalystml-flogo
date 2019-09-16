@@ -7,6 +7,7 @@ import (
 	"github.com/project-flogo/cml/operations/math/norm"
 	"github.com/project-flogo/cml/operations/math/normalize"
 	"github.com/project-flogo/cml/operations/math/scale"
+	"github.com/project-flogo/cml/operations/math/multPairWise"
 )
 
 func init() {

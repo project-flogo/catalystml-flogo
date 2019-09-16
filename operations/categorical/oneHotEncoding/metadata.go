@@ -18,8 +18,8 @@ func (i *Input) FromMap(values map[string]interface{}) error {
 	var err error
 	i.Data, err = coerce.ToObject(values["data"])
 	if err != nil {
-		//fmt.Println("Data...", values["data"])
+		return err
 	}
 
-	return err
+	return nil
 }

@@ -1,6 +1,7 @@
 package replaceValue
 
 import (
+	
 	"github.com/project-flogo/cml/action/operation"
 	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/data/metadata"
@@ -56,6 +57,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		}
 
 	}
+
 	a.logger.Debug("Output of replace Value..", in.Data)
+	
 	return in.Data, nil
 }
