@@ -1,4 +1,4 @@
-module github.com/skothari-tibco/operations-sample/common
+module github.com/project-flogo/cml/operations/common
 
 go 1.12
 

@@ -13,6 +13,7 @@ type Operation struct {
 }
 
 func New(ctx operation.InitContext) (operation.Operation, error) {
+
 	p := &Params{}
 
 	err := metadata.MapToStruct(ctx.Params(), p, true)
@@ -29,10 +30,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	in.FromMap(inputs)
 
-	params, err := coerce.ToArray(inputs[a.params.Columns.(string)])
-
+	params, err := coerce.ToArray(a.params.Columns)
 	if err != nil {
-
 		return nil, err
 	}
 	for _, val := range params {
@@ -57,6 +56,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		delete(in.Data, val.(string))
 	}
 	a.logger.Debug("Output of hot encoding..", in.Data)
+	
 	return in.Data, nil
 }
 
