@@ -20,7 +20,10 @@ func ToDataFrame(data interface{}) (DataFrame, error) {
 	var err error
 
 	switch v := data.(type) {
-	case []interface{}, [][]interface{}, [][][]interface{}, [][][][]interface{}, [][][][][]interface{}:
+	case []interface{}, [][]interface{}, [][][]interface{}, [][][][]interface{}, [][][][][]interface{}, 
+	[]int, [][]int,[][][]int,[][][][]int,[][][][][]int, 
+	[]float64, [][]float64,[][][]float64,[][][][]float64,[][][][][]float64,
+	[]string, [][]string,[][][]string,[][][][]string,[][][][][]string :
 		//Test dimensionality of matrix
 		fmt.Println("data in is a slice", v)
 		vcon, err := ToInterfaceArray(v)

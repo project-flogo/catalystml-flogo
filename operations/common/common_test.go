@@ -33,8 +33,9 @@ func TestSimpleMap2(t *testing.T) {
 
 }
 
+
 func TestSimpleMatrix(t *testing.T) {
-	matrixin := []interface{}{[]interface{}{1, 2}, []interface{}{3, 4}, []interface{}{5, 6}}
+	matrixin := [][]int{[]int{1, 2}, []int{3, 4}, []int{5, 6}}
 
 	out, err := ToDataFrame(matrixin)
 	// fmt.Println(err)
