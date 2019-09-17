@@ -1,7 +1,6 @@
 package ifnotin
 
 import (
-	"fmt"
 
 	"github.com/project-flogo/cml/action/operation"
 	"github.com/project-flogo/core/support/log"
