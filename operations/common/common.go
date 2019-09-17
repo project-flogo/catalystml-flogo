@@ -20,6 +20,8 @@ func ToDataFrame(data interface{}) (DataFrame, error) {
 	var err error
 
 	switch v := data.(type) {
+	case DataFrame:
+		return data.(DataFrame), nil
 	case []interface{}, [][]interface{}, [][][]interface{}, [][][][]interface{}, [][][][][]interface{},
 		[]int, [][]int, [][][]int, [][][][]int, [][][][][]int,
 		[]float64, [][]float64, [][][]float64, [][][][]float64, [][][][][]float64,
