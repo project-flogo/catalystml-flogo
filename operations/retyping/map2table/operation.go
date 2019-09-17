@@ -14,26 +14,19 @@ type Operation struct {
 }
 
 var ValLen int
-
 var givenType data.Type
 
 func New(ctx operation.InitContext) (operation.Operation, error) {
 	p := &Params{}
-
 	err := metadata.MapToStruct(ctx.Params(), p, true)
-
 	if err != nil {
 		return nil, err
 	}
-
 	return &Operation{params: p, logger: ctx.Logger()}, nil
 }
-
 func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	in := &Input{}
-
 	err := in.FromMap(inputs)
-
 	for _, ord := range in.ColOrder {
 		if val, ok := in.Map[ord.(string)]; ok {
 			ValLen = len(val.([]interface{}))
@@ -43,24 +36,20 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	}
 
 	result, err := convertToTable(in.Map, in.ColOrder, a.params.Axis)
-
 	if err != nil {
 		return nil, err
 	}
 	a.logger.Info("Results...", result)
-
-	return result, nil
+	out, _ := coerce.ToArray(result)
+	return out, nil
 }
-
 func convertToTable(inputMap map[string]interface{}, order []interface{}, axis int) ([][]interface{}, error) {
 	//Row Order..
 	if axis == 0 {
 		result := make([][]interface{}, len(order))
 		//row
 		for index, ord := range order {
-
 			if _, ok := inputMap[ord.(string)]; !ok {
-
 				if givenType.String() == "string" {
 					val := make([]string, ValLen)
 					result[index], _ = coerce.ToArray(val)
@@ -68,51 +57,40 @@ func convertToTable(inputMap map[string]interface{}, order []interface{}, axis i
 					val := make([]int, ValLen)
 					result[index], _ = coerce.ToArray(val)
 				}
-
 			} else {
 				val, _ := coerce.ToArray(inputMap[ord.(string)])
 				result[index] = val
 			}
-
 		}
-
 		return result, nil
-
 	}
 	//Column Order...
 	result := make([][]interface{}, ValLen)
-
 	for index, ord := range order {
 		temp, _ := coerce.ToArray(inputMap[ord.(string)])
-
 		//Check if the value exists
-		if temp != nil {
+		if len(temp) != 0 {
 			for key, val := range temp {
 				if result[key] == nil {
-
 					if givenType.String() == "string" {
-						val := make([]string, ValLen)
+						val := make([]string, len(order))
 						result[key], _ = coerce.ToArray(val)
 					} else {
-						val := make([]int, ValLen)
+						val := make([]int, len(order))
 						result[key], _ = coerce.ToArray(val)
 					}
 				}
 				result[key][index] = val
 			}
-
 		} else {
-
 			for key, val := range result {
-				
+
 				if val == nil {
 					//This is the  first val in column for which
 					//the value in map doesn't exists
 					//Hence initialize the result array with number of
 					//columns
-
 					for i := 0; i < ValLen; i++ {
-
 						if givenType.String() == "string" {
 							val := make([]string, len(order))
 							result[key], _ = coerce.ToArray(val)
@@ -120,29 +98,10 @@ func convertToTable(inputMap map[string]interface{}, order []interface{}, axis i
 							val := make([]int, len(order))
 							result[key], _ = coerce.ToArray(val)
 						}
-
 					}
-
-				} else {
-					//This is the val in column for which
-					//the value in map doesn't exists
-					//Hence initialize the result array with number of
-					//columns
-					if givenType.String() == "string" {
-						
-						result[key] = append(result[key], "")
-					} else {
-						result[key] = append(result[key], 0)
-					}
-
 				}
-
 			}
-
 		}
-
 	}
-	
 	return result, nil
-
 }
