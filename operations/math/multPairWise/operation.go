@@ -27,19 +27,50 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	a.logger.Info("Executing operation multPairWise ...")
 
 	if inputs["matrix0"] == nil || inputs["matrix1"] == nil {
-		return nil, nil
+
+		var mtx []interface{}
+		if inputs["matrix0"] != nil {
+			mtx = inputs["matrix0"].([]interface{})
+		} else {
+			mtx = inputs["matrix1"].([]interface{})
+		}
+
+		outEdge, err := mtxZero(mtx)
+		if err != nil {
+			return nil, err
+		}
+
+		return outEdge, nil
 	}
 	mtx0 := inputs["matrix0"].([]interface{})
 	mtx1 := inputs["matrix1"].([]interface{})
-	
+
 	out, err := mtxmultpairwise(mtx0, mtx1)
 	if err != nil {
 		return nil, err
 
-  }
+	}
 
 	a.logger.Info("Output of multPairWise ", out)
 	return out, nil
+}
+
+func mtxZero(mtx []interface{}) ([]interface{}, error) {
+	var err error
+	var mtxOut []interface{}
+
+	for i := 0; i < len(mtx); i++ {
+		switch v := mtx[i].(type) {
+		case []interface{}:
+			var tmp []interface{}
+			tmp, err = mtxZero(v)
+			mtxOut = append(mtxOut, tmp)
+		default:
+			mtxOut = append(mtxOut, 0.0)
+		}
+
+	}
+	return mtxOut, err
 }
 
 func mtxmultpairwise(mtx0 []interface{}, mtx1 []interface{}) ([]interface{}, error) {
@@ -52,7 +83,6 @@ func mtxmultpairwise(mtx0 []interface{}, mtx1 []interface{}) ([]interface{}, err
 
 	var err error
 	var mtxOut []interface{}
-
 
 	for i := 0; i < len(mtx0); i++ {
 		switch v := mtx0[i].(type) {
@@ -79,4 +109,3 @@ func mtxmultpairwise(mtx0 []interface{}, mtx1 []interface{}) ([]interface{}, err
 	}
 	return mtxOut, err
 }
-
