@@ -39,7 +39,7 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 	operation.logger.Info("Input dataFrame is : ", in.Data)
 	operation.logger.Info("Parameter is : ", operation.params)
 
-	result, err = operation.groupBy(in.Data.(map[string][]interface{}))
+	result, err = operation.groupBy(in.Data.(common.DataFrame))
 
 	operation.logger.Info("Grouped dataFrame is : ", result)
 

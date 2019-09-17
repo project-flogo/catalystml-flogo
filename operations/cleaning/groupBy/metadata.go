@@ -1,5 +1,9 @@
 package groupBy
 
+import (
+	"github.com/project-flogo/cml/operations/common"
+)
+
 type Params struct {
 	Index    []string `md:"index"`
 	Target   string   `md:"target"`
@@ -14,11 +18,7 @@ type Input struct {
 func (i *Input) FromMap(values map[string]interface{}) error {
 
 	var err error
-	i.Data, err = ToDataFrame(values["data"])
+	i.Data, err = common.ToDataFrame(values["data"])
 
 	return err
-}
-
-func ToDataFrame(val interface{}) (interface{}, error) {
-	return val, nil
 }

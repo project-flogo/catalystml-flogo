@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/project-flogo/cml/action/support/test"
+	"github.com/project-flogo/cml/operations/common"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -32,7 +33,7 @@ func Test1(t *testing.T) {
 		Captive      210.0
 		Wild         185.0	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(common.DataFrame)
 	inputs["data"] = dataFrame
 
 	dataFrame["Animal"] = []interface{}{
@@ -86,7 +87,7 @@ func Test2(t *testing.T) {
 		Captive      210.0
 		Wild         185.0	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(common.DataFrame)
 	inputs["data"] = dataFrame
 
 	dataFrame["Animal"] = []interface{}{

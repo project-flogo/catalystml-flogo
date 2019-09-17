@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/project-flogo/cml/action/support/test"
+	"github.com/project-flogo/cml/operations/common"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -22,7 +23,7 @@ func Test1(t *testing.T) {
 	   In [81]: result = left.join(right)
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(common.DataFrame)
 	inputs["left"] = dataFrame
 
 	dataFrame["A"] = []interface{}{
@@ -35,7 +36,7 @@ func Test1(t *testing.T) {
 		"K0", "K1", "K2",
 	}
 
-	dataFrame = make(map[string][]interface{})
+	dataFrame = make(common.DataFrame)
 	inputs["right"] = dataFrame
 
 	dataFrame["C"] = []interface{}{
@@ -80,7 +81,7 @@ func Test2(t *testing.T) {
 	   In [81]: result = left.join(right)
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(common.DataFrame)
 	inputs["left"] = dataFrame
 
 	dataFrame["A"] = []interface{}{
@@ -93,7 +94,7 @@ func Test2(t *testing.T) {
 		"K0", "K1", "K2",
 	}
 
-	dataFrame = make(map[string][]interface{})
+	dataFrame = make(common.DataFrame)
 	inputs["right"] = dataFrame
 
 	dataFrame["C"] = []interface{}{
@@ -138,7 +139,7 @@ func Test3(t *testing.T) {
 	   In [81]: result = left.join(right)
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(common.DataFrame)
 	inputs["left"] = dataFrame
 
 	dataFrame["A"] = []interface{}{
@@ -151,7 +152,7 @@ func Test3(t *testing.T) {
 		"K0", "K1", "K2",
 	}
 
-	dataFrame = make(map[string][]interface{})
+	dataFrame = make(common.DataFrame)
 	inputs["right"] = dataFrame
 
 	dataFrame["C"] = []interface{}{
@@ -196,7 +197,7 @@ func Test4(t *testing.T) {
 	   In [81]: result = left.join(right)
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(common.DataFrame)
 	inputs["left"] = dataFrame
 
 	dataFrame["A"] = []interface{}{
@@ -209,7 +210,7 @@ func Test4(t *testing.T) {
 		"K0", "K1", "K2",
 	}
 
-	dataFrame = make(map[string][]interface{})
+	dataFrame = make(common.DataFrame)
 	inputs["right"] = dataFrame
 
 	dataFrame["C"] = []interface{}{

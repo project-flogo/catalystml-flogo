@@ -39,14 +39,14 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 	operation.logger.Info("Input dataFrame is : ", in.Data)
 	operation.logger.Info("Parameter is : ", operation.params)
 
-	result, err = operation.pivot(in.Data.(map[string][]interface{}))
+	result, err = operation.pivot(in.Data.(common.DataFrame))
 
 	operation.logger.Info("Pivoted dataFrame is : ", result)
 
 	return result, err
 }
 
-func (operation *Operation) pivot(dataFrame map[string][]interface{}) (result map[string][]interface{}, err error) {
+func (operation *Operation) pivot(dataFrame common.DataFrame) (result common.DataFrame, err error) {
 
 	/* check tuple size */
 	tupleSize := -1
@@ -101,7 +101,7 @@ func (operation *Operation) pivot(dataFrame map[string][]interface{}) (result ma
 func (operation *Operation) aggregate(
 	tuple map[string]interface{},
 	aggregatedTuple map[string]common.DataState,
-	newDataFrame map[string][]interface{},
+	newDataFrame common.DataFrame,
 ) {
 	for valueColumn, functionNames := range operation.params.Aggregate {
 		for _, functionName := range functionNames {
@@ -138,7 +138,7 @@ func (operation *Operation) dataKey(
 
 func (operation *Operation) transform(
 	tupleMap map[common.Index]map[string]common.DataState,
-	newDataFrame map[string][]interface{}) (result map[string][]interface{}, err error) {
+	newDataFrame common.DataFrame) (result common.DataFrame, err error) {
 	counter := 0
 	for _, tuple := range tupleMap {
 		for column, columnValus := range newDataFrame {

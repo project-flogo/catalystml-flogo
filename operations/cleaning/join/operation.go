@@ -41,8 +41,8 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 	operation.logger.Info("Parameter is : ", operation.params)
 
 	result, err = operation.join(
-		in.Left.(map[string][]interface{}),
-		in.Right.(map[string][]interface{}),
+		in.Left.(common.DataFrame),
+		in.Right.(common.DataFrame),
 		in.LeftIndex.([]string),
 		in.RightIndex.([]string),
 	)

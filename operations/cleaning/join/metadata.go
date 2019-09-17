@@ -3,6 +3,8 @@ package join
 import (
 	"errors"
 	"reflect"
+
+	"github.com/project-flogo/cml/operations/common"
 )
 
 type Params struct {
@@ -20,24 +22,12 @@ type Input struct {
 func (i *Input) FromMap(values map[string]interface{}) error {
 
 	var err error
-	i.Left, err = CheckDataFrame(values["left"])
-	i.Right, err = CheckDataFrame(values["right"])
+	i.Left, err = common.ToDataFrame(values["left"])
+	i.Right, err = common.ToDataFrame(values["right"])
 	i.LeftIndex, err = CheckIndex(values["leftindex"])
 	i.RightIndex, err = CheckIndex(values["rightindex"])
 
 	return err
-}
-
-func CheckDataFrame(val interface{}) (interface{}, error) {
-	if nil == val {
-		return nil, errors.New("Data frame should not be nil.")
-	}
-
-	if reflect.ValueOf(val).Kind() != reflect.Map {
-		return nil, errors.New("Data frame should be map type.")
-	}
-
-	return val, nil
 }
 
 func CheckIndex(val interface{}) (interface{}, error) {

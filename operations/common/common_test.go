@@ -33,7 +33,6 @@ func TestSimpleMap2(t *testing.T) {
 
 }
 
-
 func TestSimpleMatrix(t *testing.T) {
 	matrixin := [][]int{[]int{1, 2}, []int{3, 4}, []int{5, 6}}
 
@@ -65,4 +64,26 @@ func TestSimpleMatrix3(t *testing.T) {
 
 	assert.Nil(t, err)
 
+}
+
+func TestProcessDataFrame(t *testing.T) {
+	mapin := make(map[string]interface{})
+	mapin["test"] = []string{"a", "b", "c"}
+	mapin["blah"] = []int{1, 2, 3}
+
+	dataframe, _ := ToDataFrame(mapin)
+
+	newTuple := make(map[string]interface{})
+	newTuple["sum"] = 0
+	newTuple["count"] = 0
+	newDataFrame, _ := ProcessDataFrame(dataframe, func(tuple map[string]interface{}, newDataFrame *DataFrame, lastTuple bool) error {
+		newTuple["sum"] = newTuple["sum"].(int) + tuple["blah"].(int)
+		newTuple["count"] = newTuple["count"].(int) + 1
+		if lastTuple {
+			TupleAppendToDataframe(newTuple, newDataFrame)
+		}
+		return nil
+	})
+
+	fmt.Println(newDataFrame)
 }
