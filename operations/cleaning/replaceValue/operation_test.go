@@ -3,7 +3,7 @@ package replaceValue
 import (
 	"testing"
 
-	"github.com/project-flogo/cml/action/support/test"
+	"github.com/project-flogo/catalystml-flogo/action/support/test"
 	"github.com/stretchr/testify/assert"
 )
 

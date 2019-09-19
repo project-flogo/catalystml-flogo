@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/project-flogo/cml/action/types"
+	"github.com/project-flogo/catalystml-flogo/action/types"
 
 	"github.com/project-flogo/core/data"
 	"github.com/project-flogo/core/support/log"

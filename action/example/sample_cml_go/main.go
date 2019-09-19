@@ -11,7 +11,7 @@ import (
 	"github.com/project-flogo/core/api"
 	"github.com/project-flogo/core/engine"
 	_ "github.com/project-flogo/operation/math"
-	cml "github.com/project-flogo/cml/action"
+	cml "github.com/project-flogo/catalystml-flogo/action"
 )
 
 func main() {

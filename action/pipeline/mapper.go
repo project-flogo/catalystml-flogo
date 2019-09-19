@@ -6,7 +6,7 @@ import (
 	"github.com/project-flogo/core/data"
 	"github.com/project-flogo/core/data/mapper"
 
-	"github.com/project-flogo/cml/action/cmlmapper"
+	"github.com/project-flogo/catalystml-flogo/action/cmlmapper"
 )
 
 var mapperFactory mapper.Factory

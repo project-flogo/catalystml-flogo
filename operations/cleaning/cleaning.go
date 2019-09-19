@@ -1,19 +1,19 @@
 package cleaning
 
 import (
-	"github.com/project-flogo/cml/action/operation"
-	"github.com/project-flogo/cml/operations/cleaning/addCol2Table"
-	"github.com/project-flogo/cml/operations/cleaning/apply"
-	"github.com/project-flogo/cml/operations/cleaning/dropCol"
-	"github.com/project-flogo/cml/operations/cleaning/groupBy"
-	"github.com/project-flogo/cml/operations/cleaning/ifin"
-	"github.com/project-flogo/cml/operations/cleaning/ifnotin"
-	"github.com/project-flogo/cml/operations/cleaning/join"
-	"github.com/project-flogo/cml/operations/cleaning/concatMap"
-	"github.com/project-flogo/cml/operations/cleaning/pivot"
-	"github.com/project-flogo/cml/operations/cleaning/replaceValue"
-	"github.com/project-flogo/cml/operations/cleaning/set"
-	"github.com/project-flogo/cml/operations/cleaning/transpose"
+	"github.com/project-flogo/catalystml-flogo/action/operation"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/addCol2Table"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/apply"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/dropCol"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/groupBy"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/ifin"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/ifnotin"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/join"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/concatMap"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/pivot"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/replaceValue"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/set"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/transpose"
 )
 
 func init() {

@@ -1,9 +1,9 @@
 package image_processing
 
 import (
-	"github.com/project-flogo/cml/action/operation"
-	"github.com/project-flogo/cml/operations/image_processing/img2tensor"
-	"github.com/project-flogo/cml/operations/image_processing/resize"
+	"github.com/project-flogo/catalystml-flogo/action/operation"
+	"github.com/project-flogo/catalystml-flogo/operations/image_processing/img2tensor"
+	"github.com/project-flogo/catalystml-flogo/operations/image_processing/resize"
 )
 
 func init() {

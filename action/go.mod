@@ -1,4 +1,4 @@
-module github.com/project-flogo/cml/action
+module github.com/project-flogo/catalystml-flogo/action
 
 require (
 	github.com/project-flogo/core v0.9.0-rc.1

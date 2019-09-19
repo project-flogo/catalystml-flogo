@@ -4,7 +4,7 @@ import (
 	"errors"
 	"reflect"
 
-	"github.com/project-flogo/cml/operations/common"
+	"github.com/project-flogo/catalystml-flogo/operations/common"
 )
 
 type Params struct {

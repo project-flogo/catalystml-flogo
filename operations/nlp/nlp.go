@@ -1,11 +1,11 @@
 package nlp
 
 import (
-	"github.com/project-flogo/cml/action/operation"
-	"github.com/project-flogo/cml/operations/nlp/removeStop"
-	"github.com/project-flogo/cml/operations/nlp/stem"
-	"github.com/project-flogo/cml/operations/nlp/tokenize"
-	"github.com/project-flogo/cml/operations/nlp/getstopwords"
+	"github.com/project-flogo/catalystml-flogo/action/operation"
+	"github.com/project-flogo/catalystml-flogo/operations/nlp/removeStop"
+	"github.com/project-flogo/catalystml-flogo/operations/nlp/stem"
+	"github.com/project-flogo/catalystml-flogo/operations/nlp/tokenize"
+	"github.com/project-flogo/catalystml-flogo/operations/nlp/getstopwords"
 )
 
 func init() {

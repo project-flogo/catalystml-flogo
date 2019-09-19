@@ -5,13 +5,13 @@ import (
 	
 	"github.com/project-flogo/core/action"
 	_ "github.com/project-flogo/operation/math"
-	_ "github.com/project-flogo/cml/action"
+	_ "github.com/project-flogo/catalystml-flogo/action"
 	
 )
 
 func main() {
 	
-	factory := action.GetFactory("github.com/project-flogo/cml/action")
+	factory := action.GetFactory("github.com/project-flogo/catalystml-flogo/action")
 
 	var act action.Action
 

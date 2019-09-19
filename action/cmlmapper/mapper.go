@@ -80,10 +80,10 @@ func Apply(deStructs []DerefernceStruct, scope data.Scope, value interface{}) {
 	var temp interface{}
 	var err error
 	size := len(deStructs)
-	fmt.Println("Size...", size)
+	
 	for key, val := range deStructs {
-		fmt.Println("l...", key, val, err)
-		/*var temp2 []interface{}
+		
+		var temp2 []interface{}
 		var temp3 map[string]interface{}
 
 		if temp == nil {
@@ -118,7 +118,7 @@ func Apply(deStructs []DerefernceStruct, scope data.Scope, value interface{}) {
 		}*/
 
 	}
-	fmt.Println("Scope:", temp, value)
+	//fmt.Println("Scope:", temp, value)
 	//return temp, nil
 
 }

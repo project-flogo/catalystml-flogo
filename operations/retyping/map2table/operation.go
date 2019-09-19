@@ -1,7 +1,8 @@
 package map2table
 
 import (
-	"github.com/project-flogo/cml/action/operation"
+	"github.com/project-flogo/catalystml-flogo/action/operation"
+	"github.com/project-flogo/core/data"
 	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/data/metadata"
 	"github.com/project-flogo/core/support/log"
@@ -11,6 +12,10 @@ type Operation struct {
 	params *Params
 	logger log.Logger
 }
+
+var ValLen int
+
+var givenType data.Type
 
 func New(ctx operation.InitContext) (operation.Operation, error) {
 	p := &Params{}
@@ -29,6 +34,14 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	err := in.FromMap(inputs)
 
+	for _, ord := range in.ColOrder {
+		if val, ok := in.Map[ord.(string)]; ok {
+			ValLen = len(val.([]interface{}))
+			givenType, _ = data.GetType(val.([]interface{})[0])
+			break
+		}
+	}
+
 	result, err := convertToTable(in.Map, in.ColOrder, a.params.Axis)
 
 	if err != nil {
@@ -40,28 +53,83 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 }
 
 func convertToTable(inputMap map[string]interface{}, order []interface{}, axis int) ([][]interface{}, error) {
-
-	result := make([][]interface{}, len(order))
+	//Row Order..
 	if axis == 0 {
+		result := make([][]interface{}, len(order))
 		//row
 		for index, ord := range order {
 
-			val, _ := coerce.ToArray(inputMap[ord.(string)])
-			result[index] = val
+			if _, ok := inputMap[ord.(string)]; !ok {
+
+				if givenType.String() == "string" {
+					val := make([]string, ValLen)
+					result[index], _ = coerce.ToArray(val)
+				} else {
+					val := make([]int, ValLen)
+					result[index], _ = coerce.ToArray(val)
+				}
+
+			} else {
+				val, _ := coerce.ToArray(inputMap[ord.(string)])
+				result[index] = val
+			}
+
 		}
 
-	} else {
-		for index, ord := range order {
-			temp, _ := coerce.ToArray(inputMap[ord.(string)])
+		return result, nil
 
+	}
+	//Column Order...
+	result := make([][]interface{}, ValLen)
+
+	for index, ord := range order {
+		temp, _ := coerce.ToArray(inputMap[ord.(string)])
+
+		//Check if the value exists
+		if temp != nil {
 			for key, val := range temp {
-
 				if result[key] == nil {
-					result[key] = make([]interface{}, len(order))
+
+					if givenType.String() == "string" {
+						val := make([]string, len(order))
+						result[key], _ = coerce.ToArray(val)
+					} else {
+						val := make([]int, len(order))
+						result[key], _ = coerce.ToArray(val)
+					}
 				}
 				result[key][index] = val
 			}
+
+		} else {
+
+			for key, val := range result {
+				
+				if val == nil {
+					//This is the  first val in column for which
+					//the value in map doesn't exists
+					//Hence initialize the result array with number of
+					//columns
+
+					for i := 0; i < ValLen; i++ {
+
+						if givenType.String() == "string" {
+							val := make([]string, len(order))
+							result[key], _ = coerce.ToArray(val)
+						} else {
+							val := make([]int, len(order))
+							result[key], _ = coerce.ToArray(val)
+						}
+
+					}
+
+				}
+
+			}
 		}
+
 	}
+	
 	return result, nil
+
 }
