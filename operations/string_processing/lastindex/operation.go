@@ -5,7 +5,7 @@ import (
 
 	"strings"
 
-	"github.com/project-flogo/cml/action/operation"
+	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/core/support/log"
 )
 

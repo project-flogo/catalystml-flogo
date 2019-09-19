@@ -6,7 +6,7 @@
     "appModel": "1.0.0",
     "imports": [
         "github.com/project-flogo/contrib/trigger/timer",
-        "github.com/project-flogo/cml/action",
+        "github.com/project-flogo/catalystml-flogo/action",
         "github.com/project-flogo/operation/math"
     ],
     "triggers": [
@@ -113,7 +113,7 @@
     ],
     "actions": [
       {
-        "ref": "github.com/project-flogo/cml/action",
+        "ref": "github.com/project-flogo/catalystml-flogo/action",
         "settings": {
           "catalystMlURI": "res://cam:gather"
         },

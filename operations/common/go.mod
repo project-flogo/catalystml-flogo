@@ -1,4 +1,4 @@
-module github.com/project-flogo/cml/operations/common
+module github.com/project-flogo/catalystml-flogo/operations/common
 
 go 1.12
 

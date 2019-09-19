@@ -7,7 +7,7 @@ import (
 	"github.com/project-flogo/core/data/resolve"
 	"github.com/project-flogo/core/support/log"
 
-	"github.com/project-flogo/cml/action/operation"
+	"github.com/project-flogo/catalystml-flogo/action/operation"
 )
 
 type Stage struct {

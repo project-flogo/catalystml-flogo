@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/project-flogo/cml/action/pipeline"
+	"github.com/project-flogo/catalystml-flogo/action/pipeline"
 	"github.com/project-flogo/core/action"
 	"github.com/project-flogo/core/app/resource"
 	"github.com/project-flogo/core/data/metadata"

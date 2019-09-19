@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	_ "github.com/project-flogo/cml/operations/count"
+	_ "github.com/project-flogo/catalystml-flogo/operations/count"
 	"github.com/project-flogo/fps/support/test"
 	"github.com/stretchr/testify/assert"
 )

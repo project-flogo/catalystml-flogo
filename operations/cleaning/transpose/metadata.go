@@ -1,7 +1,7 @@
 package transpose
 
 import (
-	"github.com/project-flogo/cml/operations/common"
+	"github.com/project-flogo/catalystml-flogo/operations/common"
 )
 
 type Input struct {

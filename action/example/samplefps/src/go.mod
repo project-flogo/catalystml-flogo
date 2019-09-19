@@ -3,7 +3,7 @@ module main
 go 1.12
 
 require (
-	github.com/project-flogo/cml/action v0.0.0
+	github.com/project-flogo/catalystml-flogo/action v0.0.0
 	github.com/project-flogo/contrib/activity/log v0.9.0
 	github.com/project-flogo/contrib/trigger/rest v0.9.0
 	github.com/project-flogo/contrib/trigger/timer v0.9.0
@@ -14,6 +14,6 @@ require (
 
 )
 
-replace github.com/project-flogo/cml/action => ../../../
+replace github.com/project-flogo/catalystml-flogo/action => ../../../
 
 replace github.com/project-flogo/operation/math => ../../operation
