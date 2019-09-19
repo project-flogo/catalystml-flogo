@@ -115,7 +115,7 @@ func Apply(deStructs []DerefernceStruct, scope data.Scope, value interface{}) {
 				temp2[index] = val
 				fmt.Println("Setting...", temp2[index], value)
 			}
-		}*/
+		}
 
 	}
 	//fmt.Println("Scope:", temp, value)
