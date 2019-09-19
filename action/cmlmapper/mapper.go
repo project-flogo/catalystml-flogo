@@ -1,7 +1,6 @@
 package cmlmapper
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -100,8 +99,7 @@ func Apply(deStructs []DerefernceStruct, scope data.Scope, value interface{}) {
 			temp, ok = temp3[val.Index]
 			if key == size-1 {
 
-				fmt.Println("Val inde...", val.Index, key)
-				fmt.Println("Setting...", temp3[val.Index], value)
+				
 				temp3[val.Index] = value
 			}
 			if !ok {
@@ -113,7 +111,7 @@ func Apply(deStructs []DerefernceStruct, scope data.Scope, value interface{}) {
 			temp = temp2[index]
 			if key == size-1 {
 				temp2[index] = val
-				fmt.Println("Setting...", temp2[index], value)
+				
 			}
 		}
 
