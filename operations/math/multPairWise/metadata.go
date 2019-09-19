@@ -16,4 +16,6 @@ func (i *Input) FromMap(values map[string]interface{}) error {
 	i.Matrix1, err = common.ToInterfaceArray(values["matrix1"])
 
 	return err
+
 }
+

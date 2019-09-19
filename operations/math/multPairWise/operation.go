@@ -2,9 +2,10 @@ package multPairWise
 
 import (
 	"fmt"
-
 	"github.com/project-flogo/catalystml-flogo/action/operation"
+
 	"github.com/project-flogo/core/data/coerce"
+
 	"github.com/project-flogo/core/support/log"
 )
 
@@ -23,19 +24,52 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input.FromMap(inputs)
 
 	a.logger.Info("Executing operation multPairWise ...")
+
 	if inputs["matrix0"] == nil || inputs["matrix1"] == nil {
-		return nil, nil
+
+		var mtx []interface{}
+		if inputs["matrix0"] != nil {
+			mtx = inputs["matrix0"].([]interface{})
+		} else {
+			mtx = inputs["matrix1"].([]interface{})
+		}
+
+		outEdge, err := mtxZero(mtx)
+		if err != nil {
+			return nil, err
+		}
+
+		return outEdge, nil
 	}
 	mtx0 := inputs["matrix0"].([]interface{})
 	mtx1 := inputs["matrix1"].([]interface{})
-	
+
 	out, err := mtxmultpairwise(mtx0, mtx1)
 	if err != nil {
 		return nil, err
+
 	}
 
 	a.logger.Info("Output of multPairWise ", out)
 	return out, nil
+}
+
+func mtxZero(mtx []interface{}) ([]interface{}, error) {
+	var err error
+	var mtxOut []interface{}
+
+	for i := 0; i < len(mtx); i++ {
+		switch v := mtx[i].(type) {
+		case []interface{}:
+			var tmp []interface{}
+			tmp, err = mtxZero(v)
+			mtxOut = append(mtxOut, tmp)
+		default:
+			mtxOut = append(mtxOut, 0.0)
+		}
+
+	}
+	return mtxOut, err
 }
 
 func mtxmultpairwise(mtx0 []interface{}, mtx1 []interface{}) ([]interface{}, error) {

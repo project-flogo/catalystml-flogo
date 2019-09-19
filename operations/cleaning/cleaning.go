@@ -14,6 +14,7 @@ import (
 	"github.com/project-flogo/catalystml-flogo/operations/cleaning/replaceValue"
 	"github.com/project-flogo/catalystml-flogo/operations/cleaning/set"
 	"github.com/project-flogo/catalystml-flogo/operations/cleaning/transpose"
+
 )
 
 func init() {
@@ -29,4 +30,5 @@ func init() {
 	_ = operation.Register(&concatMap.Operation{}, concatMap.New)
 	_ = operation.Register(&transpose.Operation{}, transpose.New)
 	_ = operation.Register(&pivot.Operation{}, pivot.New)
+
 }

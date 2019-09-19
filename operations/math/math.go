@@ -7,6 +7,7 @@ import (
 	"github.com/project-flogo/catalystml-flogo/operations/math/normalize"
 	"github.com/project-flogo/catalystml-flogo/operations/math/scale"
 	"github.com/project-flogo/catalystml-flogo/operations/math/multPairWise"
+
 )
 
 func init() {
