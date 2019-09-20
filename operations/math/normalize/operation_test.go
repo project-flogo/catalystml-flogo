@@ -22,6 +22,23 @@ func TestSingleDEval(t *testing.T) {
 	assert.Nil(t, err)
 
 }
+func TestSingleDEvalDiff(t *testing.T) {
+	//params := Params{}
+	opt := &Operation{logger : log.RootLogger() }
+	val, err := coerce.ToArray([]interface{}{"Age",1,3,45,5})
+	inputs := make(map[string]interface{})
+	inputs["data"] = val
+	inputs["value"] = 20
+	inputs["minvalue"]= 2
+
+	//input := &Input{Array: []float32{1.0, 2.0, 3.6, 4}}
+
+
+	_, err = opt.Eval(inputs)
+
+	assert.Nil(t, err)
+
+}
 func TestMultiple2DEval(t *testing.T) {
 	opt := &Operation{logger : log.RootLogger() }
 	val, err := coerce.ToArray([][]int{{1},{3},{45,56},{5}})
