@@ -1,7 +1,7 @@
 package normalize
 
 import (
-	
+	"strings"
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/support/log"
@@ -54,10 +54,21 @@ func calculateNorm(array []interface{}, value float32, min float32) (result []in
 	_, err = coerce.ToFloat32(array[0])
 
 	if err != nil {
+		//The element present is type string.
+		if strings.Contains(err.Error(),"invalid syntax") {
+			return nil, nil
+		}
+
 		//If not.. consider it as an array and call itself.
 		for i := 0; i < len(array); i++ {
-			arr, _ := coerce.ToArray(array[i])
-			temp, _ := calculateNorm(arr, value, min)
+			arr, err := coerce.ToArray(array[i])
+			if err != nil {
+				return nil, err
+			}
+			temp, err := calculateNorm(arr, value, min)
+			if err != nil {
+				return nil, err
+			}
 			result = append(result, temp)
 		}
 		return result, nil
@@ -69,9 +80,15 @@ func calculateNorm(array []interface{}, value float32, min float32) (result []in
 }
 
 func calulate1D(array []interface{}, value float32, min float32) (result []interface{}) {
-
+	
 	for key, val := range array {
-		temp, _ := coerce.ToFloat32(val)
+		temp, err := coerce.ToFloat32(val) 
+		if err != nil {
+			//The element present is type string.
+			if strings.Contains(err.Error(),"invalid syntax") {
+				array[key] = 0
+			}
+		}
 		temp = (temp - min) / (value - min)
 		array[key] = temp
 
