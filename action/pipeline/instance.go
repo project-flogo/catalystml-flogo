@@ -112,6 +112,10 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 			if definedType != givenType {
 				return nil, fmt.Errorf("Type mismatch in output. Defined type [%s] passed type [%s]", definedType, givenType)
 			}
+			
+			inst.logger.Infof("The output took %v to calculate", time.Since(start))
+
+			return output, nil
 		} 
 		
 		definedType, _ = data.ToTypeEnum(inst.def.output.Type)
