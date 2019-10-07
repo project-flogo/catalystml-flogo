@@ -2,6 +2,7 @@ package normalize
 
 import (
 	"strings"
+
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/support/log"
@@ -42,8 +43,6 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	a.logger.Debug("Norm is..", result)
 	a.logger.Info("Normalization finished")
 
-	
-
 	return result, err
 
 }
@@ -55,7 +54,7 @@ func calculateNorm(array []interface{}, value float32, min float32) (result []in
 
 	if err != nil {
 		//The element present is type string.
-		if strings.Contains(err.Error(),"invalid syntax") {
+		if strings.Contains(err.Error(), "invalid syntax") {
 			return nil, nil
 		}
 
@@ -80,12 +79,12 @@ func calculateNorm(array []interface{}, value float32, min float32) (result []in
 }
 
 func calulate1D(array []interface{}, value float32, min float32) (result []interface{}) {
-	
+
 	for key, val := range array {
-		temp, err := coerce.ToFloat32(val) 
+		temp, err := coerce.ToFloat32(val)
 		if err != nil {
 			//The element present is type string.
-			if strings.Contains(err.Error(),"invalid syntax") {
+			if strings.Contains(err.Error(), "invalid syntax") {
 				array[key] = 0
 			}
 		}
