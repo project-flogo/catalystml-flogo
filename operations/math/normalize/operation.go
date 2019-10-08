@@ -74,25 +74,22 @@ func calculateNorm(array []interface{}, value float32, min float32) (result []in
 		return result, nil
 	}
 
-	temp := calulate1D(array, value, min)
-	return temp, nil
+	temp, err := calulate1D(array, value, min)
+	return temp, err
 
 }
 
-func calulate1D(array []interface{}, value float32, min float32) (result []interface{}) {
+func calulate1D(array []interface{}, value float32, min float32) (result []interface{}, err error) {
 	
 	for key, val := range array {
 		temp, err := coerce.ToFloat32(val) 
 		if err != nil {
-			//The element present is type string.
-			if strings.Contains(err.Error(),"invalid syntax") {
-				array[key] = 0
-			}
+			return nil, err
 		}
 		temp = (temp - min) / (value - min)
 		array[key] = temp
 
 	}
 
-	return array
+	return array, nil
 }
