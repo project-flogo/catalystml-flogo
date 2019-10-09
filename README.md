@@ -22,8 +22,11 @@ There are multiple ways to embed a CatalystML structure within flogo:
 
 ### Golang Flogo API (library)
 
-#### Within Flogo app (with Trigger)
+Project-Flogo allows for the functinality of flogo to be integrated with custom Golang code by using the Flogo Golang API as a Golang library.  This can be done by either following a template that includes triggers and flows/streams or by just calling the CML action as a function.
 
-#### Raw Golang code (without Trigger)
+1) An example of Golang code that includes CatalystML within a Flogo template that includes triggers and flows is located [here](https://github.com/project-flogo/catalystml-flogo/tree/master/examples/golangWithTrigger).
+
+2) Raw Golang code (without Trigger) 
+[Here](https://github.com/project-flogo/catalystml-flogo/tree/master/examples/golangWOTrigger) is an example of using CatalystML in Golang using the CatalystML action as a function.
 
 
