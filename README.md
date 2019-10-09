@@ -14,15 +14,11 @@ As discussed above this implementation is written with Golang within the Flogo e
 
 ### Flogo Command Line Interface
 
-Within a flogo.json CatalystML
+[Flogo's Command line interface](https://tibcosoftware.github.io/flogo/flogo-cli/flogo-cli/) is built around a json object that represents the structure of a Flogo application.  Compiling this json ([here is an example of compiling a flogo.json](https://github.com/project-flogo/ml/blob/master/examples/flowsOutlier/README.md)) with the Flogo CLI then creates an executable binary.  Within a flogo.json CatalystML
 
-#### Flogo Action
-
-Running the CatalystML action alone on top of a trigger.
-
-#### Flogo Activity
-
-Running the CatalystML action as an activity (read function) within another action such as flows or streams.
+There are multiple ways to embed a CatalystML structure within flogo:
+1) As a flogo action that responds to a trigger.  In this case a trigger responds to input data, while the CatalystML action transforms that data.  An example flogo.json of CatalystML as a flogo action is located [here](https://github.com/project-flogo/catalystml-flogo/tree/master/examples/flogoAction).
+2) As a Flogo activity within a flogo flow or stream.  Flows and streams are flogo actions that allow you to chain predefined functions called activities.  In this case CatalystML is simply one step in a chain of functions.  This is how CatalystML-flogo would be used to interact with a machine learning model with the model executed within another [activity](https://github.com/project-flogo/ml/tree/master/activity/inference).  An example flogo.json of CatalystML as a flogo activity within a stream is located [here](https://github.com/project-flogo/catalystml-flogo/tree/master/examples/flogoActivity).
 
 ### Golang Flogo API (library)
 
