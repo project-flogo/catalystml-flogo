@@ -4,16 +4,16 @@ import (
 	"context"
 	"fmt"
 
-	_ "github.com/project-flogo/cml/action"
-	_ "github.com/project-flogo/cml/operations/cleaning"
-	_ "github.com/project-flogo/cml/operations/nlp"
-	_ "github.com/project-flogo/cml/operations/string_processing"
+	_ "github.com/project-flogo/catalystml-flogo/action"
+	_ "github.com/project-flogo/catalystml-flogo/operations/cleaning"
+	_ "github.com/project-flogo/catalystml-flogo/operations/nlp"
+	_ "github.com/project-flogo/catalystml-flogo/operations/string_processing"
 	"github.com/project-flogo/core/action"
 )
 
 func main() {
 
-	factory := action.GetFactory("github.com/project-flogo/cml/action")
+	factory := action.GetFactory("github.com/project-flogo/catalystml-flogo/action")
 
 	var act action.Action
 

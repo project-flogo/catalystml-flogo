@@ -9,13 +9,13 @@ import (
 	// "github.com/project-flogo/contrib/trigger/timer"
 	"github.com/skothari-tibco/csvtimer"
 
-	cml "github.com/project-flogo/cml/action"
+	cml "github.com/project-flogo/catalystml-flogo/action"
 
-	_ "github.com/project-flogo/cml/operations/categorical"
-	_ "github.com/project-flogo/cml/operations/cleaning"
-	_ "github.com/project-flogo/cml/operations/common"
-	_ "github.com/project-flogo/cml/operations/math"
-	_ "github.com/project-flogo/cml/operations/retyping"
+	_ "github.com/project-flogo/catalystml-flogo/operations/categorical"
+	_ "github.com/project-flogo/catalystml-flogo/operations/cleaning"
+	_ "github.com/project-flogo/catalystml-flogo/operations/common"
+	_ "github.com/project-flogo/catalystml-flogo/operations/math"
+	_ "github.com/project-flogo/catalystml-flogo/operations/retyping"
 	"github.com/project-flogo/core/action"
 	"github.com/project-flogo/core/api"
 	"github.com/project-flogo/core/engine"
@@ -54,10 +54,8 @@ func myApp() *api.App {
 	h.NewAction(RunActions)
 
 	cmlAct, _ := app.NewIndependentAction(&cml.Action{}, map[string]interface{}{"catalystMlURI": "file://cml.json"})
-	// cmlAct2, _ := app.NewIndependentAction(&cml.Action{}, map[string]interface{}{"catalystMlURI": "file://cml2.json"})
 
 	actions = map[string]action.Action{"cml": cmlAct}
-	// actions["cml2"]=cmlAct2
 	return app
 }
 
