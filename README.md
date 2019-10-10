@@ -26,7 +26,6 @@ Project-Flogo allows for the functinality of flogo to be integrated with custom 
 
 1) An example of Golang code that includes CatalystML within a Flogo template that includes triggers and flows is located [here](https://github.com/project-flogo/catalystml-flogo/tree/master/examples/golangWithTrigger).
 
-2) Raw Golang code (without Trigger) 
-[Here](https://github.com/project-flogo/catalystml-flogo/tree/master/examples/golangWOTrigger) is an example of using CatalystML in Golang using the CatalystML action as a function.
+2) [Here](https://github.com/project-flogo/catalystml-flogo/tree/master/examples/golangWOTrigger) is an example of using CatalystML in Golang using the CatalystML action as a function.
 
 
