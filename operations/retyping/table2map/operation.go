@@ -28,13 +28,16 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	in := &Input{}
 
 	err := in.FromMap(inputs)
+	a.logger.Info("Starting Operation Table to Map.")
+	a.logger.Debug("The inputs of Operation Table to Map.", inputs)
 
 	result, err := convertToMap(in.Table, in.ColKeys, a.params.Axis)
 
 	if err != nil {
 		return nil, err
 	}
-	a.logger.Info("Resultss...", result)
+	a.logger.Info("Operation Table to Map completed.")
+	a.logger.Debug("The output of Operation Table to Map.", result)
 	return result, nil
 }
 

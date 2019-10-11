@@ -23,7 +23,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Info("Executing operation split...")
+	a.logger.Info("Starting operation split...")
 
 	out := strings.Split(input.Str, input.Sep)
 	a.logger.Info("result of split...", out)

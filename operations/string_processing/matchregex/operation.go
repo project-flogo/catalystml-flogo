@@ -25,7 +25,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Info("Executing operation regexmatch...", input.S0, " to ", input.S1)
+	a.logger.Info("Starting operation regexmatch...", input.S0, " to ", input.S1)
 
 	// out := strings.Contains(input.S0, input.S1)
 	out, _ := regexp.MatchString(input.S0, input.S1)

@@ -36,18 +36,18 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 	}
 
 	var result interface{}
-
+	operation.logger.Info("Starting Operation Norm.")
 	if !in.isFlat {
-		operation.logger.Info("Matrix is...", in.Data)
+		operation.logger.Debug("Matrix is...", in.Data)
 		if 0 != operation.params.Axis && 1 != operation.params.Axis {
-			operation.logger.Info("Invalid axis...", operation.params.Axis, ", will set to default...0")
+			operation.logger.Debug("Invalid axis...", operation.params.Axis, ", will set to default...0")
 			operation.params.Axis = 0
 		} else {
-			operation.logger.Info("Axis is...", operation.params.Axis)
+			operation.logger.Debug("Axis is...", operation.params.Axis)
 		}
 	} else {
-		operation.logger.Info("Matrix is...", in.Data.([]interface{})[0])
-		operation.logger.Info("Flat array axis won't apply.")
+		operation.logger.Debug("Matrix is...", in.Data.([]interface{})[0])
+		operation.logger.Debug("Flat array axis won't apply.")
 		operation.params.Axis = -1
 	}
 
@@ -61,7 +61,8 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 		result = result.([]interface{})[0]
 	}
 
-	operation.logger.Info("Norm is..", result)
+	operation.logger.Info("Operation Norm completed.")
+	operation.logger.Debug("Output of Operation Norm.", result)
 
 	return result, err
 }

@@ -21,7 +21,7 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 
 func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
-	a.logger.Info("Executing operation UUID...")
+	a.logger.Info("Starting operation UUID...")
 
 	uuid := make([]byte, 16)
 	n, err := io.ReadFull(rand.Reader, uuid)

@@ -23,7 +23,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	s0 := input.S0
 	s1 := input.S1
 
-	a.logger.Info("Executing operation...", s0, s1)
+	a.logger.Info("Starting operation...", s0, s1)
 
 	par := levenshtein.NewParams()
 	out := levenshtein.Similarity(s0, s1, par)

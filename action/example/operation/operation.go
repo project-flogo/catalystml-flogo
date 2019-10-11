@@ -1,9 +1,9 @@
 package operation
 
 import (
+	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/core/data/metadata"
 	"github.com/project-flogo/core/support/log"
-	"github.com/project-flogo/catalystml-flogo/action/operation"
 )
 
 func init() {
@@ -33,7 +33,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Info("Executing operation...", input.InputSample, a.params.Sample)
+	a.logger.Info("Starting operation...", input.InputSample, a.params.Sample)
 	out := make(map[string]interface{})
 
 	out["sample"] = input.InputSample

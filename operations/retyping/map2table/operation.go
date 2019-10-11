@@ -1,9 +1,8 @@
 package map2table
 
 import (
-
 	"github.com/project-flogo/catalystml-flogo/action/operation"
-		"github.com/project-flogo/core/data"
+	"github.com/project-flogo/core/data"
 	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/data/metadata"
 	"github.com/project-flogo/core/support/log"
@@ -28,6 +27,8 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	in := &Input{}
 	err := in.FromMap(inputs)
+	a.logger.Info("Starting Operation Map to Table.")
+	a.logger.Debug("The inputs of Operation Map to Table.", inputs)
 	for _, ord := range in.ColOrder {
 		if val, ok := in.Map[ord.(string)]; ok {
 			ValLen = len(val.([]interface{}))
@@ -40,7 +41,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	a.logger.Info("Results...", result)
+	a.logger.Info("Operation Map to Table completed.")
+	a.logger.Debug("The output of Operation Map to Table.", result)
 	out, _ := coerce.ToArray(result)
 	return out, nil
 }

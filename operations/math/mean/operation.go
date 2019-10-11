@@ -33,15 +33,15 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 	if err != nil {
 		return nil, err
 	}
-
+	operation.logger.Info("Starting Operation Mean.")
 	var result interface{}
 
 	if !in.isFlat {
-		operation.logger.Info("Matrix is...", in.Data)
-		operation.logger.Info("Axis is...", operation.params.Axis)
+		operation.logger.Debug("Matrix is...", in.Data)
+		operation.logger.Debug("Axis is...", operation.params.Axis)
 	} else {
-		operation.logger.Info("Matrix is...", in.Data.([]interface{})[0])
-		operation.logger.Info("Flat array axis won't apply.")
+		operation.logger.Debug("Matrix is...", in.Data.([]interface{})[0])
+		operation.logger.Debug("Flat array axis won't apply.")
 		operation.params.Axis = -1
 	}
 
@@ -55,7 +55,8 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 		result = result.([]interface{})[0]
 	}
 
-	operation.logger.Info("Mean is..", result)
+	operation.logger.Info("Operation Mean completed.")
+	operation.logger.Debug("The output of Operation Mean.", result)
 
 	return result, err
 }

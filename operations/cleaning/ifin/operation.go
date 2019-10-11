@@ -19,8 +19,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	input.FromMap(inputs)
 
-	a.logger.Debug("inputs", inputs)
-	a.logger.Info("Executing operation ifIn ...")
+	a.logger.Info("Starting operation ifIn.")
+	a.logger.Debug("Inputs for Operation ifIn.", inputs)
 
 	arr0 := inputs["arr0"]
 	arr1 := inputs["arr1"]
@@ -39,6 +39,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		}
 	}
 
-	a.logger.Info("Output of ifIn ", out)
+	a.logger.Info("Operation ifIn Completed.")
+	a.logger.Debug("Output of Operation ifIn.", out)
 	return out, nil
 }

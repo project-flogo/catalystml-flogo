@@ -26,12 +26,16 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		return nil, errors.New("Cannot Flatten non-array elements")
 	}
 
+	a.logger.Info("Starting Operation Flatten.")
+	a.logger.Debug("Inputs of Operation Flatten.", temp)
+
 	result := flattenArr(temp)
 
 	if result == nil {
 		return nil, nil
 	}
-	a.logger.Info("Flatten is..", result)
+	a.logger.Info("Operation Flatten Completed.")
+	a.logger.Info("Output of Operation Flatten.", result)
 
 	return result, nil
 }

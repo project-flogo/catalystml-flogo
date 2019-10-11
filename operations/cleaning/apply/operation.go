@@ -58,8 +58,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	moa := a.params.MapOrArray //moa = Map or Array
 	input.FromMap(inputs)
 
-	a.logger.Debug("inputs", inputs)
-	a.logger.Info("Executing operation apply to...", input.Function.Operation)
+	a.logger.Info("Starting operation Apply.")
+	a.logger.Debug("Inputs of Operation Apply.", inputs)
 
 	opt := operation.Get(input.Function.Operation)
 	if opt == nil {
@@ -145,6 +145,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	} else if moa == "array" {
 		out = outSl
 	}
-	a.logger.Info("Output of apply", out)
+	a.logger.Info("Operation apply Completed.")
+	a.logger.Debug("Output of operation apply.", out)
 	return out, nil
 }
