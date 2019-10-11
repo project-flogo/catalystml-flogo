@@ -1,0 +1,152 @@
+{
+  "name": "SampleFPSApp",
+  "type": "flogo:app",
+  "version": "0.0.1",
+  "description": "",
+  "appModel": "1.0.0",
+  "imports": [
+    "github.com/project-flogo/catalystml-flogo/operations/cleaning",
+    "github.com/project-flogo/core@master",
+    "github.com/project-flogo/catalystml-flogo/operations/nlp",
+    "github.com/project-flogo/catalystml-flogo/operations/string_processing",
+    "github.com/project-flogo/contrib/trigger/timer",
+    "github.com/project-flogo/catalystml-flogo/action"
+  ],
+  "triggers": [
+    {
+      "id": "timerTrig",
+      "ref": "github.com/project-flogo/contrib/trigger/timer",
+      "settings": null,
+      "handlers": [
+        {
+          "settings": {
+            "startDelay": "1s"
+          },
+          "actions": [
+            {
+              "ref": "#action",
+              "settings": {
+                "catalystMlURI": "res://cam:gather"
+              },
+              "input": {
+                "paragraph": "Natural Language Processing (NLP) is all about leveraging tools, techniques and algorithms to process and understand natural language-based data, which is usually unstructured like text, speech and so on. In this series of articles, we will be looking at tried and tested strategies, techniques and workflows which can be leveraged by practitioners and data scientists to extract useful insights from text data. We will also cover some useful and interesting use-cases for NLP. This article will be all about processing and understanding text data with tutorials and hands-on examples."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "cam:gather",
+      "data": 
+      { 
+        "name": "Para2BOW",
+        "description": "Converts a paragraph to a bag of words for NLP",
+        "version": "0.0.1",
+        "createdDate": "20190703",
+        "model": {
+          "framework": "Tensorflow",
+          "tags": "serve",
+          "signatureDefs": "def_signature"
+        },
+        "input": [
+          {
+            "type": "string",
+            "label": "paragraph"
+          }
+        ],
+        "structure": [
+          {
+            "operation": "tolower",
+            "input": {
+              "str": "$paragraph"
+            },
+            "output": "lowerwords"
+          },
+          {
+            "operation": "tokenize",
+            "input": {
+              "str": "$lowerwords"
+            },
+            "output": "words"
+          },
+          {
+            "operation": "getstopwords",
+            "params": {
+              "lib": "nltk"
+            },
+            "output": "stopwords"
+          },
+          {
+            "operation": "ifnotin",
+            "input": {
+              "arr0": "$words",
+              "arr1": "$stopwords"
+            },
+            "output": "nostop"
+          },
+          {
+            "operation": "apply",
+            "input": {
+              "data": "$nostop",
+              "function": {
+                "operation": "stem",
+                "input": {
+                  "str": "&item"
+                },
+                "params": {
+                  "algo": "Snowball"
+                }
+              }
+            },
+            "params": {
+              "mapOrArray": "array"
+            },
+            "output": "stemwords"
+          },
+          {
+            "operation": "set",
+            "input": {
+              "arr": "$stemwords"
+            },
+            "output": "set"
+          },
+          {
+            "operation": "apply",
+            "input": {
+              "data": "$set",
+              "function": {
+                "operation": "count",
+                "input": {
+                  "s0": "$lowerwords",
+                  "s1": "&item"
+                }
+              }
+            },
+            "params": {
+              "mapOrArray": "map"
+            },
+            "output": "BOWmap"
+          }
+        ],
+        "output": {
+          "type": "map",
+          "data": {
+            "BOW": "$BOWmap"
+          }
+        }
+      }
+    }
+  ],
+  "actions": [
+    {
+      "ref": "github.com/project-flogo/catalystml-flogo/action",
+      "settings": {
+        "catalystMlURI": "res://cam:gather"
+      },
+      "id": "gather"
+    }
+  ]
+}

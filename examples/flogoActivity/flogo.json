@@ -1,0 +1,123 @@
+{
+  "name": "FinTechDemo",
+  "type": "flogo:app",
+  "version": "0.0.1",
+  "description": "",
+  "appModel": "1.0.0",
+  "imports": [
+    "github.com/project-flogo/stream/activity/aggregate",
+    "github.com/project-flogo/contrib/activity/log",
+    "github.com/project-flogo/legacybridge",
+    "github.com/project-flogo/contrib/activity/syncaction",
+    "github.com/project-flogo/catalystml-flogo/action",
+    "github.com/project-flogo/ml/activity/inference",
+    "github.com/project-flogo/catalystml-flogo/operations/cleaning",
+    "github.com/project-flogo/catalystml-flogo/operations/math",
+    "github.com/project-flogo/catalystml-flogo/operations/categorical"
+  ],
+  "triggers": [
+    {
+      "id": "csv_trigger_zero",
+      "ref": "github.com/skothari-tibco/csvtimer",
+      "settings": null,
+      "handlers": [
+        {
+          "settings": {
+            "filePath": "init_data.csv",
+            "header": true,
+            "repeatInterval": "5"
+          },
+          "action": {
+            "id": "action1",
+            "input": {
+              "input": "=$.data"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "pipeline:gather",
+      "data": {
+        "metadata": {
+          "input": [
+            {
+              "name": "input",
+              "type": "any"
+            }
+          ],
+          "output": [
+            {
+              "name": "result",
+              "type": "int"
+            }
+          ]
+        },
+        "stages": [
+          {
+            "ref": "github.com/project-flogo/stream/activity/aggregate",
+            "settings": {
+              "function": "accumulate",
+              "windowType": "timeTumbling",
+              "windowSize": "100"
+            },
+            "input": {
+              "value": "=$.input"
+            }
+          },
+          {
+            "id": "cmlact",
+            "ref": "github.com/project-flogo/contrib/activity/syncaction",
+            "settings": {
+              "ref": "#action",
+              "resURI": "file://cml.json"
+            },
+            "input": {
+              "input": {
+                "mapping": {
+                  "dataIn": "=$.result"
+                }
+              }
+            }
+          },
+          {
+            "id": "inference_ml",
+            "ref": "github.com/project-flogo/ml/activity/inference",
+            "input": {
+              "model": "Archive.zip",
+              "framework": "Tensorflow",
+              "features": {
+                "mapping": [
+                  {
+                    "name": "inputs",
+                    "data": "=$.output['output']"
+                  }
+                ]
+              },
+              "sigDefName": "serving_default",
+              "tag": "serve"
+            }
+          },
+          {
+            "id": "Publish_Kafka",
+            "ref": "github.com/project-flogo/contrib/activity/log",
+            "input": {
+              "message": "=$.result"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "actions": [
+    {
+      "id": "action1",
+      "ref": "github.com/project-flogo/stream",
+      "settings": {
+        "pipelineURI": "res://pipeline:gather"
+      }
+    }
+  ]
+}

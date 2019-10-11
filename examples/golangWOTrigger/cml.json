@@ -1,0 +1,97 @@
+{ 
+  "name": "Para2BOW",
+  "description": "Converts a paragraph to a bag of words for NLP",
+  "version": "0.0.1",
+  "createdDate": "20190703",
+  "model": {
+    "framework": "Tensorflow",
+    "tags": "serve",
+    "signatureDefs": "def_signature"
+  },
+  "input": [
+    {
+      "type": "string",
+      "label": "paragraph"
+    }
+  ],
+  "structure": [
+    {
+      "operation": "tolower",
+      "input": {
+        "str": "$paragraph"
+      },
+      "output": "lowerwords"
+    },
+    {
+      "operation": "tokenize",
+      "input": {
+        "str": "$lowerwords"
+      },
+      "output": "words"
+    },
+    {
+      "operation": "getstopwords",
+      "params": {
+        "lib": "nltk"
+      },
+      "output": "stopwords"
+    },
+    {
+      "operation": "ifnotin",
+      "input": {
+        "arr0": "$words",
+        "arr1": "$stopwords"
+      },
+      "output": "nostop"
+    },
+    {
+      "operation": "apply",
+      "input": {
+        "data": "$nostop",
+        "function": {
+          "operation": "stem",
+          "input": {
+            "str": "\u0026item"
+          },
+          "params": {
+            "algo": "Snowball"
+          }
+        }
+      },
+      "params": {
+        "mapOrArray": "array"
+      },
+      "output": "stemwords"
+    },
+    {
+      "operation": "set",
+      "input": {
+        "arr": "$stemwords"
+      },
+      "output": "set"
+    },
+    {
+      "operation": "apply",
+      "input": {
+        "data": "$set",
+        "function": {
+          "operation": "count",
+          "input": {
+            "s0": "$lowerwords",
+            "s1": "&item"
+          }
+        }
+      },
+      "params": {
+        "mapOrArray": "map"
+      },
+      "output": "BOWmap"
+    }
+  ],
+  "output": {
+    "type": "map",
+    "data": {
+      "BOW": "$BOWmap"
+    }
+  }
+}
