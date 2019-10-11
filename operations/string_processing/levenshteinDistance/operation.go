@@ -30,5 +30,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	par := levenshtein.NewParams()
 	out := levenshtein.Distance(s0, s1, par)
 
+	a.logger.Info("Operation Levenshtein completed.")
+	a.logger.Debug("Output of operation Levenshtein.", out)
+
 	return out, nil
 }
