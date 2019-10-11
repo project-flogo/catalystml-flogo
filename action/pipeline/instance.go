@@ -29,9 +29,10 @@ func (inst *Instance) Id() string {
 
 func recoverName() (map[string]interface{}, error) {
 	if r := recover(); r != nil {
-		//fmt.Println("recovered from ", r)
-		return nil, r
+		fmt.Println("recovered from ", r)
+
 	}
+	return nil, nil
 }
 
 func (inst *Instance) Run(input map[string]interface{}) (output map[string]interface{}, err error) {
