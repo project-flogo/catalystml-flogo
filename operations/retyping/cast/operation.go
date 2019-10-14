@@ -35,24 +35,28 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	switch v.Kind() {
 	case reflect.Slice, reflect.Array:
 
+		a.logger.Info("Cast Opertaion commencing on a Slice...")
+		a.logger.Debug("Inputs: data ...", inputs["data"], " toType...  ", typ)
 		result := castslice(inputs["data"], typ)
-		a.logger.Info("Cast Opertaion commencing on a Slice...", result)
-		a.logger.Info("Results...", result)
+		a.logger.Info("Cast Opertaion finishing...")
+		a.logger.Debug("Cast Results...", result)
 		// out, _ := coerce.ToArray(result)
 		return result, nil
 	case reflect.Map:
-
+		a.logger.Info("Cast Opertaion commencing on a Map...")
+		a.logger.Debug("Inputs: data ...", inputs["data"], " toType...  ", typ)
 		result := castmap(inputs["data"], typ)
-		a.logger.Info("Cast Opertaion commencing on a Map...", result)
-		a.logger.Info("Results...", result)
+		a.logger.Info("Cast Opertaion finishing...")
+		a.logger.Debug("Cast Results...", result)
 		// out, _ := coerce.ToObject(result)
 		return result, nil
 
 	default:
-
+		a.logger.Info("Cast Opertaion commencing on a base data type...")
+		a.logger.Debug("Inputs: data ...", inputs["data"], " toType...  ", typ)
 		result := casttype(inputs["data"], typ)
-		a.logger.Info("Cast Opertaion commencing on a base data type ...", result)
-		a.logger.Info("Results...", result)
+		a.logger.Info("Cast Opertaion finishing...")
+		a.logger.Debug("Cast Results...", result)
 		// out := result
 		return result, nil
 	}
