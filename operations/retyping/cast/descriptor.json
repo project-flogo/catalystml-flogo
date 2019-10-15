@@ -1,0 +1,19 @@
+{
+    "title":"cast",
+    "desc":"Convert the base datatype of a data structure or datatype from one base type to another (i.e. [int32,int32] to [flat64,float64]).  It is useful to note that maps of arrays are allowed and handle by the specification.",
+    "input":[
+	        {
+                "str":"data", 
+                "type":"any", 
+                "description":"input data to be cast.", 
+                "optional":false
+            },
+	        {
+                "str":"toType", 
+                "type":"string", 
+                "description":"string depicting which datatype to cast to, allowed:int64,float64,string,int32,float32,boolean", 
+                "optional":false
+            }
+	    ],
+    "output":"any"
+}
