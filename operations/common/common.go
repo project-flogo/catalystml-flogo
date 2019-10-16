@@ -154,6 +154,23 @@ func (this *Data) Update(newData interface{}) error {
 	return nil
 }
 
+type First struct {
+	gotValue bool
+	data     interface{}
+}
+
+func (this *First) Value() interface{} {
+	return this.data
+}
+
+func (this *First) Update(newData interface{}) error {
+	if !this.gotValue {
+		this.data = newData
+		this.gotValue = true
+	}
+	return nil
+}
+
 type Sum struct {
 	data float64
 }
