@@ -325,3 +325,100 @@ func ToInterfaceArray(val interface{}) ([]interface{}, error) {
 		return nil, fmt.Errorf("unable to coerce %#v to []interface{}", val)
 	}
 }
+
+type Callback func(tuple map[string]interface{}, newDataFrame *DataFrame, lastTuple bool) error
+
+func ProcessDataFrame(dataFrame DataFrame, callback Callback) (result DataFrame, err error) {
+
+	/* check tuple size */
+	tupleSize := -1
+	var count int
+	for _, columnValues := range dataFrame {
+		if 0 == count {
+			tupleSize = len(columnValues)
+		} else {
+			if tupleSize != len(columnValues) {
+				return nil, errors.New("Illegel dataframe : column value array with different size!")
+			}
+		}
+	}
+
+	newDataFrame := make(DataFrame)
+	tuple := make(map[string]interface{})
+	for i := 0; i < tupleSize; i++ {
+		/* build tuple */
+		for fieldname, filedsArray := range dataFrame {
+			tuple[fieldname] = filedsArray[i]
+		}
+		err := callback(tuple, &newDataFrame, i == (tupleSize-1))
+		if nil != err {
+			return nil, err
+		}
+	}
+
+	return newDataFrame, nil
+}
+
+func TupleArrayToDataframe(
+	tuples []map[string]interface{},
+	dataFrame *DataFrame) error {
+
+	dataframeSize := len(tuples)
+	if 0 == dataframeSize {
+		return errors.New("Empty tuple array!")
+	}
+
+	for index, tuple := range tuples {
+		for columnName, columnValue := range tuple {
+			columnValueArray := (*dataFrame)[columnName]
+			if nil == columnValueArray {
+				columnValueArray = make([]interface{}, len(tuples))
+				(*dataFrame)[columnName] = columnValueArray
+			}
+
+			(*dataFrame)[columnName][index] = columnValue
+		}
+	}
+
+	return nil
+}
+
+/* fast but requires predefined dataframe size */
+func TupleAssignToDataframe(
+	index int,
+	tuple map[string]interface{},
+	dataFrame *DataFrame) error {
+	for columnName, columnValue := range tuple {
+		columnValueArray := (*dataFrame)[columnName]
+		if nil == columnValueArray || index >= len(columnValueArray) {
+			return errors.New("Index out of bound !")
+		}
+		(*dataFrame)[columnName][index] = columnValue
+	}
+
+	return nil
+}
+
+/* slow but flexible dataframe size */
+func TupleAppendToDataframe(
+	tuple map[string]interface{},
+	dataFrame *DataFrame) error {
+	dataframeSize := -1
+	for columnName, columnValue := range tuple {
+		columnValueArray := (*dataFrame)[columnName]
+		if nil == columnValueArray {
+			columnValueArray = make([]interface{}, 0)
+			(*dataFrame)[columnName] = columnValueArray
+		}
+
+		if dataframeSize < 0 {
+			dataframeSize = len(columnValueArray)
+		} else if dataframeSize != len(columnValueArray) {
+			return errors.New("Unequal column value array size !")
+		}
+
+		(*dataFrame)[columnName] = append(columnValueArray, columnValue)
+	}
+
+	return nil
+}
