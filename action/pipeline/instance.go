@@ -29,9 +29,8 @@ func (inst *Instance) Id() string {
 
 func recoverName() (map[string]interface{}, error) {
 	if r := recover(); r != nil {
-	
 		fmt.Println("recovered from ", r)
-		
+
 	}
 	return nil, nil
 }
