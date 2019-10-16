@@ -1,10 +1,10 @@
 package oneHotEncoding
 
 import (
-	"testing"
 	"fmt"
 	"github.com/project-flogo/catalystml-flogo/action/support/test"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestSample(t *testing.T) {

@@ -1,11 +1,11 @@
 package reshape
 
 import (
-	"testing"
 	"fmt"
-	"github.com/project-flogo/core/support/log"
 	"github.com/project-flogo/core/data/coerce"
+	"github.com/project-flogo/core/support/log"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestSimple(t *testing.T) {
