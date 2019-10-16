@@ -11,11 +11,10 @@ import (
 
 	cml "github.com/project-flogo/catalystml-flogo/action"
 
-	_ "github.com/project-flogo/catalystml-flogo/operations/categorical"
+	_ "github.com/project-flogo/catalystml-flogo/operations/restructuring"
 	_ "github.com/project-flogo/catalystml-flogo/operations/cleaning"
 	_ "github.com/project-flogo/catalystml-flogo/operations/common"
 	_ "github.com/project-flogo/catalystml-flogo/operations/math"
-	_ "github.com/project-flogo/catalystml-flogo/operations/retyping"
 	"github.com/project-flogo/core/action"
 	"github.com/project-flogo/core/api"
 	"github.com/project-flogo/core/engine"
