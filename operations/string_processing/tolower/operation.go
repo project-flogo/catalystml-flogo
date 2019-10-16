@@ -23,10 +23,13 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Info("Executing operation tolower...", input.Str)
+	a.logger.Info("Starting Operation toLower")
+	a.logger.Debug("Input for operation tolower.", input.Str)
 
 	out := strings.ToLower(input.Str)
-	a.logger.Debug("result of tolower...", out)
+
+	a.logger.Info("Operation toLower completed.")
+	a.logger.Debug("Output for operation tolower.", out)
 
 	return out, nil
 }

@@ -27,7 +27,16 @@ func (inst *Instance) Id() string {
 	return inst.id
 }
 
+func recoverName() (map[string]interface{}, error) {
+	if r := recover(); r != nil {
+		fmt.Println("recovered from ", r)
+
+	}
+	return nil, nil
+}
+
 func (inst *Instance) Run(input map[string]interface{}) (output map[string]interface{}, err error) {
+	defer recoverName()
 	currentInput := make(map[string]interface{})
 
 	scope := NewPipelineScope(input)
@@ -63,7 +72,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 		}
 
-		inst.logger.Debugf("Executing operation [%v] with inputs: [%v]", stage.name+"-"+strconv.Itoa(key), currentInput)
+		inst.logger.Debugf("Starting operation [%v] with inputs: [%v]", stage.name+"-"+strconv.Itoa(key), currentInput)
 		stageOutput, err := stage.opt.Eval(currentInput)
 
 		if err != nil {
@@ -106,28 +115,30 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		var definedType data.Type
 		if inst.def.output.Type == "dataframe" || inst.def.output.Type == "map" {
 			definedType, _ = data.ToTypeEnum("object")
-			
+
 			givenType, _ := data.GetType(output)
 
 			if definedType != givenType {
 				return nil, fmt.Errorf("Type mismatch in output. Defined type [%s] passed type [%s]", definedType, givenType)
 			}
+
 			inst.logger.Infof("The output took %v to calculate", time.Since(start))
 
 			return output, nil
-		} 
-		
+		}
+
+
 		definedType, _ = data.ToTypeEnum(inst.def.output.Type)
-		
+
 		for key, _ := range output {
-			
+
 			givenType, _ := data.GetType(output[key])
 
 			if definedType != givenType {
 				return nil, fmt.Errorf("Type mismatch in output. Defined type [%s] passed type [%s]", definedType, givenType)
 			}
 		}
-			
+
 	}
 	inst.logger.Infof("The output took %v to calculate", time.Since(start))
 

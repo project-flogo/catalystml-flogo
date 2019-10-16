@@ -22,7 +22,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Debug("Executing operation...", input.Str)
+	a.logger.Info("Starting operation Tokenize.")
+	a.logger.Debug("Input for Operation Tokenize.", input.Str)
 
 	doc, err := prose.NewDocument(input.Str)
 	if err != nil {
@@ -34,7 +35,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		out = append(out, tok.Text)
 		// fmt.Println(tok.Text, tok.Tag)
 	}
-	a.logger.Info("Resulting array...", out)
+	a.logger.Info("Operation Tokenize completed.")
+	a.logger.Debug("Output of Operation Tokenize.", out)
 
 	return out, nil
 }

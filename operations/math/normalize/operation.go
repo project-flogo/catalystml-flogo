@@ -1,10 +1,12 @@
 package normalize
 
 import (
+
 	"strings"
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/support/log"
+	"strings"
 )
 
 type Operation struct {
@@ -27,7 +29,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	var result interface{}
 
-	a.logger.Info("Executing operation Normalization")
+	a.logger.Info("Starting operation Normalization")
 	a.logger.Debug("Array is...", in.Data)
 	if _, ok := in.Data.([]interface{}); ok {
 		result, err = calculateNorm(in.Data.([]interface{}), in.Value, in.Min)
@@ -40,9 +42,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	}
 
 	a.logger.Debug("Norm is..", result)
-	a.logger.Info("Normalization finished")
-
-	
+	a.logger.Info("Operation Normalization completed")
 
 	return result, err
 
@@ -55,7 +55,7 @@ func calculateNorm(array []interface{}, value float32, min float32) (result []in
 
 	if err != nil {
 		//The element present is type string.
-		if strings.Contains(err.Error(),"invalid syntax") {
+		if strings.Contains(err.Error(), "invalid syntax") {
 			return nil, nil
 		}
 
@@ -74,25 +74,22 @@ func calculateNorm(array []interface{}, value float32, min float32) (result []in
 		return result, nil
 	}
 
-	temp := calulate1D(array, value, min)
-	return temp, nil
+	temp, err := calulate1D(array, value, min)
+	return temp, err
 
 }
 
-func calulate1D(array []interface{}, value float32, min float32) (result []interface{}) {
-	
+func calulate1D(array []interface{}, value float32, min float32) (result []interface{}, err error) {
+
 	for key, val := range array {
-		temp, err := coerce.ToFloat32(val) 
+		temp, err := coerce.ToFloat32(val)
 		if err != nil {
-			//The element present is type string.
-			if strings.Contains(err.Error(),"invalid syntax") {
-				array[key] = 0
-			}
+			return nil, err
 		}
 		temp = (temp - min) / (value - min)
 		array[key] = temp
 
 	}
 
-	return array
+	return array, nil
 }

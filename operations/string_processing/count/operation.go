@@ -23,8 +23,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Debug("Executing operation...", input.S0, "   ", input.S1)
-	a.logger.Infof("Counting substrings, '%s', in '%s'...", input.S1, input.S0)
+	a.logger.Info("Starting operation Count")
+	a.logger.Debug("Counting substrings, '%s', in '%s'...", input.S1, input.S0)
 
 	c := strings.Count(input.S0, input.S1)
 

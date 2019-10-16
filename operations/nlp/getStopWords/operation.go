@@ -45,7 +45,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	path := a.params.FileLoc
 	merge := a.params.Merge
 
-	a.logger.Info("Starting GetStopWords Operation")
+	a.logger.Info("Starting GetStopWords Operation.")
+	a.logger.Debug("The input of Operation GetStopWords.", inputs)
 	pathprint := path
 	if path == "" {
 		pathprint = "None"
@@ -92,7 +93,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	if len(stoplist) == 0 {
 		a.logger.Info("WARNING: length of stopword list is zero")
 	}
+	a.logger.Info("GetStopWords Operation completed.")
+	a.logger.Debug("The output of Operation GetStopWords.", stoplist)
 
-	out := stoplist
-	return out, nil
+	return stoplist, nil
 }

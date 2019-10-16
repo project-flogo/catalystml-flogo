@@ -25,10 +25,11 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Info("Executing operation index...", input.S0, " to ", input.S1)
+	a.logger.Info("Starting Operation Index.")
+	a.logger.Debug("Input of operation index.", input.S0, " to ", input.S1)
 
 	out := strings.Index(input.S0, input.S1)
-	a.logger.Info("result of index...", out)
+	a.logger.Debug("Output of index.", out)
 
 	return out, nil
 }

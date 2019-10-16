@@ -60,9 +60,9 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	ysize := a.params.Ysize
 	input.FromMap(inputs)
 
-	a.logger.Debug("inputs", inputs)
-	a.logger.Info("Executing operation resize ...")
-	a.logger.Info("Resampling Filter is ...", algo)
+	a.logger.Info("Starting operation resize.")
+	a.logger.Debug("Inputs for Operation resize.", inputs)
+	a.logger.Info("Resampling Filter is.", algo)
 
 	img := input.Img // image.Image type
 
@@ -103,8 +103,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	}
 
 	src = imaging.Resize(src, w, h, rFilter)
+	a.logger.Info("Operation resize Completed.")
 
-	out := src
-	// a.logger.Info("Output of resize", out)
-	return out, nil
+	return src, nil
 }

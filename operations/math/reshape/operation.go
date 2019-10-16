@@ -21,7 +21,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	in := &Input{}
 
 	in.FromMap(inputs)
-
+	a.logger.Info("Starting Operation reshape.")
+	a.logger.Debug("The inputs for operation reshape.", in.Data)
 	flatData, _ := coerce.ToArray(flattenArr(in.Data))
 
 	if len(in.Shape) < 3 {
@@ -47,6 +48,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		result = append(result, temp)
 		flatData = flatData[column:]
 	}
+	a.logger.Info("Operation reshape completed.")
+	a.logger.Debug("The output for operation reshape.", result)
 
 	return result, nil
 }

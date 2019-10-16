@@ -20,8 +20,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Info("Executing operation...", input.Arr)
-	a.logger.Info("Creating set...")
+	a.logger.Info("Starting Operation Set.")
+	a.logger.Info("Input of Operation Set.", inputs)
 
 	set := make(map[interface{}]bool)
 
@@ -32,6 +32,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 			set[blah] = true
 		}
 	}
+	a.logger.Info("Operation Set Completed")
+	a.logger.Debug("Output of Operation Set.", out)
 
 	return out, nil
 }

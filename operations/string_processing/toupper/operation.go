@@ -23,10 +23,13 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Info("Executing operation toupper...", input.Str)
+	a.logger.Info("Starting Operation toupper.")
+	a.logger.Debug("Input for operation toupper.", input.Str)
 
 	out := strings.ToUpper(input.Str)
-	a.logger.Debug("result of toupper...", out)
+
+	a.logger.Info("Operation toupper completed.")
+	a.logger.Debug("Output of operation toupper...", out)
 
 	return out, nil
 }

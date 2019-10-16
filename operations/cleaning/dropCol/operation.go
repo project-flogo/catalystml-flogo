@@ -28,8 +28,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	in := &Input{}
 
 	in.FromMap(inputs)
-
-	a.logger.Debug("Input of DropCol is ....", in.Data, a.params)
+	a.logger.Info("Starting Operation DropCol.")
+	a.logger.Debug("Input of Operation DropCol.", in.Data, a.params)
 	for _, val := range a.params.Columns {
 
 		if _, ok := in.Data[val.(string)]; ok {
@@ -37,6 +37,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		}
 
 	}
-	a.logger.Debug("Output of DropCol is ....", in.Data)
+	a.logger.Info("Operation DropCol Completed.")
+	a.logger.Debug("Output of Operation DropCol.", in.Data)
 	return in.Data, nil
 }

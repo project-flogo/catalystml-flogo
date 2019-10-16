@@ -56,9 +56,9 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	rmAlpha := a.params.RemoveAlpha
 
 	// a.logger.Debug("inputs", inputs)
-	a.logger.Info("Executing operation img2tensor ...")
-	a.logger.Info("RemoveAlpha is set to ...", rmAlpha)
-	a.logger.Info("IncludeBatch is set to ...", a.params.IncludeBatch)
+	a.logger.Info("Starting Operation img2tensor.")
+	a.logger.Debug("RemoveAlpha is set to ...", rmAlpha)
+	a.logger.Debug("IncludeBatch is set to ...", a.params.IncludeBatch)
 
 	src := input.Img.(image.Image)
 
@@ -105,15 +105,13 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		for j := 0; j < batchsize; j++ {
 			img = append(img, singleimg)
 		}
-
+		a.logger.Info("Operation img2tensor Completed.")
 		a.logger.Debug("Values of first pixel ", img[0][0][0])
 		return img, nil
 
-	} else {
-
-		a.logger.Debug("Values of first pixel ", singleimg[0][0])
-		return singleimg, nil
-
 	}
+	a.logger.Info("Operation img2tensor Completed.")
+	a.logger.Debug("Values of first pixel ", singleimg[0][0])
+	return singleimg, nil
 
 }

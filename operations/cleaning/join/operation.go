@@ -34,11 +34,12 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 
 	var result interface{}
 
-	operation.logger.Info("Left dataFrame is : ", in.Left)
-	operation.logger.Info("Right dataFrame is : ", in.Right)
-	operation.logger.Info("Left Index map is : ", in.LeftIndex)
-	operation.logger.Info("Right Index map is : ", in.RightIndex)
-	operation.logger.Info("Parameter is : ", operation.params)
+	operation.logger.Info("Starting Operation Join.")
+	operation.logger.Debug("Input for Operation Join Left dataFrame.", in.Left)
+	operation.logger.Debug("Input for Operation Join Right dataFrame. ", in.Right)
+	operation.logger.Debug("Input for Operation Join Left Index map.", in.LeftIndex)
+	operation.logger.Debug("Input for Operation Join Right Index map.", in.RightIndex)
+	operation.logger.Debug("Input for Operation Join Parameter. ", operation.params)
 
 	result, err = operation.join(
 		in.Left.(map[string][]interface{}),
@@ -47,7 +48,8 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 		in.RightIndex.([]string),
 	)
 
-	operation.logger.Info("Joined dataFrame is : ", result)
+	operation.logger.Info("Operation Join Completed.")
+	operation.logger.Debug("Output of Operation Join Joined dataFrame is : ", result)
 
 	return result, err
 }

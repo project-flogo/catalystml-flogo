@@ -26,11 +26,13 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	var result interface{}
 
-	a.logger.Info("Input matrix is : ", in.Data)
+	a.logger.Info("Starting Operation Transpose.")
+	a.logger.Debug("Input for Operation Transpose. Matrix. ", in.Data)
 
 	result, err = transpose(in.Data.([]interface{}))
 
-	a.logger.Info("Transpose matrix is : ", result)
+	a.logger.Info("Operation Transpose Completed.")
+	a.logger.Debug("Output for Operation Transpose. Matrix.", result)
 
 	return result, err
 }

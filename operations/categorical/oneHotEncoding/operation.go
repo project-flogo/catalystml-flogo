@@ -30,6 +30,9 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	in.FromMap(inputs)
 
+	a.logger.Info("Starting One Hot Encoding operation.")
+	a.logger.Debug("Input of One Hot Encoding operation.", in.Data)
+
 	params, err := coerce.ToArray(a.params.Columns)
 	if err != nil {
 		return nil, err
@@ -55,8 +58,9 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		}
 		delete(in.Data, val.(string))
 	}
-	a.logger.Debug("Output of hot encoding..", in.Data)
-	
+	a.logger.Info("One Hot Encoding operation Completed.")
+	a.logger.Debug("Output of hot encoding.", in.Data)
+
 	return in.Data, nil
 }
 

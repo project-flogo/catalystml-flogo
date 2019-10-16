@@ -1,7 +1,6 @@
 package ifnotin
 
 import (
-
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/core/support/log"
 )
@@ -20,8 +19,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	input.FromMap(inputs)
 
-	a.logger.Debug("inputs", inputs)
-	a.logger.Info("Executing operation ifnotin ...")
+	a.logger.Info("Starting operation ifnotin.")
+	a.logger.Debug("Inputs for Operation ifnotin.", inputs)
 
 	arr0 := inputs["arr0"].([]string)
 	arr1 := inputs["arr1"].([]string)
@@ -39,7 +38,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 			out = append(out, val)
 		}
 	}
-
-	a.logger.Info("Output of ifIn ", out)
+	a.logger.Info("Operation ifnotin Completed.")
+	a.logger.Debug("Output of Operation ifIn ", out)
 	return out, nil
 }
