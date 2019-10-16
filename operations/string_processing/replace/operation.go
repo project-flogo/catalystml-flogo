@@ -23,9 +23,13 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Debug("Executing operation...", input.S0, " ", input.S1, " ", input.S2, " ", input.I)
+	a.logger.Info("Starting Operation Replace.")
+	a.logger.Debug("Input for operation repeat.", input.S0, " ", input.S1, " ", input.S2, " ", input.I)
 
 	out := strings.Replace(input.S0, input.S1, input.S2, input.I)
+
+	a.logger.Info("Operation Replace completed.")
+	a.logger.Debug("Output for operation Replace.", out)
 
 	return out, nil
 }

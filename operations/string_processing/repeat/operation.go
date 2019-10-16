@@ -23,10 +23,13 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Infof("Executing operation repeat...%s %d times", input.S, input.I)
+	a.logger.Info("Starting Operation Repeat")
+	a.logger.Debugf("Input for operation repeat.%s %d times", input.S, input.I)
 
 	out := strings.Repeat(input.S, input.I)
-	a.logger.Debug("result of repeat...", out)
+
+	a.logger.Info("Operation Repeat completed.")
+	a.logger.Debug("Output for operation repeat.", out)
 
 	return out, nil
 }

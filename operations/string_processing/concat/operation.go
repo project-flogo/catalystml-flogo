@@ -24,7 +24,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Info("Executing operation concat...", input.S0, " to ", input.S1)
+	a.logger.Info("Starting Operation Concat.")
+	a.logger.Debug("Inputs for operation concat...", input.S0, " to ", input.S1)
 
 	var b bytes.Buffer
 	if input.S0 != "" {
@@ -39,7 +40,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		}
 	}
 	out := b.String()
-	a.logger.Debug("result of concat...", out)
+	a.logger.Info("Operation Concat completed.")
+	a.logger.Debug("Output of operation concat.", out)
 
 	return out, nil
 }

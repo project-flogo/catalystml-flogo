@@ -1,11 +1,12 @@
 package normalize
 
 import (
-	"strings"
 
+	"strings"
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/support/log"
+	"strings"
 )
 
 type Operation struct {
@@ -28,7 +29,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	var result interface{}
 
-	a.logger.Info("Executing operation Normalization")
+	a.logger.Info("Starting operation Normalization")
 	a.logger.Debug("Array is...", in.Data)
 	if _, ok := in.Data.([]interface{}); ok {
 		result, err = calculateNorm(in.Data.([]interface{}), in.Value, in.Min)
@@ -41,7 +42,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	}
 
 	a.logger.Debug("Norm is..", result)
-	a.logger.Info("Normalization finished")
+	a.logger.Info("Operation Normalization completed")
 
 	return result, err
 

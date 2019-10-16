@@ -24,11 +24,12 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	//To get the inputs in the desired types.
 	input := &Input{}
 	input.FromMap(inputs)
-
-	a.logger.Info("Executing operation contains...", input.S0, " to ", input.S1)
+	a.logger.Info("Starting Operation Contians.")
+	a.logger.Debug("Input for operation contains...", input.S0, " to ", input.S1)
 
 	out := strings.Contains(input.S0, input.S1)
-	a.logger.Info("result of contains...", out)
+	a.logger.Info("Operation contains completed.")
+	a.logger.Debug("Output of Operation contains.", out)
 
 	return out, nil
 }

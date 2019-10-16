@@ -26,12 +26,14 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	var result interface{}
 
-	a.logger.Debug("Array is...", in.Data)
+	a.logger.Info("Starting Operation Scale.")
+	a.logger.Debug("The input of Operation Scale.", in.Data)
 	if _, ok := in.Data.([]interface{}); ok {
 		result, err = calculateScaler(in.Data.([]interface{}), in.Scaler)
 	}
 
-	a.logger.Debug("Norm is..", result)
+	a.logger.Info("Operation Scale completed.")
+	a.logger.Debug("The output of Operation Scale.", result)
 
 	return result, err
 

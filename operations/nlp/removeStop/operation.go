@@ -39,11 +39,11 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	// 		I just added \pP to the default regex
 	stopwords.OverwriteWordSegmenter(`[\pL\p{Mc}\p{Mn}\pP-_']+`)
 
-	a.logger.Debug("Executing operation...", input.Str)
-	a.logger.Info("Removing stopwords...", input.Str)
+	a.logger.Info("Starting operation Remove Stop Words.")
+	a.logger.Debug("Removing stopwords...", input.Str)
 	out := stopwords.CleanString(input.Str, a.params.Lang, false)
-
-	a.logger.Info("String without stopwords: ", out)
+	a.logger.Info("Operation Remove Stop Words completed.")
+	a.logger.Debug("String without stopwords: ", out)
 
 	return out, nil
 }

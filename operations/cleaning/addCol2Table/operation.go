@@ -24,7 +24,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	col := input.Col.([]interface{})
 	matrix := input.Matrix.([][]interface{})
 
-	a.logger.Info("Executing operation...", matrix, col)
+	a.logger.Info("Starting Add Column to Table operation.")
+	a.logger.Debug("Inputs of operation Add Column to Table", matrix, col)
 
 	out := matrix
 	if len(col) == len(matrix) {
@@ -36,7 +37,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		return out, fmt.Errorf("matrix and array of different lengths %d and %d", len(matrix), len(col))
 	}
 
-	fmt.Println(out)
+	a.logger.Info("Add Column to Table operation Completed.")
+	a.logger.Debug("Output of operation Add Column To Table.", matrix, col)
 
 	return out, nil
 }

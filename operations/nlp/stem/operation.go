@@ -34,7 +34,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Info("Executing operation...", input.Str)
+	a.logger.Info("Starting Operation Stem.")
+	a.logger.Debug("Input for Operation Stem.", input.Str)
 	var out string
 
 	if a.params.Algo == "Porter" {
@@ -52,8 +53,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		out = stemmed
 
 	}
-
-	a.logger.Info("stemmed word = ", out)
+	a.logger.Info("Operation Stem Words completed.")
+	a.logger.Debug("Output of Stem word operation. ", out)
 
 	return out, nil
 }

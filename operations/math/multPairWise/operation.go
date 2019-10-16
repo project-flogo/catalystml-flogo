@@ -23,7 +23,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	input.FromMap(inputs)
 
-	a.logger.Info("Executing operation multPairWise ...")
+	a.logger.Info("Starting operation multPairWise.")
 
 	if inputs["matrix0"] == nil || inputs["matrix1"] == nil {
 
@@ -49,8 +49,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		return nil, err
 
 	}
-
-	a.logger.Info("Output of multPairWise ", out)
+	a.logger.Info("Operation multPairWise completed")
+	a.logger.Debug("Output of Operation multPairWise ", out)
 	return out, nil
 }
 

@@ -1,7 +1,6 @@
 package replaceValue
 
 import (
-	
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/data/metadata"
@@ -33,6 +32,9 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		return nil, err
 	}
 
+	a.logger.Info("Starting Operation Replace Value.")
+	a.logger.Debug("Input of Operation Replace Value.", in.Data)
+
 	for _, val := range a.params.Columns {
 
 		if arr, ok := in.Data[val.(string)]; ok {
@@ -57,8 +59,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		}
 
 	}
+	a.logger.Info("Operation Replace Value Completed.")
+	a.logger.Debug("Output of Operation Replace Value.", in.Data)
 
-	a.logger.Debug("Output of replace Value..", in.Data)
-	
 	return in.Data, nil
 }
