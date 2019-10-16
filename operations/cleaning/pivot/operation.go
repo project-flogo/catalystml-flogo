@@ -36,12 +36,12 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 
 	var result interface{}
 
-	operation.logger.Info("Input dataFrame is : ", in.Data)
-	operation.logger.Info("Parameter is : ", operation.params)
+	operation.logger.Debug("Input dataFrame is : ", in.Data)
+	operation.logger.Debug("Parameter is : ", operation.params)
 
 	result, err = operation.pivot(in.Data.(map[string][]interface{}))
 
-	operation.logger.Info("Pivoted dataFrame is : ", result)
+	operation.logger.Debug("Pivoted dataFrame is : ", result)
 
 	return result, err
 }

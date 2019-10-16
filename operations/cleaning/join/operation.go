@@ -1,6 +1,8 @@
 package join
 
 import (
+	"errors"
+
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/catalystml-flogo/operations/common"
 	"github.com/project-flogo/core/data/metadata"
@@ -34,20 +36,30 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 
 	var result interface{}
 
-	operation.logger.Info("Left dataFrame is : ", in.Left)
-	operation.logger.Info("Right dataFrame is : ", in.Right)
-	operation.logger.Info("Left Index map is : ", in.LeftIndex)
-	operation.logger.Info("Right Index map is : ", in.RightIndex)
-	operation.logger.Info("Parameter is : ", operation.params)
+	operation.logger.Debug("Left dataFrame is : ", in.Left)
+	operation.logger.Debug("Right dataFrame is : ", in.Right)
+	operation.logger.Debug("Left Index map is : ", in.LeftIndex)
+	operation.logger.Debug("Right Index map is : ", in.RightIndex)
+	operation.logger.Debug("Parameter is : ", operation.params)
+
+	var leftJoinOn []string
+	var rightJoinOn []string
+	if nil != operation.params.On {
+		leftJoinOn = operation.params.On
+		rightJoinOn = operation.params.On
+	} else {
+		leftJoinOn = in.LeftIndex.([]string)
+		rightJoinOn = in.RightIndex.([]string)
+	}
 
 	result, err = operation.join(
 		in.Left.(map[string][]interface{}),
 		in.Right.(map[string][]interface{}),
-		in.LeftIndex.([]string),
-		in.RightIndex.([]string),
+		leftJoinOn,
+		rightJoinOn,
 	)
 
-	operation.logger.Info("Joined dataFrame is : ", result)
+	operation.logger.Debug("Joined dataFrame is : ", result)
 
 	return result, err
 }
@@ -66,8 +78,11 @@ func (operation *Operation) join(
 	if "right" == operation.params.How {
 		dataFrame02 = leftDataFrame
 		dataFrame01 = rightDataFrame
-		index02 = leftIndex
-		index01 = rightIndex
+		index02, err = getIndex(leftIndex)
+		index01, err = getIndex(rightIndex)
+		if nil != err {
+			return nil, err
+		}
 	}
 
 	/* dataFrame01 join dataFrame02 */
@@ -130,7 +145,7 @@ func (operation *Operation) join(
 			}
 		}
 	}
-	operation.logger.Info("DataSet - ", dataSet)
+	operation.logger.Debug("DataSet - ", dataSet)
 
 	return operation.dataSetToDataFrame(dataSet, dataFrame)
 }
@@ -162,4 +177,18 @@ func GetKey(indexColumn []string, tuple map[string]interface{}) common.Index {
 		index[i] = tuple[element]
 	}
 	return common.NewIndex(index)
+}
+
+func getIndex(val interface{}) ([]string, error) {
+	if nil == val {
+		return nil, errors.New("Index should not be nil.")
+	}
+
+	index, ok := val.([]string)
+
+	if !ok {
+		return nil, errors.New("Index should be []string.")
+	}
+
+	return index, nil
 }

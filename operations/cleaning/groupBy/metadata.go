@@ -1,10 +1,9 @@
 package groupBy
 
 type Params struct {
-	Index    []string `md:"index"`
-	Target   string   `md:"target"`
-	Function string   `md:"function"`
-	Level    int      `md:"level"`
+	Index     []string            `md:"index"`
+	Aggregate map[string][]string `md:"aggregate"`
+	Level     int                 `md:"level"`
 }
 
 type Input struct {
