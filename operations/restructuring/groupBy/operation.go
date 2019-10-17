@@ -36,74 +36,93 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 
 	var result interface{}
 
-	operation.logger.Info("Starting Operation Group By.")
-	operation.logger.Debug("Input dataFrame for Operation Group By. ", in.Data)
-	operation.logger.Debug("Parameter for Operation Group By .", operation.params)
+	operation.logger.Debug("Input dataFrame is : ", in.Data)
+	operation.logger.Debug("Parameter is : ", operation.params)
 
 	result, err = operation.groupBy(in.Data.(map[string][]interface{}))
 
-	operation.logger.Info("Operation Group By Completed.")
-	operation.logger.Debug("output of Operation Group By: ", result)
+	operation.logger.Debug("Grouped dataFrame is : ", result)
 
 	return result, err
 }
 
 func (operation *Operation) groupBy(dataFrame map[string][]interface{}) (result map[string][]interface{}, err error) {
-
-	/* check tuple size */
-	tupleSize := -1
-	for _, filedsArray := range dataFrame {
-		tupleSize = len(filedsArray)
-		if 0 < tupleSize {
-			break
-		}
+	var keyColumns []string
+	// Use all index columns, if level < 0
+	if 0 > operation.params.Level {
+		keyColumns = operation.params.Index
+	} else {
+		keyColumns = make([]string, 1)
+		keyColumns[0] = operation.params.Index[operation.params.Level]
 	}
 
-	groupedData := make(map[string]common.DataState)
-	tuple := make(map[string]interface{})
-	for i := 0; i < tupleSize; i++ {
-		/* build tuple */
-		for fieldname, filedsArray := range dataFrame {
-			tuple[fieldname] = filedsArray[i]
+	aggregatedTupleByGroup := make(map[common.Index]map[string]common.DataState)
+	var key []interface{}
+	newDataFrame, _ := common.ProcessDataFrame(dataFrame, func(tuple map[string]interface{}, newDataFrame *common.DataFrame, lastTuple bool) error {
+
+		key = make([]interface{}, len(keyColumns))
+		for j, keyElement := range keyColumns {
+			key[j] = tuple[keyElement]
 		}
 
-		outputKeyValue := tuple[operation.params.Index[operation.params.Level]].(string)
-		data := groupedData[outputKeyValue]
-		if nil == data {
-			data = common.GetFunction(operation.params.Function)
-			groupedData[outputKeyValue] = data
+		index := common.NewIndex(key)
+		aggregatedTuple := aggregatedTupleByGroup[index]
+		if nil == aggregatedTuple {
+			aggregatedTuple = make(map[string]common.DataState)
+			for _, keyColumn := range keyColumns {
+				keyData := &common.First{}
+				keyData.Update(tuple[keyColumn])
+				aggregatedTuple[keyColumn] = keyData
+			}
+			aggregatedTupleByGroup[index] = aggregatedTuple
 		}
-		data.Update(tuple[operation.params.Target])
 
-		operation.logger.Debug("Tuple - ", tuple, ", groupedData - ", groupedData)
-	}
+		operation.aggregate(tuple, aggregatedTuple)
 
-	return operation.tupleToDataFrame(groupedData)
-}
+		if lastTuple {
+			for _, aggregatedTuple := range aggregatedTupleByGroup {
+				newTuple := make(map[string]interface{})
 
-func (operation *Operation) groupedKey() string {
-	var groupKey bytes.Buffer
-	groupKey.WriteString(operation.params.Function)
-	groupKey.WriteString("_")
-	groupKey.WriteString(operation.params.Target)
-	return groupKey.String()
-}
-
-func (operation *Operation) tupleToDataFrame(
-	groupedData map[string]common.DataState) (result map[string][]interface{}, err error) {
-	newDataFrame := make(map[string][]interface{})
-	tupleSize := len(groupedData)
-	dataKey := operation.params.Index[operation.params.Level]
-	groupedKey := operation.groupedKey()
-	newDataFrame[dataKey] = make([]interface{}, tupleSize)
-	newDataFrame[groupedKey] = make([]interface{}, tupleSize)
-
-	counter := 0
-	for key, data := range groupedData {
-		newDataFrame[dataKey][counter] = key
-		newDataFrame[groupedKey][counter] = data.Value()
-		counter++
-	}
+				for key, value := range aggregatedTuple {
+					newTuple[key] = value.Value()
+				}
+				common.TupleAppendToDataframe(newTuple, newDataFrame)
+			}
+		}
+		return nil
+	})
 
 	return newDataFrame, nil
+}
+
+func (operation *Operation) aggregate(
+	tuple map[string]interface{},
+	aggregatedTuple map[string]common.DataState,
+) {
+	for valueColumn, functionNames := range operation.params.Aggregate {
+		for _, functionName := range functionNames {
+			dataKey := operation.dataKey(tuple, functionName, valueColumn)
+			function := aggregatedTuple[dataKey]
+			if nil == function {
+				function = common.GetFunction(functionName)
+				aggregatedTuple[dataKey] = function
+			}
+			err := function.Update(tuple[valueColumn])
+			if nil != err {
+				operation.logger.Info("Error : ", err)
+			}
+		}
+	}
+}
+
+func (operation *Operation) dataKey(
+	tuple map[string]interface{},
+	functionName string,
+	valueColumn string,
+) string {
+	var groupKey bytes.Buffer
+	groupKey.WriteString(functionName)
+	groupKey.WriteString("_")
+	groupKey.WriteString(valueColumn)
+	return groupKey.String()
 }
