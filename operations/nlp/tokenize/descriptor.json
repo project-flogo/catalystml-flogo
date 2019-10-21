@@ -3,7 +3,7 @@
     "desc":"Seperates a string into words.",
     "input":[
 	        {
-                "str":"s0", 
+                "str":"str", 
                 "type":"string", 
                 "description":"string", 
                 "optional":false
