@@ -1,0 +1,14 @@
+{
+    "title":"postag",
+    "desc":"Seperates a string into POS.",
+    "input":[
+	        {
+                "str":"str", 
+                "type":"string", 
+                "description":"string", 
+                "optional":false
+            }
+	    ],
+    "params":[],
+    "output":"array[string]"
+}

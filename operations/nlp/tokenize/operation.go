@@ -33,7 +33,6 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	var out []string
 	for _, tok := range doc.Tokens() {
 		out = append(out, tok.Text)
-		// fmt.Println(tok.Text, tok.Tag)
 	}
 	a.logger.Info("Operation Tokenize completed.")
 	a.logger.Debug("Output of Operation Tokenize.", out)
