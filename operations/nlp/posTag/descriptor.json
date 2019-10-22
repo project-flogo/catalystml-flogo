@@ -1,6 +1,6 @@
 {
-    "title":"tokenize",
-    "desc":"Seperates a string into words.",
+    "title":"postag",
+    "desc":"Seperates a string into POS.",
     "input":[
 	        {
                 "str":"str", 

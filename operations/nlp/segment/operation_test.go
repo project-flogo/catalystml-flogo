@@ -1,4 +1,4 @@
-package tokenize
+package segment
 
 import (
 	"testing"
@@ -8,7 +8,6 @@ import (
 )
 
 func TestSample(t *testing.T) {
-
 	opt := &Operation{logger: log.RootLogger()}
 
 	inputs := make(map[string]interface{})

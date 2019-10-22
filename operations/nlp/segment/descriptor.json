@@ -1,6 +1,6 @@
 {
-    "title":"tokenize",
-    "desc":"Seperates a string into words.",
+    "title":"segment",
+    "desc":"Seperates a paragraph into sentences.",
     "input":[
 	        {
                 "str":"str", 

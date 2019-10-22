@@ -1,4 +1,4 @@
-package tokenize
+package segment
 
 import (
 	"github.com/project-flogo/catalystml-flogo/action/operation"
@@ -7,7 +7,6 @@ import (
 )
 
 type Operation struct {
-	// params *Params
 	logger log.Logger
 }
 
@@ -22,8 +21,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	input := &Input{}
 	input.FromMap(inputs)
 
-	a.logger.Info("Starting operation Tokenize.")
-	a.logger.Debug("Input for Operation Tokenize.", input.Str)
+	a.logger.Info("Starting operation Segment.")
+	a.logger.Debug("Input for Operation Segment.", input.Str)
 
 	doc, err := prose.NewDocument(input.Str)
 	if err != nil {
@@ -31,11 +30,11 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	}
 
 	var out []string
-	for _, tok := range doc.Tokens() {
-		out = append(out, tok.Text)
+	for _, sent := range doc.Sentences() {
+		out = append(out, sent.Text)
 	}
-	a.logger.Info("Operation Tokenize completed.")
-	a.logger.Debug("Output of Operation Tokenize.", out)
+	a.logger.Info("Operation Tokenize Segment.")
+	a.logger.Debug("Output of Operation Segment.", out)
 
 	return out, nil
 }
