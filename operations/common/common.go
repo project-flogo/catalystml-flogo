@@ -439,3 +439,68 @@ func TupleAppendToDataframe(
 
 	return nil
 }
+
+func NewSortableTuple(data map[string]interface{}) SortableTuple {
+	length := len(data)
+	sTuple := SortableTuple{
+		KeyToIndex: make(map[string]int, length),
+		Data:       make([]interface{}, length),
+	}
+	index := 0
+	for key, value := range data {
+		sTuple.KeyToIndex[key] = index
+		sTuple.Data[index] = value
+	}
+	return sTuple
+}
+
+type SortableTuple struct {
+	KeyToIndex map[string]int
+	Data       []interface{}
+}
+
+func (t SortableTuple) GetByKey(key string) interface{} {
+	return t.Data[t.KeyToIndex[key]]
+}
+
+func (t SortableTuple) GetByIndex(index int) interface{} {
+	return t.Data[index]
+}
+
+type TupleSorter struct {
+	Ascending bool
+	ByKey     bool
+	SortBy    []interface{}
+	Tuples    []SortableTuple
+}
+
+func (s TupleSorter) Len() int {
+	return len(s.Tuples)
+}
+
+func (s TupleSorter) Less(i, j int) bool {
+	for _, sortKey := range s.SortBy {
+		var result int
+		if s.ByKey {
+			result, _ = compare(s.Tuples[i].GetByKey(sortKey.(string)), s.Tuples[j].GetByKey(sortKey.(string)))
+		} else {
+			result, _ = compare(s.Tuples[i].GetByIndex(sortKey.(int)), s.Tuples[j].GetByIndex(sortKey.(int)))
+		}
+
+		if 0 == result {
+			continue
+		} else {
+			if s.Ascending {
+				return 0 < result
+			} else {
+				return 0 > result
+			}
+		}
+	}
+
+	return true
+}
+
+func (s TupleSorter) Swap(i, j int) {
+	s.Tuples[i], s.Tuples[j] = s.Tuples[j], s.Tuples[i]
+}
