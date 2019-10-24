@@ -11,12 +11,28 @@ import (
 	"github.com/project-flogo/core/data/coerce"
 )
 
-type DataFrame map[string][]interface{}
+type DataFrame struct {
+	order []string
+	data  map[string][]interface{}
+}
 
-func ToDataFrame(data interface{}) (DataFrame, error) {
+func (dataFrame *DataFrame) AddColumn(colName string, colValues []interface{}) {
+	dataFrame.data[colName] = colValues
+	dataFrame.order = append(dataFrame.order, colName)
+}
+
+func NewDataFrame() *DataFrame {
+	return &DataFrame{
+		order: make([]string, 0),
+		data:  make(map[string][]interface{}),
+	}
+}
+
+func ToDataFrame(data interface{}) (*DataFrame, error) {
 	// This function takes an slices, matrix, tensors, and maps to a dataframe, does not handle other type caases
 
-	out := make(DataFrame)
+	out := NewDataFrame()
+
 	var err error
 
 	switch v := data.(type) {
@@ -36,7 +52,7 @@ func ToDataFrame(data interface{}) (DataFrame, error) {
 			s := fmt.Sprintf("%d", i)
 			switch w := val.(type) {
 			case string, int, int32, int64, float32, float64, bool:
-				out[s] = []interface{}{w}
+				out.AddColumn(s, []interface{}{w})
 				e = 1
 			default:
 				break
@@ -61,7 +77,7 @@ func ToDataFrame(data interface{}) (DataFrame, error) {
 				arr = append(arr, tmp[j][i])
 			}
 			s := fmt.Sprintf("%d", i)
-			out[s] = arr
+			out.AddColumn(s, arr)
 		}
 
 	case map[string]interface{}:
@@ -80,7 +96,7 @@ func ToDataFrame(data interface{}) (DataFrame, error) {
 				} else {
 					return nil, fmt.Errorf("length of columns not consistent")
 				}
-				out[s] = []interface{}{va}
+				out.AddColumn(s, []interface{}{va})
 			default:
 				cur, _ := ToInterfaceArray(va)
 				lcur := len(cur)
@@ -89,7 +105,7 @@ func ToDataFrame(data interface{}) (DataFrame, error) {
 				} else {
 					return nil, fmt.Errorf("length of columns not consistent")
 				}
-				out[s] = cur
+				out.AddColumn(s, cur)
 
 			}
 
@@ -345,12 +361,12 @@ func ToInterfaceArray(val interface{}) ([]interface{}, error) {
 
 type Callback func(tuple map[string]interface{}, newDataFrame *DataFrame, lastTuple bool) error
 
-func ProcessDataFrame(dataFrame DataFrame, callback Callback) (result DataFrame, err error) {
+func ProcessDataFrame(dataFrame DataFrame, callback Callback) (result *DataFrame, err error) {
 
 	/* check tuple size */
 	tupleSize := -1
 	var count int
-	for _, columnValues := range dataFrame {
+	for _, columnValues := range dataFrame.data {
 		if 0 == count {
 			tupleSize = len(columnValues)
 		} else {
@@ -360,14 +376,15 @@ func ProcessDataFrame(dataFrame DataFrame, callback Callback) (result DataFrame,
 		}
 	}
 
-	newDataFrame := make(DataFrame)
+	newDataFrame := NewDataFrame()
+
 	tuple := make(map[string]interface{})
 	for i := 0; i < tupleSize; i++ {
 		/* build tuple */
-		for fieldname, filedsArray := range dataFrame {
+		for fieldname, filedsArray := range dataFrame.data {
 			tuple[fieldname] = filedsArray[i]
 		}
-		err := callback(tuple, &newDataFrame, i == (tupleSize-1))
+		err := callback(tuple, newDataFrame, i == (tupleSize-1))
 		if nil != err {
 			return nil, err
 		}
@@ -387,13 +404,13 @@ func TupleArrayToDataframe(
 
 	for index, tuple := range tuples {
 		for columnName, columnValue := range tuple {
-			columnValueArray := (*dataFrame)[columnName]
+			columnValueArray := (*dataFrame).data[columnName]
 			if nil == columnValueArray {
 				columnValueArray = make([]interface{}, len(tuples))
-				(*dataFrame)[columnName] = columnValueArray
+				(*dataFrame).data[columnName] = columnValueArray
 			}
 
-			(*dataFrame)[columnName][index] = columnValue
+			(*dataFrame).data[columnName][index] = columnValue
 		}
 	}
 
@@ -406,11 +423,11 @@ func TupleAssignToDataframe(
 	tuple map[string]interface{},
 	dataFrame *DataFrame) error {
 	for columnName, columnValue := range tuple {
-		columnValueArray := (*dataFrame)[columnName]
+		columnValueArray := (*dataFrame).data[columnName]
 		if nil == columnValueArray || index >= len(columnValueArray) {
 			return errors.New("Index out of bound !")
 		}
-		(*dataFrame)[columnName][index] = columnValue
+		(*dataFrame).data[columnName][index] = columnValue
 	}
 
 	return nil
@@ -422,10 +439,10 @@ func TupleAppendToDataframe(
 	dataFrame *DataFrame) error {
 	dataframeSize := -1
 	for columnName, columnValue := range tuple {
-		columnValueArray := (*dataFrame)[columnName]
+		columnValueArray := (*dataFrame).data[columnName]
 		if nil == columnValueArray {
 			columnValueArray = make([]interface{}, 0)
-			(*dataFrame)[columnName] = columnValueArray
+			(*dataFrame).data[columnName] = columnValueArray
 		}
 
 		if dataframeSize < 0 {
@@ -434,7 +451,7 @@ func TupleAppendToDataframe(
 			return errors.New("Unequal column value array size !")
 		}
 
-		(*dataFrame)[columnName] = append(columnValueArray, columnValue)
+		(*dataFrame).data[columnName] = append(columnValueArray, columnValue)
 	}
 
 	return nil
