@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"errors"
+
 	"fmt"
 	"reflect"
 
@@ -14,6 +15,14 @@ import (
 type DataFrame struct {
 	order []string
 	data  map[string][]interface{}
+}
+
+func (dataFrame *DataFrame) GetKeys() []string {
+	return dataFrame.order
+}
+
+func (dataFrame *DataFrame) GetColumn(key string) []interface{} {
+	return dataFrame.data[key]
 }
 
 func (dataFrame *DataFrame) AddColumn(colName string, colValues []interface{}) {
@@ -36,10 +45,10 @@ func ToDataFrame(data interface{}) (*DataFrame, error) {
 	var err error
 
 	switch v := data.(type) {
-	case []interface{}, [][]interface{}, [][][]interface{}, [][][][]interface{}, [][][][][]interface{}, 
-	[]int, [][]int,[][][]int,[][][][]int,[][][][][]int, 
-	[]float64, [][]float64,[][][]float64,[][][][]float64,[][][][][]float64,
-	[]string, [][]string,[][][]string,[][][][]string,[][][][][]string :
+	case []interface{}, [][]interface{}, [][][]interface{}, [][][][]interface{}, [][][][][]interface{},
+		[]int, [][]int, [][][]int, [][][][]int, [][][][][]int,
+		[]float64, [][]float64, [][][]float64, [][][][]float64, [][][][][]float64,
+		[]string, [][]string, [][][]string, [][][][]string, [][][][][]string:
 		//Test dimensionality of matrix
 		fmt.Println("data in is a slice", v)
 		vcon, err := ToInterfaceArray(v)
@@ -81,11 +90,22 @@ func ToDataFrame(data interface{}) (*DataFrame, error) {
 		}
 
 	case map[string]interface{}:
-		fmt.Println("data in is a map", v)
+
+		colOrder, ok := v["order"].([]interface{})
+		if !ok || 0 == len(colOrder) {
+			colOrder = make([]interface{}, 0)
+			for key, _ := range v {
+				if "order" == key {
+					continue
+				}
+				colOrder = append(colOrder, key)
+			}
+		}
 
 		l := -1
-		for key, val := range v {
-			s := key
+		for _, key := range colOrder {
+			s := key.(string)
+			val := v[key.(string)]
 
 			// out[s], l, err = blah(val, l)
 			switch va := val.(type) {
@@ -318,6 +338,20 @@ func compare(data1 interface{}, data2 interface{}) (int, error) {
 		case delta < 0:
 			return -1, nil
 		}
+	case string:
+		delta1str, _ := coerce.ToString(data1)
+		delta2str, err := coerce.ToString(data2)
+		if nil != err {
+			return 0, err
+		}
+		switch {
+		case delta1str > delta2str:
+			return 1, nil
+		case delta1str == delta2str:
+			return 0, nil
+		case delta1str < delta2str:
+			return -1, nil
+		}
 	}
 
 	return 0, errors.New("Unable to compare, Uknown type!")
@@ -361,7 +395,7 @@ func ToInterfaceArray(val interface{}) ([]interface{}, error) {
 
 type Callback func(tuple map[string]interface{}, newDataFrame *DataFrame, lastTuple bool) error
 
-func ProcessDataFrame(dataFrame DataFrame, callback Callback) (result *DataFrame, err error) {
+func ProcessDataFrame(dataFrame *DataFrame, callback Callback) (result *DataFrame, err error) {
 
 	/* check tuple size */
 	tupleSize := -1
@@ -457,17 +491,28 @@ func TupleAppendToDataframe(
 	return nil
 }
 
-func NewSortableTuple(data map[string]interface{}) SortableTuple {
+func NewSortableTuple(data map[string]interface{}, fieldOrder []string) SortableTuple {
 	length := len(data)
 	sTuple := SortableTuple{
 		KeyToIndex: make(map[string]int, length),
 		Data:       make([]interface{}, length),
 	}
-	index := 0
-	for key, value := range data {
-		sTuple.KeyToIndex[key] = index
-		sTuple.Data[index] = value
+
+	if nil == fieldOrder {
+		index := 0
+		for key, value := range data {
+			sTuple.KeyToIndex[key] = index
+			sTuple.Data[index] = value
+			index++
+		}
+	} else {
+		for index, key := range fieldOrder {
+			sTuple.KeyToIndex[key] = index
+			sTuple.Data[index] = data[key]
+			index++
+		}
 	}
+
 	return sTuple
 }
 
@@ -486,6 +531,7 @@ func (t SortableTuple) GetByIndex(index int) interface{} {
 
 type TupleSorter struct {
 	Ascending bool
+	NilLast   bool
 	ByKey     bool
 	SortBy    []interface{}
 	Tuples    []SortableTuple
@@ -499,18 +545,17 @@ func (s TupleSorter) Less(i, j int) bool {
 	for _, sortKey := range s.SortBy {
 		var result int
 		if s.ByKey {
-			result, _ = compare(s.Tuples[i].GetByKey(sortKey.(string)), s.Tuples[j].GetByKey(sortKey.(string)))
+			result = s.compare(s.Tuples[i].GetByKey(sortKey.(string)), s.Tuples[j].GetByKey(sortKey.(string)))
 		} else {
-			result, _ = compare(s.Tuples[i].GetByIndex(sortKey.(int)), s.Tuples[j].GetByIndex(sortKey.(int)))
+			result = s.compare(s.Tuples[i].GetByIndex(sortKey.(int)), s.Tuples[j].GetByIndex(sortKey.(int)))
 		}
-
 		if 0 == result {
 			continue
 		} else {
 			if s.Ascending {
-				return 0 < result
-			} else {
 				return 0 > result
+			} else {
+				return 0 < result
 			}
 		}
 	}
@@ -520,4 +565,26 @@ func (s TupleSorter) Less(i, j int) bool {
 
 func (s TupleSorter) Swap(i, j int) {
 	s.Tuples[i], s.Tuples[j] = s.Tuples[j], s.Tuples[i]
+}
+
+func (s TupleSorter) compare(valuei interface{}, valuej interface{}) int {
+	var result int
+	if nil == valuei && nil == valuej {
+		return 0
+	} else if nil == valuei {
+		if s.Ascending == s.NilLast {
+			result = 1
+		} else if s.Ascending != s.NilLast {
+			result = -1
+		}
+	} else if nil == valuej {
+		if s.Ascending == s.NilLast {
+			result = -1
+		} else if s.Ascending != s.NilLast {
+			result = 1
+		}
+	} else {
+		result, _ = compare(valuei, valuej)
+	}
+	return result
 }
