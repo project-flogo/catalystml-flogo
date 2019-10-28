@@ -3,7 +3,7 @@
     "desc":"resizes an image",
     "input":[
 	        {
-                "str":"img", 
+                "name":"img", 
                 "type":"image", 
                 "description":"the image to be resized, jpg,png, or gif", 
                 "optional":false
@@ -11,19 +11,19 @@
 	    ],
     "params":[
         {
-            "str":"xsize", 
+            "name":"xsize", 
             "type":"int", 
             "description":"the width of the new image, if only xsize included, xsize/ysize ratio is preserved", 
             "optional":true
         },
         {
-            "str":"ysize", 
+            "name":"ysize", 
             "type":"int", 
             "description":"the height of the new image, if only ysize included, ysize/xsize ratio is preserved", 
             "optional":true
         },
         {
-            "str":"algo", 
+            "name":"algo", 
             "type":"string", 
             "description":"algorithm to use for resizing", 
             "optional":true

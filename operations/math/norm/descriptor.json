@@ -1,0 +1,22 @@
+{
+    "title":"norm",
+    "desc":"resizes an image",
+    "input":[
+	        {
+                "name":"data", 
+                "type":"array", 
+                "description":"data to get geometric length of", 
+                "optional":false
+            }
+	    ],
+    "params":[
+        {
+            "name":"axis", 
+            "type":"int", 
+            "description":"which axis to use, 0 (horizontal) is default", 
+            "default":0,
+            "optional":true
+        }
+    ],
+    "output":"array"
+}
