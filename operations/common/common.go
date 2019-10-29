@@ -23,8 +23,8 @@ type DataFrame struct {
 	data      map[string][]interface{}
 }
 
-func (dataFrame *DataFrame) SetFromTable(fromTable bool) {
-	dataFrame.fromTable = fromTable
+func (dataFrame *DataFrame) GetFromTable() bool {
+	return dataFrame.fromTable
 }
 
 func (dataFrame *DataFrame) GetLabels() []string {
@@ -49,18 +49,17 @@ func (dataFrame *DataFrame) AsTable() map[string]interface{} {
 
 func (dataFrame *DataFrame) AsMatrix() [][]interface{} {
 	length := len(dataFrame.data)
-	matrix := make([][]interface{}, length)
-	index := 0
-	if 0 == len(dataFrame.order) {
-		for _, value := range dataFrame.data {
-			matrix[index] = value
-			index++
+	matrix := make([][]interface{}, 0)
+
+	ProcessDataFrame(dataFrame, func(tuple *SortableTuple, lastTuple bool) error {
+		array := make([]interface{}, length)
+		for fieldIndex, fieldName := range tuple.order {
+			array[fieldIndex] = tuple.Data[fieldName]
 		}
-	} else {
-		for index = 0; index < length; index++ {
-			matrix[index] = dataFrame.data[dataFrame.order[index]]
-		}
-	}
+		matrix = append(matrix, array)
+
+		return nil
+	})
 	return matrix
 }
 
@@ -97,10 +96,10 @@ func ToDataFrame(data interface{}) (*DataFrame, error) {
 		[]float64, [][]float64, [][][]float64, [][][][]float64, [][][][][]float64,
 		[]string, [][]string, [][][]string, [][][][]string, [][][][][]string:
 
-		out.SetFromTable(false)
+		out.fromTable = false
 
 		//Test dimensionality of matrix
-		fmt.Println("data in is a slice", v)
+		//fmt.Println("data in is a slice", v)
 		vcon, err := ToInterfaceArray(v)
 		if err != nil {
 			return nil, err
@@ -140,7 +139,8 @@ func ToDataFrame(data interface{}) (*DataFrame, error) {
 		}
 
 	case map[string]interface{}:
-		out.SetFromTable(true)
+
+		out.fromTable = true
 
 		colOrder, ok := v["order"].([]interface{})
 		if !ok || 0 == len(colOrder) {
@@ -648,14 +648,15 @@ func NewDataFrameSorter(
 	dataFrame *DataFrame,
 ) *DataFrameSorter {
 	sorter := &DataFrameSorter{
-		Axis:         Axis,
-		Ascending:    Ascending,
-		NilLast:      NilLast,
-		ByKey:        ByKey,
-		SortBy:       SortBy,
-		RowLabels:    make([]string, 0),
-		ColumnLabels: dataFrame.order,
-		Tuples:       make([]SortableTuple, 0),
+		Axis:              Axis,
+		Ascending:         Ascending,
+		NilLast:           NilLast,
+		ByKey:             ByKey,
+		SortBy:            SortBy,
+		RowLabels:         make([]string, 0),
+		ColumnLabels:      dataFrame.order,
+		Tuples:            make([]SortableTuple, 0),
+		OriginalFromTable: dataFrame.fromTable,
 	}
 
 	switch Axis {
@@ -685,14 +686,15 @@ func NewDataFrameSorter(
 }
 
 type DataFrameSorter struct {
-	Axis         int
-	Ascending    bool
-	NilLast      bool
-	ByKey        bool
-	SortBy       []interface{}
-	Tuples       []SortableTuple
-	ColumnLabels []string
-	RowLabels    []string
+	Axis              int
+	Ascending         bool
+	NilLast           bool
+	ByKey             bool
+	SortBy            []interface{}
+	Tuples            []SortableTuple
+	ColumnLabels      []string
+	RowLabels         []string
+	OriginalFromTable bool
 }
 
 func (s DataFrameSorter) GetDataFrame() *DataFrame {
@@ -730,6 +732,7 @@ func (s DataFrameSorter) GetDataFrame() *DataFrame {
 	if nil != err {
 		fmt.Println(err.Error())
 	}
+	dataFrame.fromTable = s.OriginalFromTable
 
 	return dataFrame
 }

@@ -74,14 +74,14 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 		dataFrame,
 	)
 
-	//operation.logger.Info("Before ------------->", sorter)
+	operation.logger.Debug("Before sort : ", sorter)
 	sort.Sort(sorter)
-	//operation.logger.Info("After  ------------->", sorter)
+	operation.logger.Debug("After sorted : ", sorter)
 
 	result = sorter.GetDataFrame()
 
 	operation.logger.Info("Operation Sort completed.")
-	operation.logger.Info("The output of Operation Sort.", result)
+	operation.logger.Info("The output of Operation Sort, As DataFrame : ", result)
 
 	return result.AsIs(), err
 }
