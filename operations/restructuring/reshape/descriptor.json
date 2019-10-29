@@ -1,0 +1,19 @@
+{
+    "title":"reshape",
+    "desc":"change the dimensionality of a matrix without changing the underlying data",
+    "input":[
+	        {
+                "name":"data", 
+                "type":"array", 
+                "description":"data to be reshaped", 
+                "optional":false
+            },
+            {
+                "name":"shape", 
+                "type":"array", 
+                "description":"array of integers where: 1) length of array  number of  output dimensions and 2) each integer specifies the number of values for a given dimension.  If the integer is -1 that dimension is sized to fit the data. i.e. [-1,2,3] for a 24 value array means a 4x2x3 matrix", 
+                "optional":false
+            }
+        ],
+    "output":"array"
+}

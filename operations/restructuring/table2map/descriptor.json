@@ -1,0 +1,28 @@
+{
+    "title":"table2map",
+    "desc":"convert a matrix to a map by adding a name to each column",
+    "input":[
+	        {
+                "name":"data", 
+                "type":"array", 
+                "description":"contains map to be converted to table", 
+                "optional":false
+            },
+	        {
+                "name":"colKeys", 
+                "type":"array", 
+                "description":"list of keys for map that correspond to 0 to n columns in table", 
+                "optional":false
+            }
+        ],
+    "params":[
+	        {
+                "name":"axis", 
+                "type":"int", 
+                "description":"the orientation of the table (0=vertical/column, 1=horizontal/row)", 
+                "optional":true,
+                "default":0
+            }
+	    ],
+    "output":"map"
+}
