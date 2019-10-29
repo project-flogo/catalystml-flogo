@@ -20,7 +20,7 @@ func Test1(t *testing.T) {
 	       two    NaN    6.0
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(map[string]interface{})
 	inputs["data"] = dataFrame
 
 	dataFrame["A"] = []interface{}{
@@ -70,7 +70,7 @@ func Test2(t *testing.T) {
 	       small  2.333333  4.333333
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(map[string]interface{})
 	inputs["data"] = dataFrame
 
 	dataFrame["A"] = []interface{}{
@@ -123,7 +123,7 @@ func Test3(t *testing.T) {
 	       small  2.333333  6.0  4.333333  2.0
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(map[string]interface{})
 	inputs["data"] = dataFrame
 
 	dataFrame["A"] = []interface{}{
@@ -165,7 +165,7 @@ func Test4(t *testing.T) {
 	/*
 	 */
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(map[string]interface{})
 	inputs["data"] = dataFrame
 
 	dataFrame["A"] = []interface{}{

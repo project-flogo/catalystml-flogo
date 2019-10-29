@@ -39,32 +39,32 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 	operation.logger.Debug("Input dataFrame is : ", in.Data)
 	operation.logger.Debug("Parameter is : ", operation.params)
 
-	result, err = operation.pivot(in.Data.(map[string][]interface{}))
+	result, err = operation.pivot(in.Data.(map[string]interface{}))
 
 	operation.logger.Debug("Pivoted dataFrame is : ", result)
 
 	return result, err
 }
 
-func (operation *Operation) pivot(dataFrame map[string][]interface{}) (result map[string][]interface{}, err error) {
+func (operation *Operation) pivot(dataFrame map[string]interface{}) (result map[string]interface{}, err error) {
 
 	/* check tuple size */
 	tupleSize := -1
 	for _, filedsArray := range dataFrame {
-		tupleSize = len(filedsArray)
+		tupleSize = len(filedsArray.([]interface{}))
 		if 0 < tupleSize {
 			break
 		}
 	}
 
-	newDataFrame := make(map[string][]interface{})
+	newDataFrame := make(map[string]interface{})
 	aggregatedTupleMap := make(map[common.Index]map[string]common.DataState)
 	tuple := make(map[string]interface{})
 	var key []interface{}
 	for i := 0; i < tupleSize; i++ {
 		/* build tuple */
 		for fieldname, filedsArray := range dataFrame {
-			tuple[fieldname] = filedsArray[i]
+			tuple[fieldname] = filedsArray.([]interface{})[i]
 		}
 
 		/* build key for output data*/
@@ -101,7 +101,7 @@ func (operation *Operation) pivot(dataFrame map[string][]interface{}) (result ma
 func (operation *Operation) aggregate(
 	tuple map[string]interface{},
 	aggregatedTuple map[string]common.DataState,
-	newDataFrame map[string][]interface{},
+	newDataFrame map[string]interface{},
 ) {
 	for valueColumn, functionNames := range operation.params.Aggregate {
 		for _, functionName := range functionNames {
@@ -138,7 +138,7 @@ func (operation *Operation) dataKey(
 
 func (operation *Operation) transform(
 	tupleMap map[common.Index]map[string]common.DataState,
-	newDataFrame map[string][]interface{}) (result map[string][]interface{}, err error) {
+	newDataFrame map[string]interface{}) (result map[string]interface{}, err error) {
 	counter := 0
 	for _, tuple := range tupleMap {
 		for column, columnValus := range newDataFrame {
@@ -147,7 +147,7 @@ func (operation *Operation) transform(
 				newDataFrame[column] = columnValus
 			}
 			if nil != tuple[column] {
-				columnValus[counter] = tuple[column].Value()
+				columnValus.([]interface{})[counter] = tuple[column].Value()
 			}
 		}
 		counter++

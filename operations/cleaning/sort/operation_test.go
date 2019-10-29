@@ -405,13 +405,13 @@ func TestAscentingNilFirst(t *testing.T) {
 func TestSortByRow(t *testing.T) {
 	/*
 		   >>> sorted=df.sort_values(by=1,axis=1)
-			   col2 col3 col1
-			0   2    0    A
+			    col3 col2 col1
+			0   0    2    A
 			1   1    1    A
 			2   9    9    B
-			3  	8    4    NaN
-			4   7    2    D
-			5   4    3    C
+			3  	4    8    NaN
+			4   2    7    D
+			5   3    4    C
 	*/
 
 	inputs := make(map[string]interface{})

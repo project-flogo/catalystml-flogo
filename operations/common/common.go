@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"errors"
+	"strconv"
 
 	"fmt"
 	"reflect"
@@ -12,17 +13,63 @@ import (
 	"github.com/project-flogo/core/data/coerce"
 )
 
+const (
+	DataFrameOrderLabel = "order"
+)
+
 type DataFrame struct {
-	order []string
-	data  map[string][]interface{}
+	fromTable bool
+	order     []string
+	data      map[string][]interface{}
 }
 
-func (dataFrame *DataFrame) GetKeys() []string {
+func (dataFrame *DataFrame) SetFromTable(fromTable bool) {
+	dataFrame.fromTable = fromTable
+}
+
+func (dataFrame *DataFrame) GetLabels() []string {
 	return dataFrame.order
 }
 
-func (dataFrame *DataFrame) GetColumn(key string) []interface{} {
-	return dataFrame.data[key]
+func (dataFrame *DataFrame) GetColumn(label string) []interface{} {
+	return dataFrame.data[label]
+}
+
+func (dataFrame *DataFrame) AsTable() map[string]interface{} {
+	table := make(map[string]interface{})
+	if 0 != len(dataFrame.order) {
+		table[DataFrameOrderLabel] = dataFrame.order
+	}
+
+	for key, value := range dataFrame.data {
+		table[key] = value
+	}
+	return table
+}
+
+func (dataFrame *DataFrame) AsMatrix() [][]interface{} {
+	length := len(dataFrame.data)
+	matrix := make([][]interface{}, length)
+	index := 0
+	if 0 == len(dataFrame.order) {
+		for _, value := range dataFrame.data {
+			matrix[index] = value
+			index++
+		}
+	} else {
+		for index = 0; index < length; index++ {
+			matrix[index] = dataFrame.data[dataFrame.order[index]]
+		}
+	}
+	return matrix
+}
+
+func (dataFrame *DataFrame) AsIs() interface{} {
+	if dataFrame.fromTable {
+		return dataFrame.AsTable()
+	} else {
+		return dataFrame.AsMatrix()
+	}
 }
 
 func (dataFrame *DataFrame) AddColumn(colName string, colValues []interface{}) {
@@ -49,6 +96,9 @@ func ToDataFrame(data interface{}) (*DataFrame, error) {
 		[]int, [][]int, [][][]int, [][][][]int, [][][][][]int,
 		[]float64, [][]float64, [][][]float64, [][][][]float64, [][][][][]float64,
 		[]string, [][]string, [][][]string, [][][][]string, [][][][][]string:
+
+		out.SetFromTable(false)
+
 		//Test dimensionality of matrix
 		fmt.Println("data in is a slice", v)
 		vcon, err := ToInterfaceArray(v)
@@ -90,6 +140,7 @@ func ToDataFrame(data interface{}) (*DataFrame, error) {
 		}
 
 	case map[string]interface{}:
+		out.SetFromTable(true)
 
 		colOrder, ok := v["order"].([]interface{})
 		if !ok || 0 == len(colOrder) {
@@ -132,7 +183,6 @@ func ToDataFrame(data interface{}) (*DataFrame, error) {
 			if err != nil {
 				return nil, err
 			}
-
 		}
 	default:
 		return nil, fmt.Errorf("only slices/matrices/tensors and maps are accepted types")
@@ -393,9 +443,9 @@ func ToInterfaceArray(val interface{}) ([]interface{}, error) {
 	}
 }
 
-type Callback func(tuple map[string]interface{}, newDataFrame *DataFrame, lastTuple bool) error
+type Callback func(tuple *SortableTuple, lastTuple bool) error
 
-func ProcessDataFrame(dataFrame *DataFrame, callback Callback) (result *DataFrame, err error) {
+func ProcessDataFrame(dataFrame *DataFrame, callback Callback) error {
 
 	/* check tuple size */
 	tupleSize := -1
@@ -405,12 +455,10 @@ func ProcessDataFrame(dataFrame *DataFrame, callback Callback) (result *DataFram
 			tupleSize = len(columnValues)
 		} else {
 			if tupleSize != len(columnValues) {
-				return nil, errors.New("Illegel dataframe : column value array with different size!")
+				return errors.New("Illegel dataframe : column value array with different size!")
 			}
 		}
 	}
-
-	newDataFrame := NewDataFrame()
 
 	tuple := make(map[string]interface{})
 	for i := 0; i < tupleSize; i++ {
@@ -418,13 +466,36 @@ func ProcessDataFrame(dataFrame *DataFrame, callback Callback) (result *DataFram
 		for fieldname, filedsArray := range dataFrame.data {
 			tuple[fieldname] = filedsArray[i]
 		}
-		err := callback(tuple, newDataFrame, i == (tupleSize-1))
+		err := callback(NewSortableTuple(tuple, dataFrame.GetLabels()), i == (tupleSize-1))
 		if nil != err {
-			return nil, err
+			return err
 		}
 	}
 
-	return newDataFrame, nil
+	return nil
+}
+
+func Transpose(dataFrame *DataFrame, newLabels []string) *DataFrame {
+	table := make(map[string]interface{})
+	var newDataFrame *DataFrame
+	index := 0
+	ProcessDataFrame(dataFrame, func(tuple *SortableTuple, lastTuple bool) error {
+		var label string
+		if nil == newLabels || 0 == len(newLabels) {
+			label = strconv.Itoa(index)
+		} else {
+			label = newLabels[index]
+		}
+
+		table[label] = tuple.GetDataArray()
+		if lastTuple {
+			newDataFrame, _ = ToDataFrame(table)
+			fmt.Println(newDataFrame)
+		}
+		index++
+		return nil
+	})
+	return newDataFrame
 }
 
 func TupleArrayToDataframe(
@@ -491,24 +562,50 @@ func TupleAppendToDataframe(
 	return nil
 }
 
-func NewSortableTuple(data map[string]interface{}, fieldOrder []string) SortableTuple {
-	length := len(data)
-	sTuple := SortableTuple{
-		KeyToIndex: make(map[string]int, length),
-		Data:       make([]interface{}, length),
+/* slow but flexible dataframe size */
+func SortableTupleAppendToDataframe(
+	tuple SortableTuple,
+	dataFrame *DataFrame) error {
+	dataframeSize := -1
+	fmt.Println(tuple)
+	for _, columnName := range tuple.order {
+		columnValueArray := (*dataFrame).data[columnName]
+		if nil == columnValueArray {
+			columnValueArray = make([]interface{}, 0)
+			(*dataFrame).data[columnName] = columnValueArray
+		}
+
+		if dataframeSize < 0 {
+			dataframeSize = len(columnValueArray)
+		} else if dataframeSize != len(columnValueArray) {
+			return errors.New("Unequal column value array size !")
+		}
+
+		(*dataFrame).data[columnName] = append(columnValueArray, tuple.Data[columnName])
 	}
 
-	if nil == fieldOrder {
+	return nil
+}
+
+func NewSortableTuple(data map[string]interface{}, fieldOrder []string) *SortableTuple {
+	sTuple := &SortableTuple{
+		order: make([]string, len(data)),
+		Data:  make(map[string]interface{}),
+	}
+
+	if nil == fieldOrder || 0 == len(fieldOrder) {
+		//fmt.Println("no predefined order : ", fieldOrder)
 		index := 0
 		for key, value := range data {
-			sTuple.KeyToIndex[key] = index
-			sTuple.Data[index] = value
+			sTuple.order[index] = key
+			sTuple.Data[key] = value
 			index++
 		}
 	} else {
+		//fmt.Println("has predefined order : ", fieldOrder)
 		for index, key := range fieldOrder {
-			sTuple.KeyToIndex[key] = index
-			sTuple.Data[index] = data[key]
+			sTuple.order[index] = key
+			sTuple.Data[key] = data[key]
 			index++
 		}
 	}
@@ -517,38 +614,144 @@ func NewSortableTuple(data map[string]interface{}, fieldOrder []string) Sortable
 }
 
 type SortableTuple struct {
-	KeyToIndex map[string]int
-	Data       []interface{}
+	order []string
+	Data  map[string]interface{}
+}
+
+func (t SortableTuple) GetData() map[string]interface{} {
+	return t.Data
+}
+
+func (t SortableTuple) GetDataArray() []interface{} {
+	dataArray := make([]interface{}, len(t.Data))
+	for index, key := range t.order {
+		dataArray[index] = t.Data[key]
+	}
+	return dataArray
 }
 
 func (t SortableTuple) GetByKey(key string) interface{} {
-	return t.Data[t.KeyToIndex[key]]
+	//	fmt.Println("Key = ", key, ", Data = ", t.Data)
+	return t.Data[key]
 }
 
 func (t SortableTuple) GetByIndex(index int) interface{} {
-	return t.Data[index]
+	return t.Data[t.order[index]]
 }
 
-type TupleSorter struct {
-	Ascending bool
-	NilLast   bool
-	ByKey     bool
-	SortBy    []interface{}
-	Tuples    []SortableTuple
+func NewDataFrameSorter(
+	Axis int,
+	Ascending bool,
+	NilLast bool,
+	ByKey bool,
+	SortBy []interface{},
+	dataFrame *DataFrame,
+) *DataFrameSorter {
+	sorter := &DataFrameSorter{
+		Axis:         Axis,
+		Ascending:    Ascending,
+		NilLast:      NilLast,
+		ByKey:        ByKey,
+		SortBy:       SortBy,
+		RowLabels:    make([]string, 0),
+		ColumnLabels: dataFrame.order,
+		Tuples:       make([]SortableTuple, 0),
+	}
+
+	switch Axis {
+	case 0:
+		index := 0
+		ProcessDataFrame(dataFrame, func(tuple *SortableTuple, lastTuple bool) error {
+			sorter.Tuples = append(sorter.Tuples, *tuple)
+			sorter.RowLabels = append(sorter.RowLabels, strconv.Itoa(index))
+			index++
+			return nil
+		})
+	case 1:
+		for index, label := range dataFrame.GetLabels() {
+			column := dataFrame.GetColumn(label)
+			tuples := make(map[string]interface{})
+			fieldOrder := make([]string, len(column))
+			for rIndex, value := range column {
+				tuples[strconv.Itoa(rIndex)] = value
+				fieldOrder[rIndex] = strconv.Itoa(rIndex)
+			}
+			sorter.Tuples = append(sorter.Tuples, *NewSortableTuple(tuples, fieldOrder))
+			sorter.RowLabels = append(sorter.RowLabels, strconv.Itoa(index))
+		}
+	}
+
+	return sorter
 }
 
-func (s TupleSorter) Len() int {
+type DataFrameSorter struct {
+	Axis         int
+	Ascending    bool
+	NilLast      bool
+	ByKey        bool
+	SortBy       []interface{}
+	Tuples       []SortableTuple
+	ColumnLabels []string
+	RowLabels    []string
+}
+
+func (s DataFrameSorter) GetDataFrame() *DataFrame {
+	var dataFrame *DataFrame
+	table := make(map[string]interface{})
+	switch s.Axis {
+	case 0:
+		for index, sTuple := range s.Tuples {
+			for _, label := range s.ColumnLabels {
+				columns := table[label]
+				if nil == columns {
+					columns = make([]interface{}, len(s.RowLabels))
+					table[label] = columns
+				}
+				columns.([]interface{})[index] = sTuple.GetByKey(label)
+			}
+		}
+
+		table[DataFrameOrderLabel] = make([]interface{}, len(s.ColumnLabels))
+		for index, label := range s.ColumnLabels {
+			table[DataFrameOrderLabel].([]interface{})[index] = label
+		}
+
+	case 1:
+		table[DataFrameOrderLabel] = make([]interface{}, len(s.ColumnLabels))
+
+		for index, RowLabel := range s.RowLabels {
+			indexRowLabel, _ := strconv.Atoi(RowLabel)
+			table[s.ColumnLabels[index]] = s.Tuples[indexRowLabel].GetDataArray()
+			table[DataFrameOrderLabel].([]interface{})[index] = s.ColumnLabels[indexRowLabel]
+		}
+	}
+	var err error
+	dataFrame, err = ToDataFrame(table)
+	if nil != err {
+		fmt.Println(err.Error())
+	}
+
+	return dataFrame
+}
+
+func (s DataFrameSorter) Len() int {
 	return len(s.Tuples)
 }
 
-func (s TupleSorter) Less(i, j int) bool {
+func (s DataFrameSorter) Less(i, j int) bool {
 	for _, sortKey := range s.SortBy {
 		var result int
+		var valuei interface{}
+		var valuej interface{}
 		if s.ByKey {
-			result = s.compare(s.Tuples[i].GetByKey(sortKey.(string)), s.Tuples[j].GetByKey(sortKey.(string)))
+			valuei = s.Tuples[i].GetByKey(sortKey.(string))
+			valuej = s.Tuples[j].GetByKey(sortKey.(string))
 		} else {
-			result = s.compare(s.Tuples[i].GetByIndex(sortKey.(int)), s.Tuples[j].GetByIndex(sortKey.(int)))
+			valuei = s.Tuples[i].GetByIndex(sortKey.(int))
+			valuej = s.Tuples[j].GetByIndex(sortKey.(int))
 		}
+		result = s.compare(valuei, valuej)
+
 		if 0 == result {
 			continue
 		} else {
@@ -563,11 +766,12 @@ func (s TupleSorter) Less(i, j int) bool {
 	return true
 }
 
-func (s TupleSorter) Swap(i, j int) {
+func (s DataFrameSorter) Swap(i, j int) {
 	s.Tuples[i], s.Tuples[j] = s.Tuples[j], s.Tuples[i]
+	s.RowLabels[i], s.RowLabels[j] = s.RowLabels[j], s.RowLabels[i]
 }
 
-func (s TupleSorter) compare(valuei interface{}, valuej interface{}) int {
+func (s DataFrameSorter) compare(valuei interface{}, valuej interface{}) int {
 	var result int
 	if nil == valuei && nil == valuej {
 		return 0

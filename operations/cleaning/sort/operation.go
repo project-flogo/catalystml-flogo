@@ -7,7 +7,6 @@ import (
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/catalystml-flogo/operations/common"
 
-	//	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/data/metadata"
 	"github.com/project-flogo/core/support/log"
 )
@@ -65,78 +64,24 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 		errors.New("Input data should be DataFrame type.")
 	}
 
-	var result interface{}
-	switch operation.params.Axis {
-	case 0:
-		result, err = operation.sortByCol(dataFrame)
-	case 1:
-		result, err = operation.sortByRow(dataFrame)
-	}
+	var result *common.DataFrame
+	sorter := common.NewDataFrameSorter(
+		operation.params.Axis,
+		operation.params.Ascending,
+		"last" == operation.params.NilPosition,
+		operation.sortByKey,
+		operation.params.By,
+		dataFrame,
+	)
 
-	if nil != err {
-		return nil, err
-	}
+	//operation.logger.Info("Before ------------->", sorter)
+	sort.Sort(sorter)
+	//operation.logger.Info("After  ------------->", sorter)
+
+	result = sorter.GetDataFrame()
 
 	operation.logger.Info("Operation Sort completed.")
 	operation.logger.Info("The output of Operation Sort.", result)
 
-	return result, err
-}
-
-func (operation *Operation) sortByRow(dataFrame *common.DataFrame) (*common.DataFrame, error) {
-	tuples := common.TupleSorter{
-		Ascending: operation.params.Ascending,
-		NilLast:   "last" == operation.params.NilPosition,
-		ByKey:     operation.sortByKey,
-		SortBy:    operation.params.By,
-		Tuples:    make([]common.SortableTuple, 0),
-	}
-
-	for _, key := range dataFrame.GetKeys() {
-		data := append(dataFrame.GetColumn(key), key)
-		tuples.Tuples = append(tuples.Tuples, common.SortableTuple{
-			Data: data,
-		})
-	}
-
-	sort.Sort(tuples)
-
-	newDataFrame := common.NewDataFrame()
-	for _, sTuple := range tuples.Tuples {
-		newDataFrame.AddColumn(sTuple.Data[len(sTuple.Data)-1].(string), sTuple.Data[:len(sTuple.Data)-1])
-	}
-
-	return newDataFrame, nil
-}
-
-func (operation *Operation) sortByCol(dataFrame *common.DataFrame) (*common.DataFrame, error) {
-	tuples := common.TupleSorter{
-		Ascending: operation.params.Ascending,
-		NilLast:   "last" == operation.params.NilPosition,
-		ByKey:     operation.sortByKey,
-		SortBy:    operation.params.By,
-		Tuples:    make([]common.SortableTuple, 0),
-	}
-
-	keys := dataFrame.GetKeys()
-
-	newDataFrame, _ := common.ProcessDataFrame(dataFrame, func(tuple map[string]interface{}, newDataFrame *common.DataFrame, lastTuple bool) error {
-
-		tuples.Tuples = append(tuples.Tuples, common.NewSortableTuple(tuple, keys))
-
-		if lastTuple {
-			sort.Sort(tuples)
-			for _, sTuple := range tuples.Tuples {
-				newTuple := make(map[string]interface{})
-
-				for key, index := range sTuple.KeyToIndex {
-					newTuple[key] = sTuple.Data[index]
-				}
-				common.TupleAppendToDataframe(newTuple, newDataFrame)
-			}
-		}
-		return nil
-	})
-
-	return newDataFrame, nil
+	return result.AsIs(), err
 }

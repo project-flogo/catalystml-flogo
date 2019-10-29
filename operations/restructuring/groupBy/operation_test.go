@@ -22,7 +22,7 @@ func Test0(t *testing.T) {
 		Parrot Captive       30.0
 		       Wild          20.0*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(map[string]interface{})
 	inputs["data"] = dataFrame
 
 	dataFrame["Animal"] = []interface{}{
@@ -72,7 +72,7 @@ func Test1(t *testing.T) {
 		Falcon      370.0
 		Parrot       25.0*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(map[string]interface{})
 	inputs["data"] = dataFrame
 
 	dataFrame["Animal"] = []interface{}{
@@ -122,7 +122,7 @@ func Test2(t *testing.T) {
 		Captive      210.0
 		Wild         185.0	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(map[string]interface{})
 	inputs["data"] = dataFrame
 
 	dataFrame["Animal"] = []interface{}{
@@ -161,7 +161,7 @@ func Test2(t *testing.T) {
 
 func Test3(t *testing.T) {
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
+	dataFrame := make(map[string]interface{})
 	inputs["data"] = dataFrame
 
 	dataFrame["Animal"] = []interface{}{
