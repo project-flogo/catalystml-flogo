@@ -3,12 +3,11 @@
     "desc":"Seperates a paragraph into sentences.",
     "input":[
 	        {
-                "str":"str", 
+                "name":"str", 
                 "type":"string", 
                 "description":"string", 
                 "optional":false
             }
 	    ],
-    "params":[],
-    "output":"array[string]"
+    "output":"array"
 }

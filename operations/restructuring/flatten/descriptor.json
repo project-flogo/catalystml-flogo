@@ -1,0 +1,13 @@
+{
+    "title":"flatten",
+    "desc":"reduce multidimensional lists to single dimension",
+    "input":[
+	        {
+                "name":"matrix", 
+                "type":"array", 
+                "description":"matrix to be flattened", 
+                "optional":false
+            }
+	    ],
+    "output":"array"
+}

@@ -1,14 +1,13 @@
 {
-    "title":"postag",
-    "desc":"Seperates a string into POS.",
+    "title":"posTag",
+    "desc":"Part of speach tagger",
     "input":[
 	        {
-                "str":"str", 
+                "name":"str", 
                 "type":"string", 
                 "description":"string", 
                 "optional":false
             }
 	    ],
-    "params":[],
-    "output":"array[string]"
+    "output":"array"
 }

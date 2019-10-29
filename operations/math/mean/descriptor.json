@@ -1,6 +1,6 @@
 {
     "title":"mean",
-    "desc":"resizes an image",
+    "desc":"takes the mean of an array",
     "input":[
 	        {
                 "name":"data", 

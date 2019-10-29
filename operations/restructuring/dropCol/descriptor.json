@@ -1,0 +1,19 @@
+{
+    "title":"dropCol",
+    "desc":"Remove cols from matrix or map",
+    "input":[
+	        {
+                "name":"data", 
+                "type":["array","map"], 
+                "description":"original data set", 
+                "optional":false
+            },
+	        {
+                "name":"cols", 
+                "type":["array","string","int"], 
+                "description":"indices or key for column in map or matrix to be removed", 
+                "optional":false
+            }
+	    ],
+    "output":["array","map"]
+}
