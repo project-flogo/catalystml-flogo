@@ -9,7 +9,6 @@ import (
 type Params struct {
 	Ascending   bool          `md:"ascending"`
 	NilPosition string        `md:"nilPosition",allowed=["first","last"],required=false`
-	KeepRow     bool          `md:"keepRow"`
 	By          []interface{} `md:"by"`
 	Axis        int           `md:"axis"`
 }

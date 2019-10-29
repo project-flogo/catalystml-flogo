@@ -52,7 +52,6 @@ func TestSortTableBySingleCol(t *testing.T) {
 
 	params := Params{
 		Ascending: true,
-		KeepRow:   true,
 		By:        []interface{}{"col1"},
 		Axis:      0,
 	}
@@ -102,7 +101,6 @@ func TestSortTableByMultipleCols(t *testing.T) {
 
 	params := Params{
 		Ascending: true,
-		KeepRow:   true,
 		By:        []interface{}{"col1", "col2"},
 		Axis:      0,
 	}
@@ -152,7 +150,6 @@ func TestSortTableByMultipleColsByIndex(t *testing.T) {
 
 	params := Params{
 		Ascending: true,
-		KeepRow:   true,
 		By:        []interface{}{0, 1},
 		Axis:      0,
 	}
@@ -201,7 +198,6 @@ func TestTableSortDescending(t *testing.T) {
 
 	params := Params{
 		Ascending: false,
-		KeepRow:   true,
 		By:        []interface{}{"col1"},
 		Axis:      0,
 	}
@@ -251,7 +247,6 @@ func TestSortTableDescentingNilFirst(t *testing.T) {
 	params := Params{
 		Ascending:   false,
 		NilPosition: "first",
-		KeepRow:     true,
 		By:          []interface{}{"col1"},
 		Axis:        0,
 	}
@@ -301,7 +296,6 @@ func TestSortTableAscentingNilFirst(t *testing.T) {
 	params := Params{
 		Ascending:   true,
 		NilPosition: "first",
-		KeepRow:     true,
 		By:          []interface{}{"col1"},
 		Axis:        0,
 	}
@@ -350,7 +344,6 @@ func TestSortTableByRow(t *testing.T) {
 
 	params := Params{
 		Ascending: true,
-		KeepRow:   true,
 		By:        []interface{}{1},
 		Axis:      1,
 	}
@@ -433,7 +426,6 @@ func TestSortMatrixBySingleCol(t *testing.T) {
 
 	params := Params{
 		Ascending: true,
-		KeepRow:   true,
 		By:        []interface{}{0},
 		Axis:      0,
 	}
@@ -503,7 +495,6 @@ func TestSortMatrixByMultipleCols(t *testing.T) {
 
 	params := Params{
 		Ascending: true,
-		KeepRow:   true,
 		By:        []interface{}{0, 1},
 		Axis:      0,
 	}
@@ -573,7 +564,6 @@ func TestSortMatrixByMultipleColsByIndex(t *testing.T) {
 
 	params := Params{
 		Ascending: true,
-		KeepRow:   true,
 		By:        []interface{}{0, 1},
 		Axis:      0,
 	}
@@ -642,7 +632,6 @@ func TestMatrixSortDescending(t *testing.T) {
 
 	params := Params{
 		Ascending: false,
-		KeepRow:   true,
 		By:        []interface{}{0},
 		Axis:      0,
 	}
@@ -712,7 +701,6 @@ func TestSortMatrixDescentingNilFirst(t *testing.T) {
 	params := Params{
 		Ascending:   false,
 		NilPosition: "first",
-		KeepRow:     true,
 		By:          []interface{}{0},
 		Axis:        0,
 	}
@@ -782,7 +770,6 @@ func TestSortMatrixAscentingNilFirst(t *testing.T) {
 	params := Params{
 		Ascending:   true,
 		NilPosition: "first",
-		KeepRow:     true,
 		By:          []interface{}{0},
 		Axis:        0,
 	}
@@ -851,7 +838,6 @@ func TestSortMatrixByRow(t *testing.T) {
 
 	params := Params{
 		Ascending: true,
-		KeepRow:   true,
 		By:        []interface{}{1},
 		Axis:      1,
 	}
@@ -920,7 +906,6 @@ func TestSortArrayByRow(t *testing.T) {
 
 	params := Params{
 		Ascending: true,
-		KeepRow:   true,
 		By:        []interface{}{0},
 		Axis:      0,
 	}
@@ -974,7 +959,6 @@ func TestSortArrayByColumn(t *testing.T) {
 
 	params := Params{
 		Ascending: true,
-		KeepRow:   true,
 		By:        []interface{}{0},
 		Axis:      1,
 	}
