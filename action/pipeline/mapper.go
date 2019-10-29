@@ -42,7 +42,7 @@ func NewDefaultOperationOutputMapper(stage *Stage) mapper.Mapper {
 	if len(t) > 0 {
 
 		if strings.Contains(t, "[") {
-			//defMapper[key] = fpsmapper.NewExpression(t)
+			defMapper[t] = cmlmapper.NewExpression(t)
 
 		} else {
 
