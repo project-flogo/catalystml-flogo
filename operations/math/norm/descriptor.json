@@ -1,6 +1,6 @@
 {
     "title":"norm",
-    "desc":"resizes an image",
+    "desc":"determine the geometric length of a vector - output is a float.  If matrix determines magnitude of vectors based upon axis selected - output array of floats.",
     "input":[
 	        {
                 "name":"data", 
