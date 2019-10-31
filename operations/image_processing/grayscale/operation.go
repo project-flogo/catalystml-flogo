@@ -7,25 +7,11 @@ import (
 	"image/color"
 	"image/jpeg"
 
-	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/support/log"
 )
 
 type Operation struct {
 	logger log.Logger
-}
-
-type initContextImpl struct {
-	mFactory mapper.Factory
-	name     string
-}
-
-func (ctx *initContextImpl) MapperFactory() mapper.Factory {
-	return ctx.mFactory
-}
-
-func (ctx *initContextImpl) Logger() log.Logger {
-	return log.ChildLogger(log.RootLogger(), ctx.name)
 }
 
 func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
