@@ -4,7 +4,6 @@ import (
 	// "bytes"
 
 	"bytes"
-	"fmt"
 	"image"
 	"image/color"
 	"image/jpeg"
@@ -69,7 +68,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	src := input.Img.(image.Image)
 
 	bnds := src.Bounds()
-	fmt.Println(bnds)
+
 	x0sub := xsub
 	x1sub := xsub + wsub
 	y0sub := ysub
@@ -82,7 +81,6 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	}
 
 	newbnds := image.Rect(0, 0, x1sub-x0sub, y1sub-y0sub)
-	fmt.Println(newbnds)
 	newimg := image.NewRGBA(newbnds)
 	for x := x0sub; x < x1sub; x++ {
 		for y := x0sub; y < y1sub; y++ {
