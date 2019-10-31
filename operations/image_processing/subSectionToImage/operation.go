@@ -11,7 +11,6 @@ import (
 	"os"
 
 	"github.com/project-flogo/catalystml-flogo/action/operation"
-	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/data/metadata"
 	"github.com/project-flogo/core/support/log"
 )
@@ -31,24 +30,6 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 	}
 
 	return &Operation{params: p, logger: ctx.Logger()}, nil
-}
-
-type initContextImpl struct {
-	params   map[string]interface{}
-	mFactory mapper.Factory
-	name     string
-}
-
-func (ctx *initContextImpl) Params() map[string]interface{} {
-	return ctx.params
-}
-
-func (ctx *initContextImpl) MapperFactory() mapper.Factory {
-	return ctx.mFactory
-}
-
-func (ctx *initContextImpl) Logger() log.Logger {
-	return log.ChildLogger(log.RootLogger(), ctx.name)
 }
 
 func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
