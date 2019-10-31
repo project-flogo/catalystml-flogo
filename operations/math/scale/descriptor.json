@@ -1,0 +1,19 @@
+{
+    "title":"scale",
+    "desc":"resizes an image",
+    "input":[
+	        {
+                "name":"data", 
+                "type":"array", 
+                "description":"data to get scale", 
+                "optional":false
+            },
+            {
+                "name":"scaler", 
+                "type":["float","int"], 
+                "description":"data to get scale", 
+                "optional":false
+            }
+	    ],
+    "output":"array"
+}

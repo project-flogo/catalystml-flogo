@@ -1,0 +1,13 @@
+{
+    "title":"grayscale",
+    "desc":"grayscale an image",
+    "input":[
+	        {
+                "name":"img", 
+                "type":"image", 
+                "description":"the image to be grayscaled", 
+                "optional":false
+            }
+	    ],
+    "output":"image"
+}

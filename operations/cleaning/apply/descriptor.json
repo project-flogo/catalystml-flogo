@@ -1,22 +1,28 @@
 {
-    "title":"removestop",
-    "desc":"removes Stop words from a string",
+    "title":"apply",
+    "desc":"apply a function to every value in a vector or key in a map",
     "input":[
 	        {
-                "str":"str", 
-                "type":"string", 
-                "description":"the string to have stop words removed from", 
+                "name":"data", 
+                "type":["array","map"], 
+                "description":"data to be operated on", 
+                "optional":false
+            },
+            {
+                "name":"function", 
+                "type":"map", 
+                "description":"the operator to be used as the function, $item to be used as the variable taken from the data variable when defining inputs and params (instance of the loop), output not included in this object since output is in the apply object", 
                 "optional":false
             }
 	    ],
     "params":[
         {
-            "str":"lang", 
+            "name":"mapOrArray", 
             "type":"string", 
-            "description":"The language to be used, based on ISO 639-1 codes https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes", 
-            "default":"en",
+            "description":"determines whether the output is an array or a map (input value as key,  response as value)", 
+            "default":"array",
             "optional":true
         }
     ],
-    "output":"string"
+    "output":["array","map"]
 }

@@ -3,7 +3,7 @@
     "desc":"convert categorical vector into a set of vectors for each category with a 0/1",
     "input":[
 	        {
-                "str":"data", 
+                "name":"data", 
                 "type":"array of arrays or map", 
                 "description":"2D table to be converted to map", 
                 "optional":false
@@ -12,20 +12,20 @@
     "params":[
 
         {
-            "str":"inputColumns",
+            "name":"inputColumns",
             "type":"array", 
             "description":"the columns to which one Hot Encodding should be applied", 
             "optional":false
         },
         {
-            "str":"outputColumns", 
+            "name":"outputColumns", 
             "type":"array", 
             "description":"list of keys for map that correspond to 0 to n columns in table", 
             "default":"those that exist in data",
             "optional":true
         },        
         {
-            "str":"keepOrig", 
+            "name":"keepOrig", 
             "type":"bool", 
             "description":"The rest of the data in the map/matrix is kept but column used is removed unless keepOrig is true", 
             "default":false,

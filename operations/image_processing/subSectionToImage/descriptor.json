@@ -1,0 +1,27 @@
+{
+    "title":"subSectionToImage",
+    "desc":"takes a portion of an image and makes it an independent image (i.e. for selecting out a face).  If size from corner is larger than the image the subsection is returned up to the image edge.",
+    "input":[
+	        {
+                "name":"img", 
+                "type":"image", 
+                "description":"image to be have subsection removed from", 
+                "optional":false
+            }
+	    ],
+    "params":[
+        {
+            "name":"size", 
+            "type":"array", 
+            "description":"the size of the subsection", 
+            "optional":false
+        },
+        {
+            "name":"lowerLeftCorner", 
+            "type":"array", 
+            "description":"the x,y coordinates (the corner with the lowest x,y vaules)", 
+            "optional":false
+        }
+    ],
+    "output":"image"
+}

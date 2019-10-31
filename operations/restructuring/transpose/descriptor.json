@@ -1,0 +1,13 @@
+{
+    "title":"transpose",
+    "desc":"transpose a matrix",
+    "input":[
+	        {
+                "name":"data", 
+                "type":"array", 
+                "description":"Matrix to be transposed", 
+                "optional":false
+            }
+        ],
+    "output":"array"
+}

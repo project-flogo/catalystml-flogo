@@ -1,9 +1,9 @@
 {
-    "title":"Stem",
-    "desc":"gets stem of a word",
+    "title":"stem",
+    "desc":"produces the stem of a word (i.e. running -> run)",
     "input":[
 	        {
-                "str":"str", 
+                "name":"str", 
                 "type":"string", 
                 "description":"word to have endings removed", 
                 "optional":false
@@ -11,7 +11,7 @@
 	    ],
     "params":[
         {
-            "str":"algo", 
+            "name":"algo", 
             "type":"string", 
             "description":"The algorithm to be used", 
             "default":"Porter",

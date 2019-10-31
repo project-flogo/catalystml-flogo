@@ -4,17 +4,16 @@
     "input":[
 	        {
                 "name":"matrix", 
-                "type":"array", 
-                "description":"the table to be added to", 
+                "type":["array","map"], 
+                "description":"matrix to be expanded", 
                 "optional":false
             },
 	        {
                 "name":"col", 
                 "type":"array", 
-                "description":"col to be added", 
+                "description":"col to be added of same length as matrix's second dimention", 
                 "optional":false
             }
 	    ],
-    "params":[],
     "output":"array"
 }

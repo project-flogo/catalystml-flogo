@@ -1,14 +1,14 @@
 {
     "title":"tokenize",
-    "desc":"Seperates a string into words.",
+    "desc":"separate text into tokens / words / punctuation.",
     "input":[
 	        {
-                "str":"str", 
+                "name":"str", 
                 "type":"string", 
-                "description":"string", 
+                "description":"string to tokenize", 
                 "optional":false
             }
 	    ],
     "params":[],
-    "output":"array[string]"
+    "output":"array"
 }

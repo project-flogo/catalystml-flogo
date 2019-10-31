@@ -1,0 +1,25 @@
+{
+    "title":"normalize",
+    "desc":"divide all values of array by value (i.e. x/value), if minvalue is given applies (x-minval)/(value-minvalue) where x is the data ",
+    "input":[
+	        {
+                "name":"data", 
+                "type":"array", 
+                "description":"data to get mean of", 
+                "optional":false
+            },
+            {
+                "name":"value", 
+                "type":"float", 
+                "description":"value to normalize with (if starting at 0)", 
+                "optional":false
+            },
+            {
+                "name":"minval", 
+                "type":"float", 
+                "description":"min value to start normalize with (if not starting at 0)", 
+                "optional":true
+            }
+	    ],
+    "output":"array"
+}

@@ -1,0 +1,34 @@
+{
+    "title":"groupBy",
+    "desc":"group by a given column in an axis and aggregate the value of another column (like SQL)",
+    "input":[
+	        {
+                "name":"data", 
+                "type":["array","map"], 
+                "description":"data to group", 
+                "optional":false
+            },
+	        {
+                "name":"groupKeys", 
+                "type":"array", 
+                "description":"Column by which to group.", 
+                "optional":false
+            }
+        ],
+    "params":[
+	        {
+                "name":"asIndex", 
+                "type":"boolean", 
+                "description":"", 
+                "optional":false
+            },
+	        {
+                "name":"axis", 
+                "type":"int", 
+                "description":"(0=vertical/column, 1=horizontal/row)", 
+                "optional":true,
+                "default":0
+            }
+	    ],
+    "output":"array"
+}
