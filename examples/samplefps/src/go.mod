@@ -14,6 +14,6 @@ require (
 
 )
 
-replace github.com/project-flogo/catalystml-flogo/action => ../../../
+replace github.com/project-flogo/catalystml-flogo/action => ../../../action
 
 replace github.com/project-flogo/operation/math => ../../operation
