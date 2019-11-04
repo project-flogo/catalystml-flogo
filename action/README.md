@@ -17,16 +17,16 @@ The implementation of CML specification in Flogo can be divided into three steps
 
 ### Configuration.
     
-   The CML JSON spec is unmarshalled into a [DefinitionConfig](pipeline/definition.go) struct . We use this struct to set up [Instance](pipeline/instance.go) of the 
+   The CML JSON spec is unmarshalled into a [DefinitionConfig](pipeline/definition.go) struct .This struct is used to set up [Instance](pipeline/instance.go) of the 
 pipleine. 
 
 ### Initialization.
-During the initialization of pipeline instance we set up [Mappers](https://github.com/project-flogo/core/blob/master/data/mapper/mapper.go) for Input and Output of the CML.  We also
-initialize the [Operations](operation/operation.go) defined in the CML spec. We do this by getting the registered operations and initializing those using
-[factories](operation/registry.go). Here we also set up the input and output mappers for each operation.
+During the initialization of pipeline instance  [Mappers](https://github.com/project-flogo/core/blob/master/data/mapper/mapper.go) are set up for Input and Output of the CML.  
+[Operations](operation/operation.go) (defined in the CML spec) are also initialized. The Registered operations are fetched  and initialized  using
+[factories](operation/registry.go). The mappers for input and output of each operation are also initialized.
 
 ### Execution.
-After the initialization, when the action is called. We iterate over an array of initialized operations. We [resolve](https://github.com/project-flogo/core/blob/master/data/resolve/resolve.go) the input 
-and output mappers for each operation and add the output in the pipeline [scope](https://github.com/project-flogo/core/blob/master/data/resolve/scope.go). We resolve the inputs for the operation using the pipeline
-scope. The pipeline scope is nothing but the collection of all the variables, which are the output of each operations and input of CML, and its value
-. After execution of each operations we resolve the output of CML and return that value.
+After the initialization, when the action is called, the program iterates over each operation executing it. The input mappers of each operations is resolved before executing it. Only the inputs defined by the operation are sent over for the execution. There can be other variables in the pipeline scope that are not passed in execution of operation.
+After the execution of operation, the output mappers are resolved and are added in the pipeline scope; even if not needed by further operations. For more information on how mappers and resolvers work Please visit [Mappers](https://github.com/project-flogo/core/blob/master/data/mapper/mapper.go)
+, [Resolvers](https://github.com/project-flogo/core/blob/master/data/resolve/resolve.go), [Scope](https://github.com/project-flogo/core/blob/master/data/resolve/scope.go). The resolution of input and output is done using pipeline scope . The pipeline scope is nothing but the collection of all the variables, which are the output of each operations and input of CML, and its value
+. After execution of all the operations the output of the CML is resolved and returned
