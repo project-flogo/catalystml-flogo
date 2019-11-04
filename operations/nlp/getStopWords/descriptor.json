@@ -1,6 +1,6 @@
 {
     "title":"getStopWords",
-    "desc":"Gets array of ([stop words](https://en.wikipedia.org/wiki/Stop_words)), by either using a default, or reading from a file.",
+    "desc":"Gets array of stop words, by either using a default, or reading from a file.",
     "params":[
 	        {
                 "name":"lib", 

@@ -1,9 +1,9 @@
-# multPairWise
+# divPairWise
 
 ## Overview
 
 ### Description
-For matrices of the same shape multiply corresponding values.
+For matrices of the same shape divide corresponding values.
 
 ### Implementation details
 Done

@@ -1,0 +1,19 @@
+{
+    "title":"divide",
+    "desc":"divide two numbers",
+    "input":[
+	        {
+                "name":"num", 
+                "type":["int","float"] , 
+                "description":"numerator", 
+                "optional":false
+            },
+	        {
+                "name":"denom", 
+                "type":["int","float"] , 
+                "description":"denominator", 
+                "optional":false
+            }
+	    ],
+    "output":["int","float"]
+}
