@@ -19,7 +19,7 @@ type DerefernceStruct struct {
 func NewExpression(str string) []DerefernceStruct {
 	var derefStructs []DerefernceStruct
 
-	id := str[1:strings.Index(str, "[")]
+	id := str[0:strings.Index(str, "[")]
 	for key, val := range strings.Split(str, "[") {
 		var derefStruct DerefernceStruct
 		derefStruct.Id = id
