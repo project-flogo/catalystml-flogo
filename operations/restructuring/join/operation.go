@@ -38,8 +38,8 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 
 	operation.logger.Debug("Left dataFrame is : ", in.Left)
 	operation.logger.Debug("Right dataFrame is : ", in.Right)
-	operation.logger.Debug("Left Index map is : ", in.LeftIndex)
-	operation.logger.Debug("Right Index map is : ", in.RightIndex)
+	operation.logger.Debug("Left Index array is : ", in.LeftIndex)
+	operation.logger.Debug("Right Index array is : ", in.RightIndex)
 	operation.logger.Debug("Parameter is : ", operation.params)
 
 	var leftJoinOn []string
