@@ -39,7 +39,11 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 	operation.logger.Debug("Input dataFrame is : ", in.Data)
 	operation.logger.Debug("Parameter is : ", operation.params)
 
-	result, err = operation.groupBy(in.Data.(*common.DataFrame))
+	data, err := common.ToDataFrame(in.Data)
+	if nil != err {
+		return nil, err
+	}
+	result, err = operation.groupBy(data)
 
 	operation.logger.Debug("Grouped dataFrame is : ", result)
 
@@ -93,6 +97,7 @@ func (operation *Operation) groupBy(dataFrame *common.DataFrame) (result *common
 		return nil
 	})
 
+	newDataFrame.SetFromTable(dataFrame.GetFromTable())
 	return newDataFrame, nil
 }
 

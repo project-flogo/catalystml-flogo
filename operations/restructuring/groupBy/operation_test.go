@@ -22,16 +22,16 @@ func Test0(t *testing.T) {
 		Parrot Captive       30.0
 		       Wild          20.0*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string]interface{})
-	inputs["data"] = dataFrame
+	table := make(map[string]interface{})
+	inputs["data"] = table
 
-	dataFrame["Animal"] = []interface{}{
+	table["Animal"] = []interface{}{
 		"Falcon", "Falcon", "Parrot", "Parrot",
 	}
-	dataFrame["Type"] = []interface{}{
+	table["Type"] = []interface{}{
 		"Captive", "Wild", "Captive", "Wild",
 	}
-	dataFrame["Max Speed"] = []interface{}{
+	table["Max Speed"] = []interface{}{
 		390.0, 350.0, 30.0, 20.0,
 	}
 	/*
@@ -55,8 +55,11 @@ func Test0(t *testing.T) {
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 
-	_, err = opt.Eval(inputs)
+	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
+
+	t.Log("Input of Operation Sort : ", table)
+	t.Log("Output of Operation Sort : ", out)
 }
 
 func Test1(t *testing.T) {
@@ -72,16 +75,16 @@ func Test1(t *testing.T) {
 		Falcon      370.0
 		Parrot       25.0*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string]interface{})
-	inputs["data"] = dataFrame
+	table := make(map[string]interface{})
+	inputs["data"] = table
 
-	dataFrame["Animal"] = []interface{}{
+	table["Animal"] = []interface{}{
 		"Falcon", "Falcon", "Parrot", "Parrot",
 	}
-	dataFrame["Type"] = []interface{}{
+	table["Type"] = []interface{}{
 		"Captive", "Wild", "Captive", "Wild",
 	}
-	dataFrame["Max Speed"] = []interface{}{
+	table["Max Speed"] = []interface{}{
 		390.0, 350.0, 30.0, 20.0,
 	}
 	/*
@@ -105,8 +108,11 @@ func Test1(t *testing.T) {
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 
-	_, err = opt.Eval(inputs)
+	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
+
+	t.Log("Input of Operation Sort : ", table)
+	t.Log("Output of Operation Sort : ", out)
 }
 
 func Test2(t *testing.T) {
@@ -122,16 +128,16 @@ func Test2(t *testing.T) {
 		Captive      210.0
 		Wild         185.0	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string]interface{})
-	inputs["data"] = dataFrame
+	table := make(map[string]interface{})
+	inputs["data"] = table
 
-	dataFrame["Animal"] = []interface{}{
+	table["Animal"] = []interface{}{
 		"Falcon", "Falcon", "Parrot", "Parrot",
 	}
-	dataFrame["Type"] = []interface{}{
+	table["Type"] = []interface{}{
 		"Captive", "Wild", "Captive", "Wild",
 	}
-	dataFrame["Max Speed"] = []interface{}{
+	table["Max Speed"] = []interface{}{
 		390.0, 350.0, 30.0, 20.0,
 	}
 	/*
@@ -155,22 +161,25 @@ func Test2(t *testing.T) {
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 
-	_, err = opt.Eval(inputs)
+	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
+
+	t.Log("Input of Operation Sort : ", table)
+	t.Log("Output of Operation Sort : ", out)
 }
 
 func Test3(t *testing.T) {
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string]interface{})
-	inputs["data"] = dataFrame
+	table := make(map[string]interface{})
+	inputs["data"] = table
 
-	dataFrame["Animal"] = []interface{}{
+	table["Animal"] = []interface{}{
 		"Falcon", "Falcon", "Parrot", "Parrot",
 	}
-	dataFrame["Type"] = []interface{}{
+	table["Type"] = []interface{}{
 		"Captive", "Wild", "Captive", "Wild",
 	}
-	dataFrame["Max Speed"] = []interface{}{
+	table["Max Speed"] = []interface{}{
 		390.0, 350.0, 30.0, 20.0,
 	}
 	/*
@@ -194,6 +203,9 @@ func Test3(t *testing.T) {
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 
-	_, err = opt.Eval(inputs)
+	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
+
+	t.Log("Input of Operation Sort : ", table)
+	t.Log("Output of Operation Sort : ", out)
 }

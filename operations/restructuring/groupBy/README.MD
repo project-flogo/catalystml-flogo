@@ -1,7 +1,7 @@
 # groupBy
 
 ## Overview
-group by a given column in an axis and aggregate the value of another column (like SQL) 
+group by given columns in an axis and aggregate the value of other columns (like group by in SQL) 
 
 ### Description
 group by works same as following SQL command
