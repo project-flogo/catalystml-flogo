@@ -10,7 +10,7 @@ type Params struct {
 	Ascending   bool          `md:"ascending"`
 	NilPosition string        `md:"nilPosition",allowed=["first","last"],required=false`
 	By          []interface{} `md:"by"`
-	Axis        int           `md:"axis"`
+	Axis        int           `md:"axis",allowed=[0,1],required=false`
 }
 
 type Input struct {

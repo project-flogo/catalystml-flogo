@@ -37,9 +37,6 @@ func TestSortTableBySingleCol(t *testing.T) {
 	table := make(map[string]interface{})
 	inputs["data"] = table
 
-	table["order"] = []interface{}{
-		"col1", "col2", "col3",
-	}
 	table["col1"] = []interface{}{
 		"A", "A", "B", nil, "D", "C",
 	}
@@ -86,9 +83,6 @@ func TestSortTableByMultipleCols(t *testing.T) {
 	table := make(map[string]interface{})
 	inputs["data"] = table
 
-	table["order"] = []interface{}{
-		"col1", "col2", "col3",
-	}
 	table["col1"] = []interface{}{
 		"A", "A", "B", nil, "D", "C",
 	}
@@ -135,9 +129,6 @@ func TestSortTableByMultipleColsByIndex(t *testing.T) {
 	table := make(map[string]interface{})
 	inputs["data"] = table
 
-	table["order"] = []interface{}{
-		"col1", "col2", "col3",
-	}
 	table["col1"] = []interface{}{
 		"A", "A", "B", nil, "D", "C",
 	}
@@ -183,9 +174,6 @@ func TestTableSortDescending(t *testing.T) {
 	table := make(map[string]interface{})
 	inputs["data"] = table
 
-	table["order"] = []interface{}{
-		"col1", "col2", "col3",
-	}
 	table["col1"] = []interface{}{
 		"A", "A", "B", nil, "D", "C",
 	}
@@ -231,9 +219,6 @@ func TestSortTableDescentingNilFirst(t *testing.T) {
 	table := make(map[string]interface{})
 	inputs["data"] = table
 
-	table["order"] = []interface{}{
-		"col1", "col2", "col3",
-	}
 	table["col1"] = []interface{}{
 		"A", "A", "B", nil, "D", "C",
 	}
@@ -280,9 +265,6 @@ func TestSortTableAscentingNilFirst(t *testing.T) {
 	table := make(map[string]interface{})
 	inputs["data"] = table
 
-	table["order"] = []interface{}{
-		"col1", "col2", "col3",
-	}
 	table["col1"] = []interface{}{
 		"A", "A", "B", nil, "D", "C",
 	}
@@ -329,9 +311,6 @@ func TestSortTableByRow(t *testing.T) {
 	table := make(map[string]interface{})
 	inputs["data"] = table
 
-	table["order"] = []interface{}{
-		"col1", "col2", "col3",
-	}
 	table["col1"] = []interface{}{
 		"A", "A", "B", nil, "D", "C",
 	}
@@ -406,22 +385,22 @@ func TestSortMatrixBySingleCol(t *testing.T) {
 	*/
 
 	matrix[0] = []interface{}{
-		0, 2, 0,
+		"A", 2, 0,
 	}
 	matrix[1] = []interface{}{
-		0, 1, 1,
+		"A", 1, 1,
 	}
 	matrix[2] = []interface{}{
-		1, 9, 9,
+		"B", 9, 9,
 	}
 	matrix[3] = []interface{}{
 		nil, 8, 4,
 	}
 	matrix[4] = []interface{}{
-		3, 7, 2,
+		"D", 7, 2,
 	}
 	matrix[5] = []interface{}{
-		2, 4, 0,
+		"C", 4, 0,
 	}
 
 	params := Params{
@@ -475,22 +454,22 @@ func TestSortMatrixByMultipleCols(t *testing.T) {
 	*/
 
 	matrix[0] = []interface{}{
-		0, 2, 0,
+		"A", 2, 0,
 	}
 	matrix[1] = []interface{}{
-		0, 1, 1,
+		"A", 1, 1,
 	}
 	matrix[2] = []interface{}{
-		1, 9, 9,
+		"B", 9, 9,
 	}
 	matrix[3] = []interface{}{
 		nil, 8, 4,
 	}
 	matrix[4] = []interface{}{
-		3, 7, 2,
+		"D", 7, 2,
 	}
 	matrix[5] = []interface{}{
-		2, 4, 0,
+		"C", 4, 0,
 	}
 
 	params := Params{
@@ -544,22 +523,22 @@ func TestSortMatrixByMultipleColsByIndex(t *testing.T) {
 	*/
 
 	matrix[0] = []interface{}{
-		0, 2, 0,
+		"A", 2, 0,
 	}
 	matrix[1] = []interface{}{
-		0, 1, 1,
+		"A", 1, 1,
 	}
 	matrix[2] = []interface{}{
-		1, 9, 9,
+		"B", 9, 9,
 	}
 	matrix[3] = []interface{}{
 		nil, 8, 4,
 	}
 	matrix[4] = []interface{}{
-		3, 7, 2,
+		"D", 7, 2,
 	}
 	matrix[5] = []interface{}{
-		2, 4, 0,
+		"C", 4, 0,
 	}
 
 	params := Params{
@@ -612,22 +591,22 @@ func TestMatrixSortDescending(t *testing.T) {
 	*/
 
 	matrix[0] = []interface{}{
-		0, 2, 0,
+		"A", 2, 0,
 	}
 	matrix[1] = []interface{}{
-		0, 1, 1,
+		"A", 1, 1,
 	}
 	matrix[2] = []interface{}{
-		1, 9, 9,
+		"B", 9, 9,
 	}
 	matrix[3] = []interface{}{
 		nil, 8, 4,
 	}
 	matrix[4] = []interface{}{
-		3, 7, 2,
+		"D", 7, 2,
 	}
 	matrix[5] = []interface{}{
-		2, 4, 0,
+		"C", 4, 0,
 	}
 
 	params := Params{
@@ -680,22 +659,22 @@ func TestSortMatrixDescentingNilFirst(t *testing.T) {
 	*/
 
 	matrix[0] = []interface{}{
-		0, 2, 0,
+		"A", 2, 0,
 	}
 	matrix[1] = []interface{}{
-		0, 1, 1,
+		"A", 1, 1,
 	}
 	matrix[2] = []interface{}{
-		1, 9, 9,
+		"B", 9, 9,
 	}
 	matrix[3] = []interface{}{
 		nil, 8, 4,
 	}
 	matrix[4] = []interface{}{
-		3, 7, 2,
+		"D", 7, 2,
 	}
 	matrix[5] = []interface{}{
-		2, 4, 0,
+		"C", 4, 0,
 	}
 
 	params := Params{
@@ -749,22 +728,22 @@ func TestSortMatrixAscentingNilFirst(t *testing.T) {
 	*/
 
 	matrix[0] = []interface{}{
-		0, 2, 0,
+		"A", 2, 0,
 	}
 	matrix[1] = []interface{}{
-		0, 1, 1,
+		"A", 1, 1,
 	}
 	matrix[2] = []interface{}{
-		1, 9, 9,
+		"B", 9, 9,
 	}
 	matrix[3] = []interface{}{
 		nil, 8, 4,
 	}
 	matrix[4] = []interface{}{
-		3, 7, 2,
+		"D", 7, 2,
 	}
 	matrix[5] = []interface{}{
-		2, 4, 0,
+		"C", 4, 0,
 	}
 
 	params := Params{
@@ -818,22 +797,22 @@ func TestSortMatrixByRow(t *testing.T) {
 	*/
 
 	matrix[0] = []interface{}{
-		0, 2, 0,
+		"A", 2, 0,
 	}
 	matrix[1] = []interface{}{
-		0, 1, 1,
+		"A", 1, 1,
 	}
 	matrix[2] = []interface{}{
-		1, 9, 9,
+		"B", 9, 9,
 	}
 	matrix[3] = []interface{}{
 		nil, 8, 4,
 	}
 	matrix[4] = []interface{}{
-		3, 7, 2,
+		"D", 7, 2,
 	}
 	matrix[5] = []interface{}{
-		2, 4, 0,
+		"C", 4, 0,
 	}
 
 	params := Params{
@@ -886,22 +865,22 @@ func TestSortArrayByRow(t *testing.T) {
 	*/
 
 	matrix[0] = []interface{}{
-		0,
+		"A", 2, 0,
 	}
 	matrix[1] = []interface{}{
-		0,
+		"A", 1, 1,
 	}
 	matrix[2] = []interface{}{
-		1,
+		"B", 9, 9,
 	}
 	matrix[3] = []interface{}{
-		nil,
+		nil, 8, 4,
 	}
 	matrix[4] = []interface{}{
-		3,
+		"D", 7, 2,
 	}
 	matrix[5] = []interface{}{
-		2,
+		"C", 4, 0,
 	}
 
 	params := Params{
