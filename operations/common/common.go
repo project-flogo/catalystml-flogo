@@ -27,6 +27,10 @@ func (dataFrame *DataFrame) GetFromTable() bool {
 	return dataFrame.fromTable
 }
 
+func (dataFrame *DataFrame) SetFromTable(fromTable bool) {
+	dataFrame.fromTable = fromTable
+}
+
 func (dataFrame *DataFrame) GetLabels() []string {
 	return dataFrame.order
 }
@@ -37,9 +41,9 @@ func (dataFrame *DataFrame) GetColumn(label string) []interface{} {
 
 func (dataFrame *DataFrame) AsTable() map[string]interface{} {
 	table := make(map[string]interface{})
-	if 0 != len(dataFrame.order) {
-		table[DataFrameOrderLabel] = dataFrame.order
-	}
+	//if 0 != len(dataFrame.order) {
+	//	table[DataFrameOrderLabel] = dataFrame.order
+	//}
 
 	for key, value := range dataFrame.data {
 		table[key] = value
