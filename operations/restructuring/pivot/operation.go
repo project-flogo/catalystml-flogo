@@ -36,6 +36,7 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 
 	var result *common.DataFrame
 
+	operation.logger.Info("Starting Operation Pivot.")
 	operation.logger.Debug("Input dataFrame is : ", in.Data)
 	operation.logger.Debug("Parameter is : ", operation.params)
 
@@ -46,6 +47,7 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 	result, err = operation.pivot(data)
 
 	operation.logger.Debug("Pivoted dataFrame is : ", result)
+	operation.logger.Info("Operation Pivot Completed.")
 
 	return result.AsIs(), err
 }

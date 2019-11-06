@@ -53,12 +53,12 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 	dataFrame, ok := in.Data.(*common.DataFrame)
 
 	operation.logger.Info("Starting Operation Sort.")
-	operation.logger.Info("DataFrame is...", in.Data)
-	operation.logger.Info("Sort By...", operation.params.By)
-	operation.logger.Info("Axis is...", operation.params.Axis)
-	operation.logger.Info("Ascending is...", operation.params.Ascending)
-	operation.logger.Info("NilPosition is...", operation.params.NilPosition)
-	operation.logger.Info("sortByKey is...", operation.sortByKey)
+	operation.logger.Debug("DataFrame is...", in.Data)
+	operation.logger.Debug("Sort By...", operation.params.By)
+	operation.logger.Debug("Axis is...", operation.params.Axis)
+	operation.logger.Debug("Ascending is...", operation.params.Ascending)
+	operation.logger.Debug("NilPosition is...", operation.params.NilPosition)
+	operation.logger.Debug("sortByKey is...", operation.sortByKey)
 
 	if !ok {
 		errors.New("Input data should be DataFrame type.")
@@ -81,7 +81,7 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 	result = sorter.GetDataFrame()
 
 	operation.logger.Info("Operation Sort completed.")
-	operation.logger.Info("The output of Operation Sort, As DataFrame : ", result)
+	operation.logger.Debug("The output of Operation Sort, As DataFrame : ", result)
 
 	return result.AsIs(), err
 }

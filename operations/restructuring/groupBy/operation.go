@@ -36,6 +36,7 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 
 	var result *common.DataFrame
 
+	operation.logger.Info("Starting Operation GroupBy.")
 	operation.logger.Debug("Input dataFrame is : ", in.Data)
 	operation.logger.Debug("Parameter is : ", operation.params)
 
@@ -46,6 +47,7 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 	result, err = operation.groupBy(data)
 
 	operation.logger.Debug("Grouped dataFrame is : ", result)
+	operation.logger.Info("Operation GroupBy Completed.")
 
 	return result.AsIs(), err
 }

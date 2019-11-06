@@ -36,6 +36,7 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 
 	var result interface{}
 
+	operation.logger.Info("Starting Operation Join.")
 	operation.logger.Debug("Left dataFrame is : ", in.Left)
 	operation.logger.Debug("Right dataFrame is : ", in.Right)
 	operation.logger.Debug("Left Index array is : ", in.LeftIndex)
@@ -60,6 +61,7 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 	)
 
 	operation.logger.Debug("Joined dataFrame is : ", result)
+	operation.logger.Info("Operation Join Completed.")
 
 	return result, err
 }
