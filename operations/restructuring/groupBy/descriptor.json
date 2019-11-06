@@ -1,34 +1,33 @@
 {
     "title":"groupBy",
-    "desc":"group by a given column in an axis and aggregate the value of another column (like SQL)",
+    "desc":"group by given columns in an axis and aggregate the value of other columns",
     "input":[
 	        {
-                "name":"data", 
-                "type":["array","map"], 
-                "description":"data to group", 
+                "str":"data", 
+                "type":["array", "map"], 
+                "description":"map key is column name, map value are column values.", 
                 "optional":false
-            },
-	        {
-                "name":"groupKeys", 
-                "type":"array", 
-                "description":"Column by which to group.", 
-                "optional":false
-            }
-        ],
-    "params":[
-	        {
-                "name":"asIndex", 
-                "type":"boolean", 
-                "description":"", 
-                "optional":false
-            },
-	        {
-                "name":"axis", 
-                "type":"int", 
-                "description":"(0=vertical/column, 1=horizontal/row)", 
-                "optional":true,
-                "default":0
             }
 	    ],
-    "output":"array"
+    "params":[
+        {
+            "str":"index", 
+            "type":"array", 
+            "description":"Group key of data", 
+            "optional":false
+        },
+        {
+            "str":"aggregate", 
+            "type":"map", 
+            "description":"Map key is groupKey, map value is aggregate function. Currently support Sum, Count, Mean, Min, Max", 
+            "optional":true
+        },
+        {
+            "str":"level", 
+            "type":"int", 
+            "description":"Group level < 0 -> group by all index elements, 0 -> group by index element1, 1 -> group by index element2.", 
+            "optional":true
+        }
+    ],
+    "output":["array", "map"]
 }

@@ -20,22 +20,22 @@ func Test1(t *testing.T) {
 	       two    NaN    6.0
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
-	inputs["data"] = dataFrame
+	table := make(map[string]interface{})
+	inputs["data"] = table
 
-	dataFrame["A"] = []interface{}{
+	table["A"] = []interface{}{
 		"foo", "foo", "foo", "foo", "foo", "bar", "bar", "bar", "bar",
 	}
-	dataFrame["B"] = []interface{}{
+	table["B"] = []interface{}{
 		"one", "one", "one", "two", "two", "one", "one", "two", "two",
 	}
-	dataFrame["C"] = []interface{}{
+	table["C"] = []interface{}{
 		"small", "large", "large", "small", "small", "large", "small", "small", "large",
 	}
-	dataFrame["D"] = []interface{}{
+	table["D"] = []interface{}{
 		1, 2, 2, 3, 3, 4, 5, 6, 7,
 	}
-	dataFrame["E"] = []interface{}{
+	table["E"] = []interface{}{
 		2, 4, 5, 5, 6, 6, 8, 9, 9,
 	}
 
@@ -52,8 +52,11 @@ func Test1(t *testing.T) {
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 
-	_, err = opt.Eval(inputs)
+	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
+
+	t.Log("Input of Operation Pivot : ", table)
+	t.Log("Output of Operation Pivot : ", out)
 }
 
 func Test2(t *testing.T) {
@@ -70,22 +73,22 @@ func Test2(t *testing.T) {
 	       small  2.333333  4.333333
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
-	inputs["data"] = dataFrame
+	table := make(map[string]interface{})
+	inputs["data"] = table
 
-	dataFrame["A"] = []interface{}{
+	table["A"] = []interface{}{
 		"foo", "foo", "foo", "foo", "foo", "bar", "bar", "bar", "bar",
 	}
-	dataFrame["B"] = []interface{}{
+	table["B"] = []interface{}{
 		"one", "one", "one", "two", "two", "one", "one", "two", "two",
 	}
-	dataFrame["C"] = []interface{}{
+	table["C"] = []interface{}{
 		"small", "large", "large", "small", "small", "large", "small", "small", "large",
 	}
-	dataFrame["D"] = []interface{}{
+	table["D"] = []interface{}{
 		1, 2, 2, 3, 3, 4, 5, 6, 7,
 	}
-	dataFrame["E"] = []interface{}{
+	table["E"] = []interface{}{
 		2, 4, 5, 5, 6, 6, 8, 9, 9,
 	}
 
@@ -104,8 +107,11 @@ func Test2(t *testing.T) {
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 
-	_, err = opt.Eval(inputs)
+	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
+
+	t.Log("Input of Operation Pivot : ", table)
+	t.Log("Output of Operation Pivot : ", out)
 }
 
 func Test3(t *testing.T) {
@@ -123,22 +129,22 @@ func Test3(t *testing.T) {
 	       small  2.333333  6.0  4.333333  2.0
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
-	inputs["data"] = dataFrame
+	table := make(map[string]interface{})
+	inputs["data"] = table
 
-	dataFrame["A"] = []interface{}{
+	table["A"] = []interface{}{
 		"foo", "foo", "foo", "foo", "foo", "bar", "bar", "bar", "bar",
 	}
-	dataFrame["B"] = []interface{}{
+	table["B"] = []interface{}{
 		"one", "one", "one", "two", "two", "one", "one", "two", "two",
 	}
-	dataFrame["C"] = []interface{}{
+	table["C"] = []interface{}{
 		"small", "large", "large", "small", "small", "large", "small", "small", "large",
 	}
-	dataFrame["D"] = []interface{}{
+	table["D"] = []interface{}{
 		1, 2, 2, 3, 3, 4, 5, 6, 7,
 	}
-	dataFrame["E"] = []interface{}{
+	table["E"] = []interface{}{
 		2.0, 4.0, 5.0, 5.0, 6.0, 6.0, 8.0, 9.0, 9.0,
 	}
 
@@ -157,30 +163,33 @@ func Test3(t *testing.T) {
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 
-	_, err = opt.Eval(inputs)
+	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
+
+	t.Log("Input of Operation Pivot : ", table)
+	t.Log("Output of Operation Pivot : ", out)
 }
 
 func Test4(t *testing.T) {
 	/*
 	 */
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
-	inputs["data"] = dataFrame
+	table := make(map[string]interface{})
+	inputs["data"] = table
 
-	dataFrame["A"] = []interface{}{
+	table["A"] = []interface{}{
 		"foo", "foo", "foo", "foo", "foo", "bar", "bar", "bar", "bar",
 	}
-	dataFrame["B"] = []interface{}{
+	table["B"] = []interface{}{
 		"one", "one", "one", "two", "two", "one", "one", "two", "two",
 	}
-	dataFrame["C"] = []interface{}{
+	table["C"] = []interface{}{
 		"small", "large", "large", "small", "small", "large", "small", "small", "large",
 	}
-	dataFrame["D"] = []interface{}{
+	table["D"] = []interface{}{
 		1, 2, 2, 3, 3, 4, 5, 6, 7,
 	}
-	dataFrame["E"] = []interface{}{
+	table["E"] = []interface{}{
 		2, 4, 5, 5, 6, 6, 8, 9, 9,
 	}
 
@@ -199,6 +208,9 @@ func Test4(t *testing.T) {
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 
-	_, err = opt.Eval(inputs)
+	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
+
+	t.Log("Input of Operation Pivot : ", table)
+	t.Log("Output of Operation Pivot : ", out)
 }

@@ -3,11 +3,13 @@
     "desc":"transpose a matrix",
     "input":[
 	        {
-                "name":"data", 
-                "type":"array", 
-                "description":"Matrix to be transposed", 
+                "str":"data", 
+                "type":["array", "map"], 
+                "description":"map key is column name, map value are column values.", 
                 "optional":false
             }
-        ],
-    "output":"array"
+	    ],
+    "params":[
+    ],
+    "output":["array", "map"]
 }

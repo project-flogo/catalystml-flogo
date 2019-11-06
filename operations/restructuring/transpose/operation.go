@@ -1,9 +1,10 @@
 package transpose
 
 import (
-	"fmt"
+	"strconv"
 
 	"github.com/project-flogo/catalystml-flogo/action/operation"
+	"github.com/project-flogo/catalystml-flogo/operations/common"
 	"github.com/project-flogo/core/support/log"
 )
 
@@ -24,44 +25,35 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		return nil, err
 	}
 
-	var result interface{}
+	var result *common.DataFrame
 
 	a.logger.Info("Starting Operation Transpose.")
 	a.logger.Debug("Input for Operation Transpose. Matrix. ", in.Data)
 
-	result, err = transpose(in.Data.([]interface{}))
+	data, err := common.ToDataFrame(in.Data)
+	if nil != err {
+		return nil, err
+	}
+	result, err = transpose(data)
 
 	a.logger.Info("Operation Transpose Completed.")
 	a.logger.Debug("Output for Operation Transpose. Matrix.", result)
 
-	return result, err
+	return result.AsIs(), err
 }
 
-func transpose(matrix []interface{}) (result []interface{}, err error) {
+func transpose(dataFrame *common.DataFrame) (result *common.DataFrame, err error) {
 
-	var transpose []interface{}
+	newDataFrame := common.NewDataFrame()
 
-	for rowIndex, row := range matrix {
-		rowArray := row.([]interface{})
-		if nil == transpose {
-			transpose = make([]interface{}, len(rowArray))
-		}
+	counter := 0
+	common.ProcessDataFrame(dataFrame, func(sTuple *common.SortableTuple, lastTuple bool) error {
+		order := sTuple.GetDataArray()
+		newDataFrame.AddColumn(strconv.Itoa(counter), order)
+		counter++
+		return nil
+	})
 
-		if len(rowArray) != len(transpose) {
-			return nil, fmt.Errorf("Unable to apply transpose operation - uneven column size.")
-		}
-
-		for columnIndex, column := range rowArray {
-			var newRow []interface{}
-			if 0 == rowIndex {
-				newRow = make([]interface{}, len(matrix))
-				transpose[columnIndex] = newRow
-			} else {
-				newRow = transpose[columnIndex].([]interface{})
-			}
-			newRow[rowIndex] = column
-		}
-	}
-
-	return transpose, nil
+	newDataFrame.SetFromTable(dataFrame.GetFromTable())
+	return newDataFrame, nil
 }

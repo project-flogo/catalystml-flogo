@@ -3,14 +3,14 @@
 ## Overview
 
 ### Description
-join two data objects like the Left Join command in SQL
+join two data objects like the Join command in SQL
 
 ### Implementation details
 
 Input
     left - map[string][]interface{} : map key is column name, map value are column values. Optional=False
     right - map[string][]interface{} : map key is column name, map value are column values. Optional=False
-    leftindex - []string : index column names.
+    leftindex - []string : index column names of first map.
     rightindex - []string : index column names.
 Params
     on - []string - either index or the column name.

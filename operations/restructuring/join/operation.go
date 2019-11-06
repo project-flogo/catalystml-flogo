@@ -36,10 +36,11 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 
 	var result interface{}
 
+	operation.logger.Info("Starting Operation Join.")
 	operation.logger.Debug("Left dataFrame is : ", in.Left)
 	operation.logger.Debug("Right dataFrame is : ", in.Right)
-	operation.logger.Debug("Left Index map is : ", in.LeftIndex)
-	operation.logger.Debug("Right Index map is : ", in.RightIndex)
+	operation.logger.Debug("Left Index array is : ", in.LeftIndex)
+	operation.logger.Debug("Right Index array is : ", in.RightIndex)
 	operation.logger.Debug("Parameter is : ", operation.params)
 
 	var leftJoinOn []string
@@ -53,20 +54,21 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 	}
 
 	result, err = operation.join(
-		in.Left.(map[string][]interface{}),
-		in.Right.(map[string][]interface{}),
+		in.Left.(map[string]interface{}),
+		in.Right.(map[string]interface{}),
 		leftJoinOn,
 		rightJoinOn,
 	)
 
 	operation.logger.Debug("Joined dataFrame is : ", result)
+	operation.logger.Info("Operation Join Completed.")
 
 	return result, err
 }
 
 func (operation *Operation) join(
-	leftDataFrame map[string][]interface{},
-	rightDataFrame map[string][]interface{},
+	leftDataFrame map[string]interface{},
+	rightDataFrame map[string]interface{},
 	leftIndex []string,
 	rightIndex []string,
 ) (result map[string][]interface{}, err error) {
@@ -91,7 +93,7 @@ func (operation *Operation) join(
 	/* check right tuple size */
 	tupleSize := -1
 	for fieldname, filedsArray := range dataFrame02 {
-		tupleSize = len(filedsArray)
+		tupleSize = len(filedsArray.([]interface{}))
 		if nil == dataFrame[fieldname] {
 			dataFrame[fieldname] = nil
 		}
@@ -104,7 +106,7 @@ func (operation *Operation) join(
 		/* build tuple */
 		tuple = make(map[string]interface{})
 		for fieldname, filedsArray := range dataFrame02 {
-			tuple[fieldname] = filedsArray[i]
+			tuple[fieldname] = filedsArray.([]interface{})[i]
 		}
 		dataSet02[GetKey(index02, tuple)] = tuple
 		operation.logger.Debug("Tuple - ", tuple, ", DataSet02 - ", dataSet02)
@@ -112,7 +114,7 @@ func (operation *Operation) join(
 
 	tupleSize = -1
 	for fieldname, filedsArray := range dataFrame01 {
-		tupleSize = len(filedsArray)
+		tupleSize = len(filedsArray.([]interface{}))
 		if nil == dataFrame[fieldname] {
 			dataFrame[fieldname] = nil
 		}
@@ -122,7 +124,7 @@ func (operation *Operation) join(
 	for i := 0; i < tupleSize; i++ {
 		tuple = make(map[string]interface{})
 		for fieldname, fieldsArray := range dataFrame01 {
-			tuple[fieldname] = fieldsArray[i]
+			tuple[fieldname] = fieldsArray.([]interface{})[i]
 		}
 
 		key := GetKey(index02, tuple)

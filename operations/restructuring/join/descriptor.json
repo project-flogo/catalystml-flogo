@@ -1,35 +1,46 @@
 {
     "title":"join",
-    "desc":"group by a given column in an axis and aggregate the value of another column (like SQL)",
+    "desc":"join two data objects like the Join command in SQL",
     "input":[
 	        {
-                "name":"data0", 
-                "type":["array","map"], 
-                "description":"contains matrices or maps of inputs", 
+                "str":"left", 
+                "type":["array", "map"], 
+                "description":"first table : key is column name, map value are column values.", 
                 "optional":false
             },
 	        {
-                "name":"data1", 
-                "type":["array","map"], 
-                "description":"contains matrices or maps of inputs", 
+                "str":"right", 
+                "type":"map", 
+                "description":"second table : key is column name, map value are column values.", 
                 "optional":false
-            }
-        ],
-    "params":[
+            },
 	        {
-                "name":"on", 
+                "str":"leftindex", 
                 "type":"array", 
-                "description":"either index or the col name/number", 
-                "optional":true,
-                "default":"index"
+                "description":"column names of index in the first table.", 
+                "optional":false
             },
 	        {
-                "name":"how", 
-                "type":"string", 
-                "description":"sql join types", 
-                "optional":false,
-                "options":["left", "right", "inner", "outer"]
+                "str":"rightindex", 
+                "type":"array", 
+                "description":"column names of index in the second table.", 
+                "optional":false
             }
 	    ],
-    "output":["array","map"]
+    "params":[
+        {
+            "str":"on", 
+            "type":"array", 
+            "description":"either index or the column name", 
+            "optional":false
+        },
+        {
+            "str":"how", 
+            "type":"string", 
+            "description":"How to join", 
+            "optional":false,
+            "allow" : ["left", "right", "inner", "outer"]
+        }
+    ],
+    "output":["array", "map"]
 }

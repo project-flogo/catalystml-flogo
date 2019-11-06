@@ -22,29 +22,29 @@ func Test1(t *testing.T) {
 	   In [81]: result = left.join(right)
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
-	inputs["left"] = dataFrame
+	table := make(map[string]interface{})
+	inputs["left"] = table
 
-	dataFrame["A"] = []interface{}{
+	table["A"] = []interface{}{
 		"A0", "A1", "A2",
 	}
-	dataFrame["B"] = []interface{}{
+	table["B"] = []interface{}{
 		"B0", "B1", "B2",
 	}
-	dataFrame["I"] = []interface{}{
+	table["I"] = []interface{}{
 		"K0", "K1", "K2",
 	}
 
-	dataFrame = make(map[string][]interface{})
-	inputs["right"] = dataFrame
+	table = make(map[string]interface{})
+	inputs["right"] = table
 
-	dataFrame["C"] = []interface{}{
+	table["C"] = []interface{}{
 		"C0", "C1", "C2",
 	}
-	dataFrame["D"] = []interface{}{
+	table["D"] = []interface{}{
 		"D0", "D1", "D2",
 	}
-	dataFrame["I"] = []interface{}{
+	table["I"] = []interface{}{
 		"K0", "K2", "K3",
 	}
 
@@ -61,8 +61,11 @@ func Test1(t *testing.T) {
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 
-	_, err = opt.Eval(inputs)
+	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
+
+	t.Log("Input of Operation Join : ", table)
+	t.Log("Output of Operation Join : ", out)
 }
 
 func Test2(t *testing.T) {
@@ -80,29 +83,29 @@ func Test2(t *testing.T) {
 	   In [81]: result = left.join(right)
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
-	inputs["left"] = dataFrame
+	table := make(map[string]interface{})
+	inputs["left"] = table
 
-	dataFrame["A"] = []interface{}{
+	table["A"] = []interface{}{
 		"A0", "A1", "A2",
 	}
-	dataFrame["B"] = []interface{}{
+	table["B"] = []interface{}{
 		"B0", "B1", "B2",
 	}
-	dataFrame["I"] = []interface{}{
+	table["I"] = []interface{}{
 		"K0", "K1", "K2",
 	}
 
-	dataFrame = make(map[string][]interface{})
-	inputs["right"] = dataFrame
+	table = make(map[string]interface{})
+	inputs["right"] = table
 
-	dataFrame["C"] = []interface{}{
+	table["C"] = []interface{}{
 		"C0", "C1", "C2",
 	}
-	dataFrame["D"] = []interface{}{
+	table["D"] = []interface{}{
 		"D0", "D1", "D2",
 	}
-	dataFrame["I"] = []interface{}{
+	table["I"] = []interface{}{
 		"K0", "K2", "K3",
 	}
 
@@ -119,8 +122,11 @@ func Test2(t *testing.T) {
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 
-	_, err = opt.Eval(inputs)
+	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
+
+	t.Log("Input of Operation Join : ", table)
+	t.Log("Output of Operation Join : ", out)
 }
 
 func Test3(t *testing.T) {
@@ -138,29 +144,29 @@ func Test3(t *testing.T) {
 	   In [81]: result = left.join(right)
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
-	inputs["left"] = dataFrame
+	table := make(map[string]interface{})
+	inputs["left"] = table
 
-	dataFrame["A"] = []interface{}{
+	table["A"] = []interface{}{
 		"A0", "A1", "A2",
 	}
-	dataFrame["B"] = []interface{}{
+	table["B"] = []interface{}{
 		"B0", "B1", "B2",
 	}
-	dataFrame["I"] = []interface{}{
+	table["I"] = []interface{}{
 		"K0", "K1", "K2",
 	}
 
-	dataFrame = make(map[string][]interface{})
-	inputs["right"] = dataFrame
+	table = make(map[string]interface{})
+	inputs["right"] = table
 
-	dataFrame["C"] = []interface{}{
+	table["C"] = []interface{}{
 		"C0", "C1", "C2",
 	}
-	dataFrame["D"] = []interface{}{
+	table["D"] = []interface{}{
 		"D0", "D1", "D2",
 	}
-	dataFrame["I"] = []interface{}{
+	table["I"] = []interface{}{
 		"K0", "K2", "K3",
 	}
 
@@ -177,8 +183,11 @@ func Test3(t *testing.T) {
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 
-	_, err = opt.Eval(inputs)
+	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
+
+	t.Log("Input of Operation Join : ", table)
+	t.Log("Output of Operation Join : ", out)
 }
 
 func Test4(t *testing.T) {
@@ -196,29 +205,29 @@ func Test4(t *testing.T) {
 	   In [81]: result = left.join(right)
 	*/
 	inputs := make(map[string]interface{})
-	dataFrame := make(map[string][]interface{})
-	inputs["left"] = dataFrame
+	table := make(map[string]interface{})
+	inputs["left"] = table
 
-	dataFrame["A"] = []interface{}{
+	table["A"] = []interface{}{
 		"A0", "A1", "A2",
 	}
-	dataFrame["B"] = []interface{}{
+	table["B"] = []interface{}{
 		"B0", "B1", "B2",
 	}
-	dataFrame["I"] = []interface{}{
+	table["I"] = []interface{}{
 		"K0", "K1", "K2",
 	}
 
-	dataFrame = make(map[string][]interface{})
-	inputs["right"] = dataFrame
+	table = make(map[string]interface{})
+	inputs["right"] = table
 
-	dataFrame["C"] = []interface{}{
+	table["C"] = []interface{}{
 		"C0", "C1", "C2",
 	}
-	dataFrame["D"] = []interface{}{
+	table["D"] = []interface{}{
 		"D0", "D1", "D2",
 	}
-	dataFrame["I"] = []interface{}{
+	table["I"] = []interface{}{
 		"K0", "K2", "K3",
 	}
 
@@ -235,6 +244,9 @@ func Test4(t *testing.T) {
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 
-	_, err = opt.Eval(inputs)
+	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
+
+	t.Log("Input of Operation Join : ", table)
+	t.Log("Output of Operation Join : ", out)
 }

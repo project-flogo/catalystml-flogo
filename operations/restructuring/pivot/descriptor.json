@@ -1,34 +1,33 @@
 {
     "title":"pivot",
-    "desc":"group by a given column in an axis and aggregate the value of another column (like SQL)",
+    "desc":"reshape a matrix or map by re-indexing like the pivot function in pandas",
     "input":[
 	        {
-                "name":"data", 
-                "type":["array","map"], 
-                "description":"Column(s) to use for populating new frame’s values.", 
-                "optional":false
-            }
-        ],
-    "params":[
-	        {
-                "name":"index", 
-                "type":"array", 
-                "description":"Name of columns which value to be used to make new frame’s index", 
-                "optional":false
-            },
-	        {
-                "name":"columns", 
-                "type":"array", 
-                "description":"Name of columns which value to be used to make new frame’s columns.", 
-                "optional":false
-            },
-	        {
-                "name":"aggregate", 
-                "type":"map", 
-                "description":"Map key is groupKey, map value is aggregate function. Currently support Sum, Count, Mean, Min, Max", 
-                "allowed":["Sum","Count","Mean","Min","Max"],
+                "str":"data", 
+                "type":["array", "map"], 
+                "description":"map key is column name, map value are column values.", 
                 "optional":false
             }
 	    ],
-    "output":"array"
+    "params":[
+        {
+            "str":"index", 
+            "type":"array", 
+            "description":"Group key of data", 
+            "optional":false
+        },
+        {
+            "str":"columns", 
+            "type":"array", 
+            "description":"Name of columns which value to be used to make new frame’s columns", 
+            "optional":true
+        },
+        {
+            "str":"aggregate", 
+            "type":"table", 
+            "description":"Map key is groupKey, map value is aggregate function. Currently support Sum, Count, Mean, Min, Max", 
+            "optional":true
+        }
+    ],
+    "output":["array", "map"]
 }

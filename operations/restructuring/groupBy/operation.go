@@ -34,19 +34,25 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 		return nil, err
 	}
 
-	var result interface{}
+	var result *common.DataFrame
 
+	operation.logger.Info("Starting Operation GroupBy.")
 	operation.logger.Debug("Input dataFrame is : ", in.Data)
 	operation.logger.Debug("Parameter is : ", operation.params)
 
-	result, err = operation.groupBy(in.Data.(map[string][]interface{}))
+	data, err := common.ToDataFrame(in.Data)
+	if nil != err {
+		return nil, err
+	}
+	result, err = operation.groupBy(data)
 
 	operation.logger.Debug("Grouped dataFrame is : ", result)
+	operation.logger.Info("Operation GroupBy Completed.")
 
-	return result, err
+	return result.AsIs(), err
 }
 
-func (operation *Operation) groupBy(dataFrame map[string][]interface{}) (result map[string][]interface{}, err error) {
+func (operation *Operation) groupBy(dataFrame *common.DataFrame) (result *common.DataFrame, err error) {
 	var keyColumns []string
 	// Use all index columns, if level < 0
 	if 0 > operation.params.Level {
@@ -56,10 +62,11 @@ func (operation *Operation) groupBy(dataFrame map[string][]interface{}) (result 
 		keyColumns[0] = operation.params.Index[operation.params.Level]
 	}
 
+	newDataFrame := common.NewDataFrame()
 	aggregatedTupleByGroup := make(map[common.Index]map[string]common.DataState)
 	var key []interface{}
-	newDataFrame, _ := common.ProcessDataFrame(dataFrame, func(tuple map[string]interface{}, newDataFrame *common.DataFrame, lastTuple bool) error {
-
+	common.ProcessDataFrame(dataFrame, func(sTuple *common.SortableTuple, lastTuple bool) error {
+		tuple := sTuple.GetData()
 		key = make([]interface{}, len(keyColumns))
 		for j, keyElement := range keyColumns {
 			key[j] = tuple[keyElement]
@@ -92,6 +99,7 @@ func (operation *Operation) groupBy(dataFrame map[string][]interface{}) (result 
 		return nil
 	})
 
+	newDataFrame.SetFromTable(dataFrame.GetFromTable())
 	return newDataFrame, nil
 }
 
