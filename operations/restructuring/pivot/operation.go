@@ -34,38 +34,29 @@ func (operation *Operation) Eval(inputs map[string]interface{}) (interface{}, er
 		return nil, err
 	}
 
-	var result interface{}
+	var result *common.DataFrame
 
 	operation.logger.Debug("Input dataFrame is : ", in.Data)
 	operation.logger.Debug("Parameter is : ", operation.params)
 
-	result, err = operation.pivot(in.Data.(map[string]interface{}))
+	data, err := common.ToDataFrame(in.Data)
+	if nil != err {
+		return nil, err
+	}
+	result, err = operation.pivot(data)
 
 	operation.logger.Debug("Pivoted dataFrame is : ", result)
 
-	return result, err
+	return result.AsIs(), err
 }
 
-func (operation *Operation) pivot(dataFrame map[string]interface{}) (result map[string]interface{}, err error) {
+func (operation *Operation) pivot(dataFrame *common.DataFrame) (result *common.DataFrame, err error) {
 
-	/* check tuple size */
-	tupleSize := -1
-	for _, filedsArray := range dataFrame {
-		tupleSize = len(filedsArray.([]interface{}))
-		if 0 < tupleSize {
-			break
-		}
-	}
-
-	newDataFrame := make(map[string]interface{})
+	newDataFrame := common.NewDataFrame()
 	aggregatedTupleMap := make(map[common.Index]map[string]common.DataState)
-	tuple := make(map[string]interface{})
 	var key []interface{}
-	for i := 0; i < tupleSize; i++ {
-		/* build tuple */
-		for fieldname, filedsArray := range dataFrame {
-			tuple[fieldname] = filedsArray.([]interface{})[i]
-		}
+	common.ProcessDataFrame(dataFrame, func(sTuple *common.SortableTuple, lastTuple bool) error {
+		tuple := sTuple.GetData()
 
 		/* build key for output data*/
 		key = make([]interface{}, len(operation.params.Index))
@@ -86,22 +77,34 @@ func (operation *Operation) pivot(dataFrame map[string]interface{}) (result map[
 				aggregatedTuple[keyElement] = data
 			}
 			data.Update(tuple[keyElement])
-			newDataFrame[keyElement] = nil
 		}
 
-		operation.aggregate(tuple, aggregatedTuple, newDataFrame)
+		operation.aggregate(tuple, aggregatedTuple)
 		aggregatedTupleMap[index] = aggregatedTuple
 
 		operation.logger.Debug("Tuple - ", tuple, ", aggregatedTuple - ", aggregatedTuple)
-	}
 
-	return operation.transform(aggregatedTupleMap, newDataFrame)
+		if lastTuple {
+			for _, aggregatedTuple := range aggregatedTupleMap {
+				newTuple := make(map[string]interface{})
+
+				for key, value := range aggregatedTuple {
+					newTuple[key] = value.Value()
+				}
+				common.TupleAppendToDataframe(newTuple, newDataFrame)
+			}
+		}
+
+		return nil
+	})
+
+	newDataFrame.SetFromTable(dataFrame.GetFromTable())
+	return newDataFrame, nil
 }
 
 func (operation *Operation) aggregate(
 	tuple map[string]interface{},
 	aggregatedTuple map[string]common.DataState,
-	newDataFrame map[string]interface{},
 ) {
 	for valueColumn, functionNames := range operation.params.Aggregate {
 		for _, functionName := range functionNames {
@@ -115,7 +118,6 @@ func (operation *Operation) aggregate(
 			if nil != err {
 				operation.logger.Info("Error : ", err)
 			}
-			newDataFrame[dataKey] = nil
 		}
 	}
 }
@@ -134,24 +136,4 @@ func (operation *Operation) dataKey(
 	groupKey.WriteString("_")
 	groupKey.WriteString(valueColumn)
 	return groupKey.String()
-}
-
-func (operation *Operation) transform(
-	tupleMap map[common.Index]map[string]common.DataState,
-	newDataFrame map[string]interface{}) (result map[string]interface{}, err error) {
-	counter := 0
-	for _, tuple := range tupleMap {
-		for column, columnValus := range newDataFrame {
-			if nil == columnValus {
-				columnValus = make([]interface{}, len(tupleMap))
-				newDataFrame[column] = columnValus
-			}
-			if nil != tuple[column] {
-				columnValus.([]interface{})[counter] = tuple[column].Value()
-			}
-		}
-		counter++
-	}
-
-	return newDataFrame, nil
 }

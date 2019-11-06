@@ -17,12 +17,7 @@ type Input struct {
 
 func (i *Input) FromMap(values map[string]interface{}) error {
 
-	var err error
-	i.Data, err = ToDataFrame(values["data"])
+	i.Data = values["data"]
 
-	return err
-}
-
-func ToDataFrame(val interface{}) (interface{}, error) {
-	return val, nil
+	return nil
 }
