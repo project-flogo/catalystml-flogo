@@ -1,0 +1,13 @@
+{
+    "title":"concatMap",
+    "desc":"takes an array of maps and combines them into one.",
+    "input":[
+	        {
+                "name":"data", 
+                "type":"array", 
+                "description":"array of maps to be combines into one", 
+                "optional":false
+            }
+	    ],
+    "output":"array"
+}

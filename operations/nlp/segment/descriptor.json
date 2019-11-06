@@ -1,0 +1,13 @@
+{
+    "title":"segment",
+    "desc":"Seperates a paragraph into sentences.",
+    "input":[
+	        {
+                "name":"str", 
+                "type":"string", 
+                "description":"string", 
+                "optional":false
+            }
+	    ],
+    "output":"array"
+}

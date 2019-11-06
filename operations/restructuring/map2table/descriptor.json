@@ -1,0 +1,27 @@
+{
+    "title":"map2table",
+    "desc":"convert a map to a matrix",
+    "input":[
+	        {
+                "name":"map", 
+                "type":"map", 
+                "description":"contains map to be converted to table", 
+                "optional":false
+            },
+	        {
+                "name":"colOrder", 
+                "type":"array", 
+                "description":"list of the columns to be merged into table (ORDER MATTERS)", 
+                "optional":false
+            }
+        ],
+    "params":[
+	        {
+                "name":"axis", 
+                "type":"int", 
+                "description":"the orientation of the table (0=vertical/column, 1=horizontal/row)", 
+                "optional":false
+            }
+	    ],
+    "output":"array"
+}

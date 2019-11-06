@@ -1,0 +1,13 @@
+{
+    "title":"posTag",
+    "desc":"Part of speach tagger",
+    "input":[
+	        {
+                "name":"str", 
+                "type":"string", 
+                "description":"string", 
+                "optional":false
+            }
+	    ],
+    "output":"array"
+}

@@ -1,0 +1,22 @@
+{
+    "title":"mean",
+    "desc":"takes the mean of an array",
+    "input":[
+	        {
+                "name":"data", 
+                "type":"array", 
+                "description":"data to get mean of", 
+                "optional":false
+            }
+	    ],
+    "params":[
+        {
+            "name":"axis", 
+            "type":"int", 
+            "description":"which axis to use, 0 (horizontal) is default", 
+            "default":0,
+            "optional":true
+        }
+    ],
+    "output":"array"
+}
