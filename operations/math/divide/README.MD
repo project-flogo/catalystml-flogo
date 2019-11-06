@@ -1,9 +1,9 @@
-# multPairWise
+# divide
 
 ## Overview
 
 ### Description
-For matrices of the same shape multiply corresponding values.
+divide two numbers
 
 ### Implementation details
 Done

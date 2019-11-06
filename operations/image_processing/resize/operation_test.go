@@ -2,8 +2,7 @@ package resize
 
 import (
 	"fmt"
-	"image"
-	"os"
+	"io/ioutil"
 	"testing"
 
 	"github.com/project-flogo/catalystml-flogo/action/support/test"
@@ -17,15 +16,9 @@ func TestXOnly(t *testing.T) {
 	p := Params{Xsize: 100, Ysize: 0, Algo: "Linear"}
 
 	file := "../test_image.jpg"
-	f, err := os.Open(file)
+	img, err := ioutil.ReadFile(file)
 	if err != nil {
-		fmt.Printf("Error Oopening file: %v\n", err)
-		return
-	}
-
-	img, _, err := image.Decode(f)
-	if err != nil {
-		fmt.Printf("Error Decoding file: %v\n", err)
+		fmt.Printf("Error Opening file: %v\n", err)
 		return
 	}
 
@@ -48,16 +41,10 @@ func TestYOnly(t *testing.T) {
 
 	p := Params{Ysize: 150, Xsize: 0, Algo: "Lanczos"}
 
-	file := "/Users/avanderg@tibco.com/working/coffee_carafe_demo/Jabil_Image_Classification/dataset2/Cup/Image6.png"
-	f, err := os.Open(file)
+	file := "../test_image.jpg"
+	img, err := ioutil.ReadFile(file)
 	if err != nil {
 		fmt.Printf("Error Oopening file: %v\n", err)
-		return
-	}
-
-	img, _, err := image.Decode(f)
-	if err != nil {
-		fmt.Printf("Error Decoding file: %v\n", err)
 		return
 	}
 
@@ -80,16 +67,10 @@ func TestBoth(t *testing.T) {
 
 	p := Params{Ysize: 150, Xsize: 100, Algo: "CatmullRom"}
 
-	file := "/Users/avanderg@tibco.com/working/coffee_carafe_demo/Jabil_Image_Classification/dataset2/Cup/Image6.png"
-	f, err := os.Open(file)
+	file := "../test_image.jpg"
+	img, err := ioutil.ReadFile(file)
 	if err != nil {
 		fmt.Printf("Error Oopening file: %v\n", err)
-		return
-	}
-
-	img, _, err := image.Decode(f)
-	if err != nil {
-		fmt.Printf("Error Decoding file: %v\n", err)
 		return
 	}
 
