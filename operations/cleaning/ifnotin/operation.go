@@ -22,8 +22,8 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	a.logger.Info("Starting operation ifnotin.")
 	a.logger.Debug("Inputs for Operation ifnotin.", inputs)
 
-	arr0 := inputs["arr0"].([]string)
-	arr1 := inputs["arr1"].([]string)
+	arr0 := inputs["arr0"].([]interface{})
+	arr1 := inputs["arr1"].([]interface{})
 
 	// making hash to check against for if it is in
 	checkmap := make(map[interface{}]bool)
@@ -39,6 +39,6 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		}
 	}
 	a.logger.Info("Operation ifnotin Completed.")
-	a.logger.Debug("Output of Operation ifIn ", out)
+	a.logger.Debug("Output of Operation ifNotIn ", out)
 	return out, nil
 }
