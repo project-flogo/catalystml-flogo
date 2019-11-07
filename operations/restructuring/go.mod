@@ -1,4 +1,4 @@
-module github.com/project-flogo/catalystml-flogo/operations/categorical
+module github.com/project-flogo/catalystml-flogo/operations/restructuring
 
 require (
 	github.com/project-flogo/catalystml-flogo/action v0.0.0-20190919183915-24819a1a9a2b
