@@ -1,4 +1,4 @@
-package math
+package restructuring
 
 import (
 	"github.com/project-flogo/catalystml-flogo/action/operation"
