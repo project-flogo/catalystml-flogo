@@ -3,7 +3,7 @@ package stem
 import (
 	"testing"
 
-	"github.com/project-flogo/fps/support/test"
+	"github.com/project-flogo/catalystml-flogo/action/support/test"
 	"github.com/stretchr/testify/assert"
 )
 
