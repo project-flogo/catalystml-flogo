@@ -1,0 +1,19 @@
+{
+    "title":"addPairWise",
+    "desc":"for matrices of the same shape add corresponding values",
+    "input":[
+	        {
+                "name":"matrix0", 
+                "type":"array", 
+                "description":"first matrix", 
+                "optional":false
+            },
+            {
+                "name":"matrix1", 
+                "type":"array", 
+                "description":"second matrix.", 
+                "optional":false
+            }
+	    ],
+    "output":"array"
+}

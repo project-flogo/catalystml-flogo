@@ -1,0 +1,19 @@
+{
+    "title":"multi",
+    "desc":"multipli two numbers",
+    "input":[
+	        {
+                "name":"num0", 
+                "type":["int","float"] , 
+                "description":"first num", 
+                "optional":false
+            },
+	        {
+                "name":"num1", 
+                "type":["int","float"] , 
+                "description":"second number", 
+                "optional":false
+            }
+	    ],
+    "output":["int","float"]
+}

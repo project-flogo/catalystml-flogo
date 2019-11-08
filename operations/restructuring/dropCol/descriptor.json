@@ -17,3 +17,8 @@
 	    ],
     "output":["array","map"]
 }
+
+{
+    "type":"flogo:catalystml:operation",
+    "operation":"cleaning/ifin"
+}
