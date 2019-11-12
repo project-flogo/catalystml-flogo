@@ -24,12 +24,12 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	num0, _ := coerce.ToFloat64(input.Num0)
 	num1, _ := coerce.ToFloat64(input.Num1)
 
-	a.logger.Info("Starting operation multi.")
-	a.logger.Debugf("Multiplying %f by %f", num0, num1)
+	a.logger.Info("Starting operation add.")
+	a.logger.Debugf("Adding %f by %f", num0, num1)
 
 	out := num0 + num1
 
-	a.logger.Info("Operation multi completed")
-	a.logger.Debug("Output of Operation multi ", out)
+	a.logger.Info("Operation add completed")
+	a.logger.Debug("Output of Operation add ", out)
 	return out, nil
 }
