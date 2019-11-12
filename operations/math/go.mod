@@ -20,3 +20,5 @@ require (
 	golang.org/x/xerrors v0.0.0-20191011141410-1b5146add898 // indirect
 	gopkg.in/yaml.v2 v2.2.5 // indirect
 )
+
+replace github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20190919183915-24819a1a9a2b => ../common

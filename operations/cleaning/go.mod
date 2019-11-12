@@ -2,9 +2,9 @@ module github.com/project-flogo/catalystml-flogo/operations/cleaning
 
 require (
 	github.com/phpdave11/gofpdi v1.0.8 // indirect
-	github.com/project-flogo/catalystml-flogo/action v0.0.0
-	github.com/project-flogo/catalystml-flogo/operations/common v0.0.0
-	github.com/project-flogo/catalystml-flogo/operations/string_processing v0.0.0
+	github.com/project-flogo/catalystml-flogo/action v0.0.0-20191112152814-dc69f9aae0fd
+	github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20191112152814-dc69f9aae0fd
+	github.com/project-flogo/catalystml-flogo/operations/string_processing v0.0.0-20191112152814-dc69f9aae0fd
 	github.com/project-flogo/core v0.9.4-beta.2
 	github.com/stretchr/testify v1.4.0
 	go.uber.org/zap v1.10.0 // indirect
@@ -14,11 +14,5 @@ require (
 	golang.org/x/sys v0.0.0-20190919044723-0c1ff786ef13 // indirect
 	golang.org/x/tools v0.0.0-20190919180025-928b73f71f9b // indirect
 	gonum.org/v1/gonum v0.0.0-20190915125329-975d99cd20a9 // indirect
-
 )
 
-replace github.com/project-flogo/catalystml-flogo/operations/common => ../common
-
-replace github.com/project-flogo/catalystml-flogo/operations/string_processing => ../string_processing
-
-replace github.com/project-flogo/catalystml-flogo/action => ../../action
