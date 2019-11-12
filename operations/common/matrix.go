@@ -2,8 +2,11 @@ package common
 
 import (
 	"fmt"
+
 	"github.com/project-flogo/core/data/coerce"
 )
+
+type matrixOp func(val1 interface{}, val2 interface{}) (float64, error)
 
 const (
 	MatirxPairWiseAdd = iota
@@ -13,7 +16,7 @@ const (
 
 func MatrixPairWiseOperation(m0 []interface{}, m1 []interface{}, option int) ([]interface{}, error) {
 
-	if m0 == nil || m1== nil {
+	if m0 == nil || m1 == nil {
 
 		var mtx []interface{}
 		if m0 != nil {
@@ -65,91 +68,74 @@ func pairwiseOp(mtx0 []interface{}, mtx1 []interface{}, option int) ([]interface
 	if len(mtx0) != len(mtx1) {
 		return nil, fmt.Errorf("matrices are not the same size")
 	}
-
-	var err error
-	var mtxOut []interface{}
-	if option == MatirxPairWiseMulti {
-
-		for i := 0; i < len(mtx0); i++ {
-			switch v := mtx0[i].(type) {
-			case []interface{}:
-				var tmp []interface{}
-
-				tmp, err = pairwiseOp(v, mtx1[i].([]interface{}), option)
-				mtxOut = append(mtxOut, tmp)
-			case int:
-				temp, _ := coerce.ToInt(mtx1[i])
-				mtxOut = append(mtxOut, v*temp)
-			case int32:
-				temp, _ := coerce.ToInt32(mtx1[i])
-				mtxOut = append(mtxOut, mtx0[i].(int32)*temp)
-			case int64:
-				temp, _ := coerce.ToInt64(mtx1[i])
-				mtxOut = append(mtxOut, mtx0[i].(int64)*temp)
-			case float32:
-				temp, _ := coerce.ToFloat32(mtx1[i])
-				mtxOut = append(mtxOut, mtx0[i].(float32)*temp)
-			case float64:
-				temp, _ := coerce.ToFloat64(mtx1[i])
-				mtxOut = append(mtxOut, mtx0[i].(float64)*temp)
-			}
+	var mOp matrixOp
+	if option == MatirxPairWiseAdd {
+		mOp = func(val1 interface{}, val2 interface{}) (float64, error) {
+			temp1, err := coerce.ToFloat64(val1)
+			temp2, err := coerce.ToFloat64(val2)
+			return temp1 + temp2, err
 		}
-
-	} else if option == MatirxPairWiseAdd {
-
-		for i := 0; i < len(mtx0); i++ {
-			switch v := mtx0[i].(type) {
-			case []interface{}:
-				var tmp []interface{}
-
-				tmp, err = pairwiseOp(v, mtx1[i].([]interface{}), option)
-				mtxOut = append(mtxOut, tmp)
-			case int:
-				temp, _ := coerce.ToInt(mtx1[i])
-				mtxOut = append(mtxOut, v*temp)
-			case int32:
-				temp, _ := coerce.ToInt32(mtx1[i])
-				mtxOut = append(mtxOut, mtx0[i].(int32)+temp)
-			case int64:
-				temp, _ := coerce.ToInt64(mtx1[i])
-				mtxOut = append(mtxOut, mtx0[i].(int64)+temp)
-			case float32:
-				temp, _ := coerce.ToFloat32(mtx1[i])
-				mtxOut = append(mtxOut, mtx0[i].(float32)+temp)
-			case float64:
-				temp, _ := coerce.ToFloat64(mtx1[i])
-				mtxOut = append(mtxOut, mtx0[i].(float64)+temp)
-			}
+	} else if option == MatirxPairWiseMulti {
+		mOp = func(val1 interface{}, val2 interface{}) (float64, error) {
+			temp1, err := coerce.ToFloat64(val1)
+			temp2, err := coerce.ToFloat64(val2)
+			return temp1 * temp2, err
 		}
-
 	} else if option == MatirxPairWiseDivide {
-
-		for i := 0; i < len(mtx0); i++ {
-			switch v := mtx0[i].(type) {
-			case []interface{}:
-				var tmp []interface{}
-
-				tmp, err = pairwiseOp(v, mtx1[i].([]interface{}), option)
-				mtxOut = append(mtxOut, tmp)
-			case int:
-				temp, _ := coerce.ToInt(mtx1[i])
-				mtxOut = append(mtxOut, v*temp)
-			case int32:
-				temp, _ := coerce.ToInt32(mtx1[i])
-				mtxOut = append(mtxOut, mtx0[i].(int32)/temp)
-			case int64:
-				temp, _ := coerce.ToInt64(mtx1[i])
-				mtxOut = append(mtxOut, mtx0[i].(int64)/temp)
-			case float32:
-				temp, _ := coerce.ToFloat32(mtx1[i])
-				mtxOut = append(mtxOut, mtx0[i].(float32)/temp)
-			case float64:
-				temp, _ := coerce.ToFloat64(mtx1[i])
-				mtxOut = append(mtxOut, mtx0[i].(float64)/temp)
-			}
+		mOp = func(val1 interface{}, val2 interface{}) (float64, error) {
+			temp1, err := coerce.ToFloat64(val1)
+			temp2, err := coerce.ToFloat64(val2)
+			return temp1 / temp2, err
 		}
 	}
 
+	var err error
+	var mtxOut []interface{}
+
+	for i := 0; i < len(mtx0); i++ {
+		switch v := mtx0[i].(type) {
+		case []interface{}:
+			var tmp []interface{}
+
+			tmp, err = pairwiseOp(v, mtx1[i].([]interface{}), option)
+			mtxOut = append(mtxOut, tmp)
+		case int:
+			temp, _ := coerce.ToInt(mtx1[i])
+			val, err := mOp(v, temp)
+			if err != nil {
+				return nil, err
+			}
+			mtxOut = append(mtxOut, int(val))
+		case int32:
+			temp, _ := coerce.ToInt32(mtx1[i])
+			val, err := mOp(mtx0[i], temp)
+			if err != nil {
+				return nil, err
+			}
+			mtxOut = append(mtxOut, int32(val))
+		case int64:
+			temp, _ := coerce.ToInt64(mtx1[i])
+			val, err := mOp(mtx0[i], temp)
+			if err != nil {
+				return nil, err
+			}
+			mtxOut = append(mtxOut, int64(val))
+		case float32:
+			temp, _ := coerce.ToFloat32(mtx1[i])
+			val, err := mOp(mtx0[i], temp)
+			if err != nil {
+				return nil, err
+			}
+			mtxOut = append(mtxOut, float32(val))
+		case float64:
+			temp, _ := coerce.ToFloat64(mtx1[i])
+			val, err := mOp(mtx0[i], temp)
+			if err != nil {
+				return nil, err
+			}
+			mtxOut = append(mtxOut, float64(val))
+		}
+	}
 
 	return mtxOut, err
 }
