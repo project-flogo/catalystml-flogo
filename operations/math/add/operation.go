@@ -1,4 +1,4 @@
-package divide
+package add
 
 import (
 	"github.com/project-flogo/catalystml-flogo/action/operation"
@@ -21,15 +21,15 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
 	input.FromMap(inputs)
 
-	num, _ := coerce.ToFloat64(input.Num)
-	denom, _ := coerce.ToFloat64(input.Denom)
+	num0, _ := coerce.ToFloat64(input.Num0)
+	num1, _ := coerce.ToFloat64(input.Num1)
 
-	a.logger.Info("Starting operation divide.")
-	a.logger.Debugf("Dividing %f by %f", num, denom)
+	a.logger.Info("Starting operation add.")
+	a.logger.Debugf("Adding %f by %f", num0, num1)
 
-	out := num / denom
+	out := num0 + num1
 
-	a.logger.Info("Operation divide completed")
-	a.logger.Debug("Output of Operation divide ", out)
+	a.logger.Info("Operation add completed")
+	a.logger.Debug("Output of Operation add ", out)
 	return out, nil
 }
