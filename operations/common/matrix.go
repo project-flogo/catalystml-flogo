@@ -100,36 +100,36 @@ func pairwiseOp(mtx0 []interface{}, mtx1 []interface{}, option int) ([]interface
 			tmp, err = pairwiseOp(v, mtx1[i].([]interface{}), option)
 			mtxOut = append(mtxOut, tmp)
 		case int:
-			temp, _ := coerce.ToInt(mtx1[i])
-			val, err := mOp(v, temp)
+
+			val, err := mOp(v, mtx1[i])
 			if err != nil {
 				return nil, err
 			}
 			mtxOut = append(mtxOut, int(val))
 		case int32:
-			temp, _ := coerce.ToInt32(mtx1[i])
-			val, err := mOp(mtx0[i], temp)
+
+			val, err := mOp(mtx0[i], mtx1[i])
 			if err != nil {
 				return nil, err
 			}
 			mtxOut = append(mtxOut, int32(val))
 		case int64:
-			temp, _ := coerce.ToInt64(mtx1[i])
-			val, err := mOp(mtx0[i], temp)
+
+			val, err := mOp(mtx0[i], mtx1[i])
 			if err != nil {
 				return nil, err
 			}
 			mtxOut = append(mtxOut, int64(val))
 		case float32:
-			temp, _ := coerce.ToFloat32(mtx1[i])
-			val, err := mOp(mtx0[i], temp)
+
+			val, err := mOp(mtx0[i], mtx1[i])
 			if err != nil {
 				return nil, err
 			}
 			mtxOut = append(mtxOut, float32(val))
 		case float64:
-			temp, _ := coerce.ToFloat64(mtx1[i])
-			val, err := mOp(mtx0[i], temp)
+
+			val, err := mOp(mtx0[i], mtx1[i])
 			if err != nil {
 				return nil, err
 			}
