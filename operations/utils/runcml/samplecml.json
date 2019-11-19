@@ -1,0 +1,83 @@
+{   
+    "name":"Sample CML Pipeline",
+    "description":"Demonstrates sample operation in pipeline",
+    "model":{
+      "framework":"Tensorflow",
+      "tags":"serve",
+      "signatureDefs":"def_signature"
+    },
+    "input": [
+      {
+        "type":"string",
+        "label": "input"  
+      },
+      {
+        "type":"list",
+        "label":"blah"
+      }
+    ],
+    "structure": [
+      {
+        "output" : "math1",
+        "operation": "math",
+        "params": {
+          "sample":2,
+          "listOfKeys":["0_0","1_0","2_0","amag_0","0_1","1_1","2_1","amag_1"]
+        },
+        "input": {
+          "inputSample": "$input"
+        }
+
+      },
+      {
+        "output" : "math1",
+        "operation": "math",
+        "params": {
+          "sample":2
+        },
+        "input": {
+          "inputSample": "788",
+          "inputMap": "$math1"
+        }
+      },
+      {
+        "output" : "math1['sample']",
+        "operation": "math",
+        "params": {
+          "sample":3 
+        },
+        "input": {
+          "inputSample": "23",
+          "inputMap": "$math1"
+        }
+      },
+      {
+        "output" : "math2",
+        "operation": "math",
+        "params": {
+          "sample":3 
+        },
+        "input": {
+          "inputSample": "$math1['sample']",
+          "inputMap": "$math1"
+        }
+      },
+      {
+        "output" : "math2",
+        "operation": "math",
+        "params": {
+          "sample":3 
+        },
+        "input": {
+          "inputSample": "$math1['sample']",
+          "inputMap": "$math1"
+        }
+      }      
+    ],
+    "output" :{
+      "type" : "dataframe",
+      "data" : {
+        "feat1":"$math1"
+      }
+    }
+}
