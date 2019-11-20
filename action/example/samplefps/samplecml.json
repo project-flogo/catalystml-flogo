@@ -1,4 +1,4 @@
-{   
+{
     "name":"Sample CML Pipeline",
     "description":"Demonstrates sample operation in pipeline",
     "model":{
@@ -9,7 +9,7 @@
     "input": [
       {
         "type":"string",
-        "label": "input"  
+        "label": "input"
       },
       {
         "type":"list",
@@ -44,7 +44,7 @@
         "output" : "math1['sample']",
         "operation": "math",
         "params": {
-          "sample":3 
+          "sample":3
         },
         "input": {
           "inputSample": "23",
@@ -55,7 +55,7 @@
         "output" : "math2",
         "operation": "math",
         "params": {
-          "sample":3 
+          "sample":3
         },
         "input": {
           "inputSample": "$math1['sample']",
@@ -66,13 +66,13 @@
         "output" : "math2",
         "operation": "math",
         "params": {
-          "sample":3 
+          "sample":3
         },
         "input": {
           "inputSample": "$math1['sample']",
           "inputMap": "$math1"
         }
-      }      
+      }
     ],
     "output" :{
       "type" : "dataframe",

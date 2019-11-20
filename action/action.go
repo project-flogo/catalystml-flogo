@@ -7,6 +7,12 @@ import (
 	"strings"
 
 	"github.com/project-flogo/catalystml-flogo/action/pipeline"
+	_ "github.com/project-flogo/catalystml-flogo/operations/cleaning"
+	_ "github.com/project-flogo/catalystml-flogo/operations/common"
+	_ "github.com/project-flogo/catalystml-flogo/operations/image_processing"
+	_ "github.com/project-flogo/catalystml-flogo/operations/math"
+	_ "github.com/project-flogo/catalystml-flogo/operations/restructuring"
+	_ "github.com/project-flogo/catalystml-flogo/operations/string_processing"
 	"github.com/project-flogo/core/action"
 	"github.com/project-flogo/core/app/resource"
 	"github.com/project-flogo/core/data/metadata"

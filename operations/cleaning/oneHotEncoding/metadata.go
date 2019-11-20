@@ -20,7 +20,7 @@ func (i *Input) FromMap(values map[string]interface{}) error {
 
 	df, _ := common.ToDataFrame(values["data"])
 	m = make(map[string]interface{})
-	for k, arr := range df {
+	for k, arr := range df.GetData() {
 		m[k] = arr
 	}
 
