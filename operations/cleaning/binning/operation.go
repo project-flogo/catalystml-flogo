@@ -95,7 +95,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		)
 	}
 
-	a.logger.Info("Operation Set Completed")
+	a.logger.Info("Operation Binning Completed")
 	a.logger.Debug("Output of Operation Binning.", result)
 
 	return result, nil
