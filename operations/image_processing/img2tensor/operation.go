@@ -3,7 +3,6 @@ package img2tensor
 import (
 	// "bytes"
 
-	"fmt"
 	"image"
 
 	"github.com/project-flogo/catalystml-flogo/action/operation"
@@ -108,13 +107,11 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		}
 		a.logger.Info("Operation img2tensor Completed.")
 		a.logger.Debug("Values of first pixel ", img[0][0][0])
-		fmt.Println(img[0][0])
 		return img, nil
 
 	}
 	a.logger.Info("Operation img2tensor Completed.")
 	a.logger.Debug("Values of first pixel ", singleimg[0][0])
-	fmt.Println(singleimg[0])
 	return singleimg, nil
 
 }
