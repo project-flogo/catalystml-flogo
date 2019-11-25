@@ -1,4 +1,4 @@
-package lastindex
+package indexany
 
 import "github.com/project-flogo/core/data/coerce"
 

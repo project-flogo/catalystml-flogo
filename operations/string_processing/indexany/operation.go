@@ -1,4 +1,4 @@
-package lastindex
+package indexany
 
 import (
 	// "strings"
