@@ -1,0 +1,25 @@
+{
+    "title":"replaceregex",
+    "desc":"Replace data in a string based on a regular expression match.",
+    "input":[
+	        {
+                "name":"regex", 
+                "type":"string", 
+                "description":"regular expression match to be replaced", 
+                "optional":false
+            },
+	        {
+                "name":"s0", 
+                "type":"string", 
+                "description":"string", 
+                "optional":false
+            },
+	        {
+                "name":"s1", 
+                "type":"string", 
+                "description":"string to replace with", 
+                "optional":false
+            }
+	    ],
+    "output":"string"
+}

@@ -1,0 +1,25 @@
+{
+    "title":"replaceall",
+    "desc":"ReplaceAll returns a copy of the string s with all non-overlapping instances of old replaced by new.",
+    "input":[
+	        {
+                "name":"s0", 
+                "type":"string", 
+                "description":"string", 
+                "optional":false
+            },
+	        {
+                "name":"s1", 
+                "type":"string", 
+                "description":"string to be replaced", 
+                "optional":false
+            },
+	        {
+                "name":"s2", 
+                "type":"string", 
+                "description":"string to replace with", 
+                "optional":false
+            }
+	    ],
+    "output":"string"
+}
