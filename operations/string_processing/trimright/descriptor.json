@@ -1,0 +1,19 @@
+{
+    "title":"trimright",
+    "desc":"TrimRight returns a slice of the string s with all trailing Unicode code points contained in cutset removed.",
+    "input":[
+	        {
+                "name":"s0", 
+                "type":"string", 
+                "description":"string to be cleaned/trimmed", 
+                "optional":false
+            },
+	        {
+                "name":"s1", 
+                "type":"string", 
+                "description":"unicode to be trimmed off", 
+                "optional":false
+            }
+	    ],
+    "output":"string"
+}
