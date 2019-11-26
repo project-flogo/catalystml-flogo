@@ -1,0 +1,59 @@
+{
+    "title":"binning",
+    "desc":"select a numerical column list and convert it into bins",
+    "input":[
+	        {
+                "str":"data", 
+                "type":["array", "map"], 
+                "description":"the array or column of map to be binned", 
+                "optional":false
+            }
+	    ],
+    "params":[
+            	{
+                "str":"quantile", 
+                "type":"int", 
+                "description":"number of bin by even quantiles", 
+                "optional":true
+            },
+            	{
+                "str":"bins", 
+                "type":"array", 
+                "description":"array of bin boundaries by data value", 
+                "optional":true
+            },
+            	{
+                "str":"labels", 
+                "type":"array", 
+                "description":"used as labels for the resulting bins", 
+                "optional":true
+            },
+            	{
+                "str":"column", 
+                "type":"int", 
+                "description":"target column for binning", 
+                "optional":true
+            },
+            	{
+                "str":"retbins", 
+                "type":"bool", 
+                "description":"whether to return the (bins, labels) or not", 
+                "optional":true
+            },
+            	{
+                "str":"precision", 
+                "type":"int", 
+                "description":"precision of bin boundaries", 
+                "optional":true
+            },
+            	{
+                "str":"duplicates", 
+                "type":"string",
+                "allowed":["raise", "drop"],
+                "default" : "raise",
+                "description":"action on duplicate data raise error (still output data) or drop data", 
+                "optional":true
+            }
+    ],
+    "output":"map"
+}
