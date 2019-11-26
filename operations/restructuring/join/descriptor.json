@@ -3,25 +3,25 @@
     "desc":"join two data objects like the Join command in SQL",
     "input":[
 	        {
-                "str":"left", 
+                "name":"left", 
                 "type":["array", "map"], 
                 "description":"first table : key is column name, map value are column values.", 
                 "optional":false
             },
 	        {
-                "str":"right", 
+                "name":"right", 
                 "type":"map", 
                 "description":"second table : key is column name, map value are column values.", 
                 "optional":false
             },
 	        {
-                "str":"leftindex", 
+                "name":"leftindex", 
                 "type":"array", 
                 "description":"column names of index in the first table.", 
                 "optional":false
             },
 	        {
-                "str":"rightindex", 
+                "name":"rightindex", 
                 "type":"array", 
                 "description":"column names of index in the second table.", 
                 "optional":false
@@ -29,14 +29,14 @@
 	    ],
     "params":[
         {
-            "str":"on", 
+            "name":"on", 
             "type":"array", 
             "description":"either index or the column name", 
             "optional":false
         },
         {
-            "str":"how", 
-            "type":"string", 
+            "name":"how", 
+            "type":"nameing", 
             "description":"How to join", 
             "optional":false,
             "allow" : ["left", "right", "inner", "outer"]

@@ -3,7 +3,7 @@
     "desc":"transpose a matrix",
     "input":[
 	        {
-                "str":"data", 
+                "name":"data", 
                 "type":["array", "map"], 
                 "description":"map key is column name, map value are column values.", 
                 "optional":false
