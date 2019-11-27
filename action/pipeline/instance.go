@@ -27,19 +27,16 @@ func (inst *Instance) Id() string {
 	return inst.id
 }
 
-func recoverName() (map[string]interface{}, error) {
-	if r := recover(); r != nil {
-		fmt.Println("recovered from ", r)
-
-	}
-	return nil, nil
-}
 
 func (inst *Instance) Run(input map[string]interface{}) (output map[string]interface{}, err error) {
-	defer recoverName()
+
 	currentInput := make(map[string]interface{})
 
-	scope := NewPipelineScope(input)
+	scope, err := NewPipelineScope(input, inst.def.labels)
+
+	if err != nil {
+		return nil, err
+	}
 
 	start := time.Now()
 
@@ -58,6 +55,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		}
 
 	}
+
 
 	//Execute the pipeline.
 	for key, stage := range inst.def.stages {
