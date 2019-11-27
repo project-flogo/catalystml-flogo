@@ -1,6 +1,8 @@
 package pipeline
 
 import (
+	"strconv"
+
 	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/data/resolve"
 )
@@ -26,9 +28,14 @@ func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve
 		def.stages = append(def.stages, stage)
 	}
 	def.input = make(map[string]interface{})
-
-	for _, val := range config.Input {
-		def.input[val.Label] = val
+	def.labels = make(map[string]interface{})
+	for key, val := range config.Input {
+		switch t:= val.Label.(type){
+		case string:
+			def.input[t] = val
+		default:
+			def.labels[strconv.Itoa(key)] = val.Label
+		}
 	}
 
 	return def, nil
@@ -38,6 +45,7 @@ type Definition struct {
 	name   string
 	stages []*Stage
 	input  map[string]interface{}
+	labels map[string]interface{}
 	output PipelineOutput
 }
 

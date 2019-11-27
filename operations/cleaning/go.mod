@@ -15,4 +15,3 @@ require (
 	golang.org/x/tools v0.0.0-20190919180025-928b73f71f9b // indirect
 	gonum.org/v1/gonum v0.0.0-20190915125329-975d99cd20a9 // indirect
 )
-

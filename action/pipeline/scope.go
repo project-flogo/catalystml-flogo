@@ -1,6 +1,8 @@
 package pipeline
 
 import (
+	"errors"
+	"github.com/project-flogo/core/data/coerce"
 	"strconv"
 	"strings"
 
@@ -11,13 +13,18 @@ type scopeImpl struct {
 	values map[string]interface{}
 }
 
-func NewPipelineScope(input map[string]interface{}) *scopeImpl {
+func NewPipelineScope(input map[string]interface{}, labels map[string]interface{}) (*scopeImpl, error) {
+
 
 	if input != nil {
-		return &scopeImpl{values: input}
+		val , err := preProcessInputs(input, labels)
+		if err != nil {
+			return nil, err
+		}
+		return &scopeImpl{values: val}, nil
 	}
 	values := make(map[string]interface{})
-	return &scopeImpl{values: values}
+	return &scopeImpl{values: values}, nil
 }
 
 func (s *scopeImpl) GetValue(name string) (value interface{}, exists bool) {
@@ -61,4 +68,53 @@ func getPath(name string) string {
 
 	}
 	return result
+}
+
+func preProcessInputs(inputs map[string]interface{}, labels map[string]interface{}) (map[string]interface{}, error ){
+	inputMap := make( map[string]interface{})
+
+	if val, ok := inputs["input"] ; ok && labels != nil{
+		vArr , _ := coerce.ToArray(val)
+
+		for key, in := range vArr {
+
+			switch t := labels[strconv.Itoa(key)].(type) {
+
+			case string:
+				inputMap[t] = in
+			case []interface{}:
+				if len(t) > len(vArr) {
+					return nil, errors.New("Mismatch in Data and Labels ")
+				}
+				for i := 0 ; i < len(t) ; i ++ {
+					inputMap[t[i].(string)] = vArr[i]
+				}
+			}
+		}
+
+		return inputMap, nil
+	}
+	if _, ok := inputs["0"]; ok || labels != nil{
+		for key, val := range labels {
+
+			switch t:= val.(type) {
+			case string:
+				inputMap[t] = inputs[key]
+			case []interface{}:
+				vArr , _ := coerce.ToArray(inputs[key])
+				if len(t) > len(vArr) {
+					return nil, errors.New("Mismatch in Data and Labels ")
+				}
+				for i := 0 ; i < len(t) ; i ++ {
+					inputMap[t[i].(string)] = vArr[i]
+				}
+			}
+
+		}
+		return inputMap, nil
+	}
+
+	return inputs, nil
+
+
 }
