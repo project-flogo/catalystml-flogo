@@ -3,7 +3,7 @@
     "desc":"sort a matrix/map based on axis and given columns ",
     "input":[
 	        {
-                "str":"data", 
+                "name":"data", 
                 "type":["array", "map"], 
                 "description":"map key is column name, map value are column values.", 
                 "optional":false
@@ -11,14 +11,14 @@
 	    ],
     "params":[
         {
-            "str":"ascending", 
+            "name":"ascending", 
             "type":"bool", 
             "description":"Sorting data in ascending", 
             "default" : false,
             "optional":true
         },
         {
-            "str":"axis", 
+            "name":"axis", 
             "type":"int", 
             "description":"0=vertical/column, 1=horizontal/row", 
             "default" : 0,
@@ -26,16 +26,16 @@
             "optional":true
         },
         {
-            "str":"nilPosition", 
-            "type":"string", 
+            "name":"nilPosition", 
+            "type":"nameing", 
             "description":"Puts Nils at the beginning if first; last puts Nils at the end.", 
             "allowed" : ["first", "last"],
             "optional":true
         },
         {
-            "str":"by", 
+            "name":"by", 
             "type":"array", 
-            "description":"sort by elements: 1. all are string -> conlumn label, 2. all are int (0 means first column) -> column number", 
+            "description":"sort by elements: 1. all are nameing -> conlumn label, 2. all are int (0 means first column) -> column number", 
             "optional":false
         }
     ],

@@ -3,7 +3,7 @@
     "desc":"group by given columns in an axis and aggregate the value of other columns",
     "input":[
 	        {
-                "str":"data", 
+                "name":"data", 
                 "type":["array", "map"], 
                 "description":"map key is column name, map value are column values.", 
                 "optional":false
@@ -11,19 +11,19 @@
 	    ],
     "params":[
         {
-            "str":"index", 
+            "name":"index", 
             "type":"array", 
             "description":"Group key of data", 
             "optional":false
         },
         {
-            "str":"aggregate", 
+            "name":"aggregate", 
             "type":"map", 
             "description":"Map key is groupKey, map value is aggregate function. Currently support Sum, Count, Mean, Min, Max", 
             "optional":true
         },
         {
-            "str":"level", 
+            "name":"level", 
             "type":"int", 
             "description":"Group level < 0 -> group by all index elements, 0 -> group by index element1, 1 -> group by index element2.", 
             "optional":true
