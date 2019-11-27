@@ -73,7 +73,7 @@ func getPath(name string) string {
 func preProcessInputs(inputs map[string]interface{}, labels map[string]interface{}) (map[string]interface{}, error ){
 	inputMap := make( map[string]interface{})
 
-	if val, ok := inputs["input"] ; ok {
+	if val, ok := inputs["input"] ; ok && labels != nil{
 		vArr , _ := coerce.ToArray(val)
 
 		for key, in := range vArr {
@@ -94,7 +94,7 @@ func preProcessInputs(inputs map[string]interface{}, labels map[string]interface
 
 		return inputMap, nil
 	}
-	if _, ok := inputs["0"]; ok {
+	if _, ok := inputs["0"]; ok || labels != nil{
 		for key, val := range labels {
 
 			switch t:= val.(type) {
