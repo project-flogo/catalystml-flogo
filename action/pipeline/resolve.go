@@ -5,9 +5,8 @@ import (
 )
 
 var pipelineRes = resolve.NewCompositeResolver(map[string]resolve.Resolver{
-	".":        &resolve.ScopeResolver{},
-	"env":      &resolve.EnvResolver{},
-	"property": &resolve.PropertyResolver{},
+	".":   &resolve.ScopeResolver{},
+	"env": &resolve.EnvResolver{},
 })
 
 func GetDataResolver() resolve.CompositeResolver {

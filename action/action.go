@@ -104,7 +104,7 @@ func (f *ActionFactory) New(config *action.Config) (action.Action, error) {
 	}
 
 	//note: single pipeline instance for the moment
-	inst := pipeline.NewInstance(catalystMlAction.definition, instId,log.ChildLogger(log.RootLogger(), "fps-logger"))
+	inst := pipeline.NewInstance(catalystMlAction.definition, instId, log.ChildLogger(log.RootLogger(), "fps-logger"))
 	catalystMlAction.inst = inst
 
 	return catalystMlAction, nil
@@ -124,7 +124,7 @@ func (f *Action) IOMetadata() *metadata.IOMetadata {
 }
 
 func (f *Action) Run(context context.Context, inputs map[string]interface{}) (map[string]interface{}, error) {
-	
+
 	retData, err := f.inst.Run(inputs)
 
 	if err != nil {
