@@ -29,7 +29,3 @@ require (
 	golang.org/x/tools v0.0.0-20191127201027-ecd32218bd7f // indirect
 	gopkg.in/yaml.v2 v2.2.7 // indirect
 )
-
-replace github.com/project-flogo/contrib/activity/runaction v0.0.0-20191128033334-83001eea3c14 => ../../../../action
-
-

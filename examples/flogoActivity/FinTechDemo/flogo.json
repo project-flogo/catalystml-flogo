@@ -70,9 +70,8 @@
             "id": "cmlact",
             "ref": "github.com/project-flogo/contrib/activity/runaction",
             "settings": {
-              "ref": "#action",
-              "resURI": "file://cml.json",
-              "uriType": "catalystMlURI"
+              "actionRef": "#action",
+              "actionSettings": {"catalystMlURI" : "file://cml.json"}
             },
             "input": {
               "input": {
