@@ -6,11 +6,11 @@
   "appModel": "1.0.0",
   "imports": [
     "github.com/project-flogo/stream/activity/aggregate",
+    "github.com/project-flogo/stream",
     "github.com/project-flogo/contrib/activity/log",
-    "github.com/project-flogo/legacybridge",
     "github.com/project-flogo/contrib/activity/runaction",
     "github.com/project-flogo/catalystml-flogo/action",
-    "github.com/project-flogo/ml/activity/inference"
+    "github.com/skothari-tibco/csvtimer"
   ],
   "triggers": [
     {
@@ -24,12 +24,14 @@
             "header": true,
             "repeatInterval": "5"
           },
-          "action": {
-            "id": "action1",
-            "input": {
-              "input": "=$.data"
+          "actions": [
+            {
+              "id": "action1",
+              "input": {
+                "input": "=$.data"
+              }
             }
-          }
+          ]
         }
       ]
     }
@@ -66,36 +68,13 @@
           },
           {
             "id": "cmlact",
-            "ref": "#runaction",
+            "ref": "github.com/project-flogo/contrib/activity/runaction",
             "settings": {
-              "ref": "#action",
-              "resURI": "file://cml.json",
-              "uriType" : "catalystMlURI"
+              "actionRef": "#action",
+              "actionSettings": {"catalystMlURI" : "file://cml.json"}
             },
             "input": {
-              "input": {
-                "mapping": {
-                  "dataIn": "=$.result"
-                }
-              }
-            }
-          },
-          {
-            "id": "inference_ml",
-            "ref": "github.com/project-flogo/ml/activity/inference",
-            "input": {
-              "model": "Archive.zip",
-              "framework": "Tensorflow",
-              "features": {
-                "mapping": [
-                  {
-                    "name": "inputs",
-                    "data": "=$.output['output']"
-                  }
-                ]
-              },
-              "sigDefName": "serving_default",
-              "tag": "serve"
+              "dataIn": "=$.result"
             }
           },
           {
@@ -111,11 +90,11 @@
   ],
   "actions": [
     {
-      "id": "action1",
       "ref": "github.com/project-flogo/stream",
       "settings": {
         "pipelineURI": "res://pipeline:gather"
-      }
+      },
+      "id": "action1"
     }
   ]
 }
