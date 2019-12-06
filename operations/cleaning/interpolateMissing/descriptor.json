@@ -1,0 +1,36 @@
+{
+    "title":"interpolateMissing",
+    "desc":"select a numerical column list and convert it into bins",
+    "input":[
+	        {
+                "str":"data", 
+                "type":["array", "map"], 
+                "description":"the array or column of map to be binned", 
+                "optional":false
+            },
+	        {
+                "str":"col", 
+                "type":["int", "string", "array"], 
+                "description":"the column(s) to be filled in", 
+                "optional":false
+            }
+	    ],
+    "params":[
+            	{
+                "str":"how", 
+                "type":"string", 
+                "description":"mean: substitutes mean of included values for Missing, linear: interpolates linearly from adjacent values", 
+                "optional":true,
+                "allowed":["mean", "linear"],
+                "defalut":"mean"
+            },
+            	{
+                "str":"edges", 
+                "type":"array", 
+                "description":"for linear how to handle edges", 
+                "optional":true,
+                "allowed":["mean", "linear"]
+            }
+    ],
+    "output":["array", "map"]
+}
