@@ -2,7 +2,6 @@ package grayscale
 
 import (
 	"bytes"
-
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 
 	"image"
