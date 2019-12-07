@@ -27,6 +27,7 @@ func (inst *Instance) Id() string {
 	return inst.id
 }
 
+
 func (inst *Instance) Run(input map[string]interface{}) (output map[string]interface{}, err error) {
 
 	currentInput := make(map[string]interface{})
@@ -55,6 +56,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 	}
 
+
 	//Execute the pipeline.
 	for key, stage := range inst.def.stages {
 
@@ -69,7 +71,6 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 		}
 
 		inst.logger.Debugf("Starting operation [%v] with inputs: [%v]", stage.name+"-"+strconv.Itoa(key), currentInput)
-
 		stageOutput, err := stage.opt.Eval(currentInput)
 
 		if err != nil {
@@ -123,6 +124,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 			return output, nil
 		}
+
 
 		definedType, _ = data.ToTypeEnum(inst.def.output.Type)
 
