@@ -17,7 +17,7 @@ Select a numerical column list and convert it into bins.
             allowed: ["mean","linear"]
         edges - [string] for linear how to handle edges
             Optional - True
-            allowed: []
+            allowed: ["linear"]
     OutputType - [array, map]
 
 OutputType - map[string]interface{}

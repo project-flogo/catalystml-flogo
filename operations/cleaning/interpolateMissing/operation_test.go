@@ -139,3 +139,34 @@ func TestSample5(t *testing.T) {
 
 	t.Log("Output of Operation Interpolate : ", out)
 }
+
+func TestSample6(t *testing.T) {
+
+	inputs := make(map[string]interface{})
+	matrix := [][]interface{}{
+		{0.0, nil, -1.0, 1.0},
+		{nil, 2.0, nil, nil},
+		{2.0, 3.0, nil, 9.0},
+		{nil, 4.0, -4.0, 16.0},
+	}
+
+	t.Log("Input of Operation Interpolate : ", matrix)
+
+	inputs["data"] = matrix
+	inputs["col"] = "2"
+
+	params := Params{
+		How:   "linear",
+		Edges: "linear",
+	}
+
+	optInitConext := test.NewOperationInitContext(params, nil)
+
+	opt, err := New(optInitConext)
+	assert.Nil(t, err)
+
+	out, err := opt.Eval(inputs)
+	assert.Nil(t, err)
+
+	t.Log("Output of Operation Interpolate : ", out)
+}
