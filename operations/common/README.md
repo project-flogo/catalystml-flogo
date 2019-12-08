@@ -4,28 +4,28 @@ import "github.com/project-flogo/catalystml-flogo/operations/common"
 
 Package common is used as common library for operations
 
-## Constant
-
-DataFrameOrderLabel = "order"
-
 ## DataFrame
 
 ### func ToDataFrame
 ```
 func ToDataFrame(data interface{}) (*DataFrame, error)
 ``` 
+Convert array or map to data frame.
 ### func ProcessDataFrame
 ```
 func ProcessDataFrame(dataFrame *DataFrame, callback Callback) error 
 ```
+This function will iterate though all tuples in a dataframe and pass them to callback function.
 ### type Callback
 ```
 type Callback func(tuple *SortableTuple, lastTuple bool) error
 ```
+User impletement it and pass it to ProcessDataFrame for processing dataframe tuple by tuple.
 ### func Transpose
 ```
 func Transpose(dataFrame *DataFrame, newLabels []string) *DataFrame 
 ```
+Transpose input dataframe and applying new labels to new data frame.
 ### func TupleArrayToDataframe
 ```
 func TupleArrayToDataframe(tuples []map[string]interface{}, dataFrame *DataFrame) error 
@@ -52,9 +52,7 @@ func NewDataFrame() *DataFrame
 ### type DataFrame
 ```
 type DataFrame struct {
-	fromTable bool
-	order     []string
-	data      map[string][]interface{}
+	// contains filtered or unexported fields
 }
 func (dataFrame *DataFrame) GetFromTable() bool 
 func (dataFrame *DataFrame) SetFromTable(fromTable bool) 
@@ -73,15 +71,7 @@ func NewDataFrameSorter(Axis int, Ascending bool, NilLast bool, ByKey bool, Sort
 ### type DataFrameSorter
 ```
 type DataFrameSorter struct {
-	Axis              int
-	Ascending         bool
-	NilLast           bool
-	ByKey             bool
-	SortBy            []interface{}
-	Tuples            []SortableTuple
-	ColumnLabels      []string
-	RowLabels         []string
-	OriginalFromTable bool
+	// contains filtered or unexported fields
 }
 func (s DataFrameSorter) GetDataFrame() *DataFrame 
 func (s DataFrameSorter) Len() int 
@@ -96,8 +86,7 @@ func NewSortableTuple(data map[string]interface{}, fieldOrder []string) *Sortabl
 ### type SortableTuple
 ```
 type SortableTuple struct {
-	order []string
-	Data  map[string]interface{}
+	// contains filtered or unexported fields
 }
 func (t SortableTuple) GetData() map[string]interface{} 
 func (t SortableTuple) GetDataArray() []interface{} 
