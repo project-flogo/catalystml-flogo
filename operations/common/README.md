@@ -152,7 +152,7 @@ type Count struct{
 	// contains filtered or unexported fields
 }
 ```
-Call Update will add one to current value (int type).
+Call Update will increment current value by one (int type).
 ```
 func (this *Count) Value() interface{} 
 func (this *Count) Update(newData interface{}) error 
