@@ -1,4 +1,4 @@
-package binning
+package interpolateMissing
 
 import (
 	"testing"
@@ -8,23 +8,18 @@ import (
 )
 
 func TestSample1(t *testing.T) {
+
 	inputs := make(map[string]interface{})
 	table := make(map[string]interface{})
+	table["a"] = []interface{}{0.0, nil, 2.0, nil}
+	table["b"] = []interface{}{nil, 2.0, 3.0, 4.0}
+	table["c"] = []interface{}{-1.0, nil, nil, -4.0}
+	table["d"] = []interface{}{1.0, nil, 9.0, 16.0}
+	t.Log("Input of Operation Interpolate : ", table)
+
 	inputs["data"] = table
 
-	table["col1"] = []interface{}{
-		30.0, 18.0, 30.0, 45.0, 31.0, 36.0, 11.0, 40.0, 53.0, 27.0,
-	}
-
-	params := Params{
-		Quantile:  5,
-		Labels:    []string{"1st bin", "2nd bin", "3rd bin ", "4th bin", "5th bin"},
-		Column:    "col1",
-		Retbins:   true,
-		Precision: 2,
-	}
-
-	optInitConext := test.NewOperationInitContext(params, nil)
+	optInitConext := test.NewOperationInitContext(Params{}, nil)
 
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
@@ -32,28 +27,23 @@ func TestSample1(t *testing.T) {
 	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
 
-	t.Log("Input of Operation Sort : ", table)
-	t.Log("Output of Operation Sort : ", out)
+	t.Log("Output of Operation Interpolate : ", out)
 }
 
 func TestSample2(t *testing.T) {
+
 	inputs := make(map[string]interface{})
 	table := make(map[string]interface{})
+	table["a"] = []interface{}{0.0, nil, 2.0, nil}
+	table["b"] = []interface{}{nil, 2.0, 3.0, 4.0}
+	table["c"] = []interface{}{-1.0, nil, nil, -4.0}
+	table["d"] = []interface{}{1.0, nil, 9.0, 16.0}
+	t.Log("Input of Operation Interpolate : ", table)
+
 	inputs["data"] = table
+	inputs["col"] = "c"
 
-	table["col1"] = []interface{}{
-		30.0, 18.0, 30.0, 45.0, 31.0, 36.0, 11.0, 40.0, 53.0, 27.0,
-	}
-
-	params := Params{
-		Quantile:   5,
-		Column:     "col1",
-		Retbins:    true,
-		Precision:  2,
-		Duplicates: "drop",
-	}
-
-	optInitConext := test.NewOperationInitContext(params, nil)
+	optInitConext := test.NewOperationInitContext(Params{}, nil)
 
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
@@ -61,24 +51,24 @@ func TestSample2(t *testing.T) {
 	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
 
-	t.Log("Input of Operation Sort : ", table)
-	t.Log("Output of Operation Sort : ", out)
+	t.Log("Output of Operation Interpolate : ", out)
 }
 
 func TestSample3(t *testing.T) {
+
 	inputs := make(map[string]interface{})
 	table := make(map[string]interface{})
-	inputs["data"] = table
+	table["a"] = []interface{}{0.0, nil, 2.0, nil}
+	table["b"] = []interface{}{nil, 2.0, 3.0, 4.0}
+	table["c"] = []interface{}{-1.0, nil, nil, -4.0}
+	table["d"] = []interface{}{1.0, nil, 9.0, 16.0}
+	t.Log("Input of Operation Interpolate : ", table)
 
-	table["col1"] = []interface{}{
-		30.0, 18.0, 30.0, 45.0, 31.0, 36.0, 11.0, 40.0, 53.0, 27.0,
-	}
+	inputs["data"] = table
+	inputs["col"] = "c"
 
 	params := Params{
-		Quantile:  5,
-		Column:    "col1",
-		Retbins:   false,
-		Precision: 2,
+		How: "mean",
 	}
 
 	optInitConext := test.NewOperationInitContext(params, nil)
@@ -89,26 +79,25 @@ func TestSample3(t *testing.T) {
 	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
 
-	t.Log("Input of Operation Sort : ", table)
-	t.Log("Output of Operation Sort : ", out)
+	t.Log("Output of Operation Interpolate : ", out)
 }
 
 func TestSample4(t *testing.T) {
 
 	inputs := make(map[string]interface{})
 	table := make(map[string]interface{})
-	inputs["data"] = table
+	table["a"] = []interface{}{0.0, nil, 2.0, nil}
+	table["b"] = []interface{}{nil, 2.0, 3.0, 4.0}
+	table["c"] = []interface{}{-1.0, nil, nil, -4.0}
+	table["d"] = []interface{}{1.0, nil, 9.0, 16.0}
+	t.Log("Input of Operation Interpolate : ", table)
 
-	table["col1"] = []interface{}{
-		30.0, 18.0, 30.0, 45.0, 31.0, 36.0, 11.0, 40.0, 53.0, 27.0,
-	}
+	inputs["data"] = table
+	//inputs["col"] = "c"
 
 	params := Params{
-		Bins:      []float64{11, 19.4, 27.8, 36.2, 44.6, 53},
-		Labels:    []string{"1st bin", "2nd bin", "3rd bin ", "4th bin", "5th bin"},
-		Column:    "col1",
-		Retbins:   true,
-		Precision: 2,
+		How:   "linear",
+		Edges: "linear",
 	}
 
 	optInitConext := test.NewOperationInitContext(params, nil)
@@ -119,26 +108,25 @@ func TestSample4(t *testing.T) {
 	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
 
-	t.Log("Input of Operation Sort : ", table)
-	t.Log("Output of Operation Sort : ", out)
+	t.Log("Output of Operation Interpolate : ", out)
 }
 
 func TestSample5(t *testing.T) {
 
 	inputs := make(map[string]interface{})
 	table := make(map[string]interface{})
-	inputs["data"] = table
+	table["a"] = []interface{}{0.0, nil, 2.0, nil}
+	table["b"] = []interface{}{nil, 2.0, 3.0, 4.0}
+	table["c"] = []interface{}{-1.0, nil, nil, -4.0}
+	table["d"] = []interface{}{1.0, nil, 9.0, 16.0}
+	t.Log("Input of Operation Interpolate : ", table)
 
-	table["col1"] = []interface{}{
-		30.0, 18.0, 30.0, 45.0, 31.0, 36.0, 11.0, 40.0, 53.0, 27.0,
-	}
+	inputs["data"] = table
+	inputs["col"] = "c"
 
 	params := Params{
-		Bins:       []float64{11, 19.4, 27.8, 36.2, 44.6, 53},
-		Column:     "col1",
-		Retbins:    true,
-		Precision:  2,
-		Duplicates: "drop",
+		How:   "linear",
+		Edges: "linear",
 	}
 
 	optInitConext := test.NewOperationInitContext(params, nil)
@@ -149,35 +137,5 @@ func TestSample5(t *testing.T) {
 	out, err := opt.Eval(inputs)
 	assert.Nil(t, err)
 
-	t.Log("Input of Operation Sort : ", table)
-	t.Log("Output of Operation Sort : ", out)
-}
-
-func TestSample6(t *testing.T) {
-
-	inputs := make(map[string]interface{})
-	table := make(map[string]interface{})
-	inputs["data"] = table
-
-	table["col1"] = []interface{}{
-		30.0, 18.0, 30.0, 45.0, 31.0, 36.0, 11.0, 40.0, 53.0, 27.0,
-	}
-
-	params := Params{
-		Bins:      []float64{11, 19.4, 27.8, 36.2, 44.6, 53},
-		Labels:    []string{"1st bin", "2nd bin", "3rd bin ", "4th bin", "5th bin"},
-		Column:    "col1",
-		Precision: 2,
-	}
-
-	optInitConext := test.NewOperationInitContext(params, nil)
-
-	opt, err := New(optInitConext)
-	assert.Nil(t, err)
-
-	out, err := opt.Eval(inputs)
-	assert.Nil(t, err)
-
-	t.Log("Input of Operation Sort : ", table)
-	t.Log("Output of Operation Sort : ", out)
+	t.Log("Output of Operation Interpolate : ", out)
 }

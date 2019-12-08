@@ -1,11 +1,8 @@
-package binning
+package interpolateMissing
 
 import (
 	"errors"
-	"math"
-	"sort"
-	"strconv"
-	"strings"
+	//"fmt"
 
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/catalystml-flogo/operations/common"
@@ -14,8 +11,10 @@ import (
 )
 
 type Operation struct {
-	logger log.Logger
-	params *Params
+	logger     log.Logger
+	params     *Params
+	method     InterpolateMethod
+	edgeMethod InterpolateMethod
 }
 
 func New(ctx operation.InitContext) (operation.Operation, error) {
@@ -27,7 +26,28 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 		return nil, err
 	}
 
-	return &Operation{params: p, logger: ctx.Logger()}, nil
+	var method InterpolateMethod
+	switch p.How {
+	case "linear":
+		method = Linear{}
+	case "mean":
+		method = Mean{}
+	default:
+		method = Mean{}
+	}
+
+	var edgeMethod InterpolateMethod
+	switch p.Edges {
+	case "linear":
+		edgeMethod = Linear{}
+	}
+
+	return &Operation{
+		params:     p,
+		logger:     ctx.Logger(),
+		method:     method,
+		edgeMethod: edgeMethod,
+	}, nil
 }
 
 func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
@@ -41,204 +61,182 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		return nil, err
 	}
 
-	dataFrame, ok := in.Data.(*common.DataFrame)
-
-	a.logger.Info("Starting Operation Binning.")
-	a.logger.Debug("Input of Operation Binning.", dataFrame)
-	a.logger.Debug("Quantile...", a.params.Quantile)
-	a.logger.Debug("Bins...", a.params.Bins)
-	a.logger.Debug("Column...", a.params.Column)
-	a.logger.Debug("Labels...", a.params.Labels)
-	a.logger.Debug("Retbins...", a.params.Retbins)
-	a.logger.Debug("Precision...", a.params.Precision)
-	a.logger.Debug("Retbins...", a.params.Retbins)
-	a.logger.Debug("Duplicate...", a.params.Duplicates)
-
-	if !ok {
+	dataFrame, isDataFrame := in.Data.(*common.DataFrame)
+	if !isDataFrame {
 		errors.New("Input data should be DataFrame type.")
 	}
 
-	sorter := common.NewDataFrameSorter(
-		0,
-		true,
-		true,
-		true,
-		[]interface{}{a.params.Column},
-		dataFrame,
-	)
+	a.logger.Info("Starting Operation interpolateMissing.")
+	a.logger.Debug("Input Data of Operation interpolateMissing = ", dataFrame)
+	a.logger.Debug("How = ", a.params.How)
+	a.logger.Debug("Edges = ", a.params.Edges)
 
-	a.logger.Debug("Before sort : ", sorter)
-	sort.Sort(sorter)
-	a.logger.Debug("After sorted : ", sorter)
-
-	sortedDF := sorter.GetDataFrame()
-	targetArr := sortedDF.GetColumn(a.params.Column)
-
-	var result interface{}
-	if 0 < a.params.Quantile {
-		result = a.qBinning(
-			targetArr,
-			a.params.Quantile,
-			"drop" == strings.ToLower(a.params.Duplicates),
-			a.params.Retbins,
-			math.Pow10(a.params.Precision),
-			a.params.Labels,
-		)
+	columnName, isString := in.Col.(string)
+	if !isString {
+		for _, columnName := range dataFrame.GetLabels() {
+			a.interpolateMissing(dataFrame.GetColumn(columnName))
+		}
 	} else {
-		result = a.binning(
-			targetArr,
-			a.params.Bins,
-			"drop" == strings.ToLower(a.params.Duplicates),
-			a.params.Retbins,
-			math.Pow10(a.params.Precision),
-			a.params.Labels,
-		)
+		a.logger.Debug("Input Col Operation interpolateMissing = ", columnName)
+		a.interpolateMissing(dataFrame.GetColumn(columnName))
 	}
 
-	a.logger.Info("Operation Binning Completed")
-	a.logger.Debug("Output of Operation Binning.", result)
+	a.logger.Info("Operation interpolateMissing Completed")
+	a.logger.Debug("Output of Operation interpolateMissing = ", dataFrame)
 
-	return result, nil
+	return dataFrame.AsIs(), nil
 }
 
-func (a *Operation) binning(
+func (a *Operation) interpolateMissing(
 	array []interface{},
-	bounds []float64,
-	dropDuplicate bool,
-	retbins bool,
-	roundingFactor float64,
-	labels []string,
-) map[string]interface{} {
-	useLabel := false
-	if len(labels) == len(bounds)-1 {
-		useLabel = true
-	}
-	result := make(map[string]interface{})
-	result["bounds"] = bounds
-	previousValue := 0.0
-	previousBinNumber := 0
-	upperBound := bounds[1]
-	counter := 0
-	for index, data := range array {
-		value := data.(float64)
-		if value > upperBound {
-			counter++
-			upperBound = bounds[counter+1]
-		}
+) {
 
-		var binNumber int
-		duplicate := false
-		if value == previousValue {
-			binNumber = previousBinNumber
-			duplicate = true
+	inInterval := false
+	gaps := make([]Interval, 0)
+	edges := make([]Interval, 0)
+	var gap Interval
+	gapIndex := 0
+	for index, value := range array {
+		wasInInterval := inInterval
+		a.logger.Debug("index = ", index, ", value = ", value)
+		if nil == value {
+			if 0 == index || nil != array[index-1] {
+				inInterval = true
+			}
 		} else {
-			previousBinNumber = counter
-			binNumber = counter
+			if 0 != index && nil == array[index-1] {
+				inInterval = false
+			}
 		}
 
-		a.logger.Debug(">> i = ", index, ", value = ", value, ", binNumber = ", binNumber, ", previousBinNumber = ", previousBinNumber)
+		if !wasInInterval && inInterval {
+			gap = NewInterval()
+			gap.SetStartBound(index - 1)
+		} else if wasInInterval && !inInterval {
+			gap.SetEndBound(index)
+			if -1 == gap.GetStartBound() || -1 == gap.GetEndBound() {
+				edges = append(edges, gap)
 
-		if retbins && (!dropDuplicate || !duplicate) {
-			var bins map[string]interface{}
-			if nil == result["bins"] {
-				bins = make(map[string]interface{}, len(bounds))
-				result["bins"] = bins
 			} else {
-				bins = result["bins"].(map[string]interface{})
+				gaps = append(gaps, gap)
 			}
-
-			var label string
-			if useLabel {
-				label = labels[binNumber]
-			} else {
-				label = strconv.Itoa(binNumber)
-			}
-
-			if nil == bins[label] {
-				bins[label] = make([]interface{}, 0)
-			}
-			bins[label] = append(bins[label].([]interface{}), value)
-			a.logger.Debug("i = ", index, ", label = ", label, ", value = ", value)
+			gapIndex++
 		}
-		previousValue = value
+
+		a.logger.Debug("in gap : ", inInterval)
 	}
-	return result
+
+	if inInterval {
+		edges = append(edges, gap)
+	}
+	a.logger.Debug("gaps : ", gaps)
+	a.logger.Debug("edges : ", edges)
+
+	for _, gap := range gaps {
+		gap.Interpolate(array, a.method)
+	}
+
+	if nil != a.edgeMethod {
+		for _, edge := range edges {
+			edge.InterpolateEdge(array, a.edgeMethod)
+		}
+	}
 }
 
-func (a *Operation) qBinning(
-	array []interface{},
-	quantile int,
-	dropDuplicate bool,
-	retbins bool,
-	roundingFactor float64,
-	labels []string,
-) map[string]interface{} {
-	useLabel := false
-	if len(labels) == quantile {
-		useLabel = true
+func NewInterval() Interval {
+	return Interval{stratBound: -1, endBound: -1}
+}
+
+type Interval struct {
+	stratBound int
+	endBound   int
+}
+
+func (i *Interval) SetStartBound(startBound int) {
+	i.stratBound = startBound
+}
+
+func (i *Interval) GetStartBound() int {
+	return i.stratBound
+}
+
+func (i *Interval) SetEndBound(endBound int) {
+	i.endBound = endBound
+}
+
+func (i *Interval) GetEndBound() int {
+	return i.endBound
+}
+
+func (i *Interval) Interpolate(series []interface{}, how InterpolateMethod) {
+	how.Process(series, i)
+}
+
+func (i *Interval) InterpolateEdge(series []interface{}, how InterpolateMethod) {
+	how.ProcessEdge(series, i)
+}
+
+type InterpolateMethod interface {
+	Process(series []interface{}, gap *Interval)
+	ProcessEdge(series []interface{}, gap *Interval)
+}
+
+type Mean struct {
+}
+
+func (m Mean) Process(series []interface{}, gap *Interval) {
+	mean := (series[gap.GetStartBound()].(float64) + series[gap.GetEndBound()].(float64)) / 2
+	for i := gap.GetStartBound() + 1; i < gap.GetEndBound(); i++ {
+		series[i] = mean
 	}
-	result := make(map[string]interface{})
-	bounds := make([]interface{}, quantile+1)
-	result["bounds"] = bounds
-	deltaPercentile := 100.0 / float64(quantile)
-	lowerBound := 0.0
-	upperBound := deltaPercentile
-	previousValue := 0.0
-	previousPcnt := 0.0
-	previousBinNumber := 0
-	counter := 0
-	for index, data := range array {
-		value := data.(float64)
-		percentile := 100 * (float64(index) + 0.5) / float64(len(array))
-		if percentile > upperBound {
-			lowerBound += deltaPercentile
-			upperBound += deltaPercentile
-			a.logger.Debug(">> i = ", index+1, ", PreviousPcnt = ", previousPcnt, ", Percentile = ", percentile)
-			a.logger.Debug(">> previousValue = ", previousValue, ", value = ", value)
-			a.logger.Debug(">> lowerBound = ", lowerBound, ", upperBound = ", upperBound)
-			counter++
-			bound := (value*(lowerBound-previousPcnt) + previousValue*(percentile-lowerBound)) / (percentile - previousPcnt)
-			bounds[counter] = math.Round(bound*roundingFactor) / roundingFactor
-		} else if 0 == index {
-			bounds[counter] = value
-		} else if len(array)-1 == index {
-			bounds[counter+1] = value
-		}
+}
 
-		var binNumber int
-		duplicate := false
-		if value == previousValue {
-			binNumber = previousBinNumber
-			duplicate = true
-		} else {
-			previousBinNumber = counter
-			binNumber = counter
-		}
+func (m Mean) ProcessEdge(series []interface{}, gap *Interval) {
+}
 
-		if retbins && (!dropDuplicate || !duplicate) {
-			var bins map[string]interface{}
-			if nil == result["bins"] {
-				bins = make(map[string]interface{}, quantile)
-				result["bins"] = bins
-			} else {
-				bins = result["bins"].(map[string]interface{})
-			}
+type Linear struct {
+}
 
-			var label string
-			if useLabel {
-				label = labels[binNumber]
-			} else {
-				label = strconv.Itoa(binNumber)
-			}
-
-			if nil == bins[label] {
-				bins[label] = make([]interface{}, 0)
-			}
-			bins[label] = append(bins[label].([]interface{}), value)
-			a.logger.Debug("i = ", index, ", label = ", label, ", value = ", value)
-		}
-		previousValue = value
-		previousPcnt = percentile
+func (l Linear) Process(series []interface{}, gap *Interval) {
+	gapLength := gap.GetEndBound() - gap.GetStartBound()
+	delta := slope(float64(gapLength), series[gap.GetStartBound()].(float64), series[gap.GetEndBound()].(float64))
+	for i := gap.GetStartBound() + 1; i < gap.GetEndBound(); i++ {
+		series[i] = series[i-1].(float64) + delta
 	}
-	return result
+}
+
+func (l Linear) ProcessEdge(series []interface{}, gap *Interval) {
+	if -1 == gap.GetStartBound() {
+		gapLength := gap.GetEndBound()
+		//fmt.Println(
+		//	"gap : ", *gap,
+		//	", len(*series) : ", len(series),
+		//	", (*series)[gapLength] = ", series[gapLength],
+		//	", (*series)[gapLength+1] = ", series[gapLength+1],
+		//)
+		if (gapLength+2) <= len(series) && nil != series[gapLength] && nil != series[gapLength+1] {
+			delta := slope(1.0, series[gapLength].(float64), series[gapLength+1].(float64))
+			for i := gapLength - 1; i >= 0; i-- {
+				series[i] = series[i+1].(float64) - delta
+			}
+		}
+	} else if -1 == gap.GetEndBound() {
+		gapLength := len(series) - gap.GetStartBound()
+		//fmt.Println(
+		//	"gap : ", *gap,
+		//	", len(*series) : ", len(series),
+		//	", (*series)[gapLength] = ", series[gapLength],
+		//	", (*series)[gapLength+1] = ", series[gapLength+1],
+		//)
+		if (gapLength+2) <= len(series) && nil != series[gap.GetStartBound()] && nil != series[gap.GetStartBound()-1] {
+			delta := slope(1.0, series[gap.GetStartBound()-1].(float64), series[gap.GetStartBound()].(float64))
+			for i := gap.GetStartBound() + 1; i < len(series); i++ {
+				series[i] = series[i-1].(float64) + delta
+			}
+		}
+	}
+}
+
+func slope(gapLen float64, y1 float64, y2 float64) float64 {
+	return (y2 - y1) / gapLen
 }

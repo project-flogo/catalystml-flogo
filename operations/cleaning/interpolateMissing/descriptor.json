@@ -29,7 +29,7 @@
                 "type":"array", 
                 "description":"for linear how to handle edges", 
                 "optional":true,
-                "allowed":["mean", "linear"]
+                "allowed":["linear"]
             }
     ],
     "output":["array", "map"]

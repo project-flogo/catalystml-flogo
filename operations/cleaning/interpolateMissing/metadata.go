@@ -1,4 +1,4 @@
-package binning
+package interpolateMissing
 
 import (
 	"github.com/project-flogo/catalystml-flogo/operations/common"
@@ -18,6 +18,7 @@ func (i *Input) FromMap(values map[string]interface{}) error {
 
 	var err error
 	i.Data, err = common.ToDataFrame(values["data"])
+	i.Col = values["col"]
 
 	return err
 }
