@@ -273,7 +273,10 @@ func (this *Sum) Value() interface{} {
 }
 
 func (this *Sum) Update(newData interface{}) error {
-	delta, _ := coerce.ToFloat64(newData)
+	delta, err := coerce.ToFloat64(newData)
+	if nil != err {
+		return err
+	}
 	this.data += delta
 	return nil
 }

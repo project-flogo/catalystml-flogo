@@ -19,8 +19,8 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/project-flogo/catalystml-flogo v0.1.0 h1:zE18Ab/o1TxDTLh8GLsXjiS8Zt/h+48vN0UxEOGRmOo=
 github.com/project-flogo/catalystml-flogo/action v0.0.0-20190919183915-24819a1a9a2b h1:09j2K7W/vmjLFQAKnt7xgEOprCHLIW99zKp0Cl63Iq0=
 github.com/project-flogo/catalystml-flogo/action v0.0.0-20190919183915-24819a1a9a2b/go.mod h1:7LJYrm+cCpK8Z+ENrZDpu9U/rQtflZYyr27YVvSQ8fo=
-github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20191106183910-855c5fa1b810 h1:wMkktdg+/LXKZpxTUU4QvCDlHswodRw+Q47X5N3EsOs=
-github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20191106183910-855c5fa1b810/go.mod h1:KjME7OdIdCTp8n5BugWJpdrniViq2b5+jmoAfpOma5w=
+github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20191203200037-9511e7217fc3 h1:7gxlp6Tg/YN8jdX4dfV3buCLhhM9Xb5PCk3+zKZzd1g=
+github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20191203200037-9511e7217fc3/go.mod h1:KjME7OdIdCTp8n5BugWJpdrniViq2b5+jmoAfpOma5w=
 github.com/project-flogo/core v0.9.0-rc.1 h1:0dALJoxHI/T4Ao340cHfNg5Yf5uM/bT4Y7u+5UYXfIQ=
 github.com/project-flogo/core v0.9.0-rc.1/go.mod h1:dzmBbQfNNC0g0KClKYQxxGJLe53MHafg75Vhmw2TW8U=
 github.com/project-flogo/core v0.9.3/go.mod h1:QGWi7TDLlhGUaYH3n/16ImCuulbEHGADYEXyrcHhX7U=

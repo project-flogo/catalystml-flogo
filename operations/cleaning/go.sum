@@ -28,7 +28,8 @@ github.com/project-flogo/catalystml-flogo/action v0.0.0-20191112152814-dc69f9aae
 github.com/project-flogo/catalystml-flogo/action v0.0.0-20191112152814-dc69f9aae0fd/go.mod h1:8gYruO15JaYFOMh6J/uRk5BVj2ZmfCmmqAc/4i+vmMo=
 github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20190919183915-24819a1a9a2b h1:M/tfBv6F+EPsXNVNCk0mZYCynaP1A41m4oA/omBYrVA=
 github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20190919183915-24819a1a9a2b/go.mod h1:KjME7OdIdCTp8n5BugWJpdrniViq2b5+jmoAfpOma5w=
-github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20191112152814-dc69f9aae0fd/go.mod h1:KjME7OdIdCTp8n5BugWJpdrniViq2b5+jmoAfpOma5w=
+github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20191203200037-9511e7217fc3 h1:7gxlp6Tg/YN8jdX4dfV3buCLhhM9Xb5PCk3+zKZzd1g=
+github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20191203200037-9511e7217fc3/go.mod h1:KjME7OdIdCTp8n5BugWJpdrniViq2b5+jmoAfpOma5w=
 github.com/project-flogo/catalystml-flogo/operations/string_processing v0.0.0-20191106183910-855c5fa1b810 h1:5RtnO4tdVIkbtHXizyEhxq+gMBNCc5x5pFIs4xwsEuY=
 github.com/project-flogo/catalystml-flogo/operations/string_processing v0.0.0-20191106183910-855c5fa1b810/go.mod h1:ywBtgWod4G2/k2QV/Rg1i63TeiRbs6n2fomQy7l+2ko=
 github.com/project-flogo/catalystml-flogo/operations/string_processing v0.0.0-20191112152814-dc69f9aae0fd/go.mod h1:ywBtgWod4G2/k2QV/Rg1i63TeiRbs6n2fomQy7l+2ko=
