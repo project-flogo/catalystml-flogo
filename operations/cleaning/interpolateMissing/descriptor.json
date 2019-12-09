@@ -26,10 +26,11 @@
             },
             	{
                 "str":"edges", 
-                "type":"array", 
-                "description":"for linear how to handle edges", 
+                "type":"string", 
+                "description":"mean: substitutes mean of included values for Missing, linear: exterpolates linearly from adjacent values", 
                 "optional":true,
-                "allowed":["linear"]
+                "allowed":["mean", "linear"],
+                "defalut":"mean"
             }
     ],
     "output":["array", "map"]

@@ -40,6 +40,10 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 	switch p.Edges {
 	case "linear":
 		edgeMethod = Linear{}
+	case "mean":
+		method = Mean{}
+	default:
+		method = Mean{}
 	}
 
 	return &Operation{
@@ -144,20 +148,20 @@ func (a *Operation) interpolateMissing(
 }
 
 func NewInterval() Interval {
-	return Interval{stratBound: -1, endBound: -1}
+	return Interval{startBound: -1, endBound: -1}
 }
 
 type Interval struct {
-	stratBound int
+	startBound int
 	endBound   int
 }
 
 func (i *Interval) SetStartBound(startBound int) {
-	i.stratBound = startBound
+	i.startBound = startBound
 }
 
 func (i *Interval) GetStartBound() int {
-	return i.stratBound
+	return i.startBound
 }
 
 func (i *Interval) SetEndBound(endBound int) {
@@ -185,13 +189,36 @@ type Mean struct {
 }
 
 func (m Mean) Process(series []interface{}, gap *Interval) {
-	mean := (series[gap.GetStartBound()].(float64) + series[gap.GetEndBound()].(float64)) / 2
+	mean := m.mean(series)
 	for i := gap.GetStartBound() + 1; i < gap.GetEndBound(); i++ {
 		series[i] = mean
 	}
 }
 
 func (m Mean) ProcessEdge(series []interface{}, gap *Interval) {
+	mean := m.mean(series)
+	if -1 == gap.GetStartBound() {
+		for i := 0; i < gap.GetEndBound(); i++ {
+			series[i] = mean
+		}
+	} else if -1 == gap.GetEndBound() {
+		for i := gap.GetEndBound() + 1; i < len(series); i++ {
+			series[i] = mean
+		}
+	}
+}
+
+func (m Mean) mean(series []interface{}) float64 {
+	count := 0
+	sum := 0.0
+	for _, value := range series {
+		if nil != value {
+			count++
+			sum += value.(float64)
+		}
+	}
+
+	return sum / float64(count)
 }
 
 type Linear struct {
