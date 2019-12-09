@@ -8,12 +8,9 @@
     "github.com/project-flogo/stream/activity/aggregate",
     "github.com/project-flogo/contrib/activity/log",
     "github.com/project-flogo/legacybridge",
-    "github.com/project-flogo/contrib/activity/syncaction",
+    "github.com/project-flogo/contrib/activity/runaction",
     "github.com/project-flogo/catalystml-flogo/action",
-    "github.com/project-flogo/ml/activity/inference",
-    "github.com/project-flogo/catalystml-flogo/operations/cleaning",
-    "github.com/project-flogo/catalystml-flogo/operations/math",
-    "github.com/project-flogo/catalystml-flogo/operations/categorical"
+    "github.com/project-flogo/ml/activity/inference"
   ],
   "triggers": [
     {
@@ -69,10 +66,11 @@
           },
           {
             "id": "cmlact",
-            "ref": "github.com/project-flogo/contrib/activity/syncaction",
+            "ref": "#runaction",
             "settings": {
               "ref": "#action",
-              "resURI": "file://cml.json"
+              "resURI": "file://cml.json",
+              "uriType" : "catalystMlURI"
             },
             "input": {
               "input": {

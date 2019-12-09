@@ -1,0 +1,19 @@
+{
+    "title":"valToArray",
+    "desc":"casts single value to array or array of arrays of given shape",
+    "input":[
+	        {
+                "name":"val", 
+                "type":["int","float"], 
+                "description":"value to be expanded", 
+                "optional":false
+            },
+	        {
+                "name":"shape", 
+                "type":"array", 
+                "description":"array determines shape of output ([2,3] means a 2x3 matrix)", 
+                "optional":false
+            }
+	    ],
+    "output":"array"
+}

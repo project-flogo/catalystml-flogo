@@ -6,7 +6,7 @@
 For matrices of the same shape multiply corresponding values.
 
 ### Implementation details
-In Progress.
+Done
 
 ## Compliance to Spec
 

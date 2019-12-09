@@ -1,0 +1,19 @@
+{
+    "title":"trimprefix",
+    "desc":"TrimPrefix returns s without the provided leading prefix string. If s doesn't start with prefix, s is returned unchanged.",
+    "input":[
+	        {
+                "name":"s0", 
+                "type":"string", 
+                "description":"string to be cleaned/trimmed", 
+                "optional":false
+            },
+	        {
+                "name":"s1", 
+                "type":"string", 
+                "description":"unicode to be trimmed off", 
+                "optional":false
+            }
+	    ],
+    "output":"string"
+}

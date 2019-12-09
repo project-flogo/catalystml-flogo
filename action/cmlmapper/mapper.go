@@ -18,8 +18,13 @@ type DerefernceStruct struct {
 
 func NewExpression(str string) []DerefernceStruct {
 	var derefStructs []DerefernceStruct
+	var id string
+	if str[0] == '$' {
+		id = str[1:strings.Index(str, "[")]
+	} else {
+		id = str[0:strings.Index(str, "[")]
+	}
 
-	id := str[0:strings.Index(str, "[")]
 	for key, val := range strings.Split(str, "[") {
 		var derefStruct DerefernceStruct
 		derefStruct.Id = id
@@ -79,9 +84,9 @@ func Apply(deStructs []DerefernceStruct, scope data.Scope, value interface{}) {
 	var temp interface{}
 	var err error
 	size := len(deStructs)
-	
+
 	for key, val := range deStructs {
-		
+
 		var temp2 []interface{}
 		var temp3 map[string]interface{}
 
@@ -99,7 +104,6 @@ func Apply(deStructs []DerefernceStruct, scope data.Scope, value interface{}) {
 			temp, ok = temp3[val.Index]
 			if key == size-1 {
 
-				
 				temp3[val.Index] = value
 			}
 			if !ok {
@@ -111,7 +115,7 @@ func Apply(deStructs []DerefernceStruct, scope data.Scope, value interface{}) {
 			temp = temp2[index]
 			if key == size-1 {
 				temp2[index] = val
-				
+
 			}
 		}
 

@@ -1,0 +1,25 @@
+{
+    "title":"lag",
+    "desc":"create new vector shifted down by lagnum with NaN filling missing locations added to table/map",
+    "input":[
+	        {
+                "name":"table", 
+                "type":["array","map"], 
+                "description":"data to be shifted", 
+                "optional":false
+            },
+            {
+                "name":"lagnum", 
+                "type":"int", 
+                "description":"number of places to lag data", 
+                "optional":false
+            },
+            {
+                "name":"col", 
+                "type":"int", 
+                "description":"column to shift", 
+                "optional":false
+            }
+	    ],
+    "output":["array","map"]
+}

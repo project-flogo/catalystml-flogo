@@ -3,7 +3,7 @@
     "desc":"reshape a matrix or map by re-indexing like the pivot function in pandas",
     "input":[
 	        {
-                "str":"data", 
+                "name":"data", 
                 "type":["array", "map"], 
                 "description":"map key is column name, map value are column values.", 
                 "optional":false
@@ -11,19 +11,19 @@
 	    ],
     "params":[
         {
-            "str":"index", 
+            "name":"index", 
             "type":"array", 
             "description":"Group key of data", 
             "optional":false
         },
         {
-            "str":"columns", 
+            "name":"columns", 
             "type":"array", 
             "description":"Name of columns which value to be used to make new frame’s columns", 
             "optional":true
         },
         {
-            "str":"aggregate", 
+            "name":"aggregate", 
             "type":"table", 
             "description":"Map key is groupKey, map value is aggregate function. Currently support Sum, Count, Mean, Min, Max", 
             "optional":true

@@ -1,0 +1,19 @@
+{
+    "title":"trimsuffix",
+    "desc":"TrimSuffix returns s without the provided trailing suffix string. If s doesn't end with suffix, s is returned unchanged.",
+    "input":[
+	        {
+                "name":"s0", 
+                "type":"string", 
+                "description":"string to be cleaned/trimmed", 
+                "optional":false
+            },
+	        {
+                "name":"s1", 
+                "type":"string", 
+                "description":"unicode to be trimmed off", 
+                "optional":false
+            }
+	    ],
+    "output":"string"
+}

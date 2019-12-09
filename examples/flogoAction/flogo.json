@@ -5,10 +5,7 @@
   "description": "",
   "appModel": "1.0.0",
   "imports": [
-    "github.com/project-flogo/catalystml-flogo/operations/cleaning",
     "github.com/project-flogo/core@master",
-    "github.com/project-flogo/catalystml-flogo/operations/nlp",
-    "github.com/project-flogo/catalystml-flogo/operations/string_processing",
     "github.com/project-flogo/contrib/trigger/timer",
     "github.com/project-flogo/catalystml-flogo/action"
   ],

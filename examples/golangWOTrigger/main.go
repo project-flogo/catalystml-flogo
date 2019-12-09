@@ -8,6 +8,7 @@ import (
 	_ "github.com/project-flogo/catalystml-flogo/operations/cleaning"
 	_ "github.com/project-flogo/catalystml-flogo/operations/nlp"
 	_ "github.com/project-flogo/catalystml-flogo/operations/string_processing"
+	_ "github.com/project-flogo/catalystml-flogo/operations/image_processing"
 	"github.com/project-flogo/core/action"
 )
 

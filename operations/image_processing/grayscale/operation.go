@@ -1,7 +1,9 @@
-package resize
+package grayscale
 
 import (
 	"bytes"
+
+	"github.com/project-flogo/catalystml-flogo/action/operation"
 
 	"image"
 	"image/color"
@@ -12,6 +14,10 @@ import (
 
 type Operation struct {
 	logger log.Logger
+}
+
+func New(ctx operation.InitContext) (operation.Operation, error) {
+	return &Operation{logger: ctx.Logger()}, nil
 }
 
 func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {

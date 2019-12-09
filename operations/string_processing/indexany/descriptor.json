@@ -1,0 +1,19 @@
+{
+    "title":"indexany",
+    "desc":"IndexAny returns the index of the first instance of any Unicode code point from chars in s, or -1 if no Unicode code point from chars is present in s",
+    "input":[
+        {
+            "name":"s0", 
+            "type":"string", 
+            "description":"string", 
+            "optional":false
+        },
+        {
+            "name":"s1", 
+            "type":"string", 
+            "description":"substring", 
+            "optional":false
+        }
+    ],
+    "output":"int"
+}

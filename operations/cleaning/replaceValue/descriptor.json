@@ -1,0 +1,49 @@
+{
+    "title":"replaceValue",
+    "desc":"Given a map replaces data (key) with map value",
+    "input":[
+	        {
+                "name":"data", 
+                "type":["array","map"], 
+                "description":"data to be operated on", 
+                "optional":false
+            },
+            {
+                "name":"replaceMap", 
+                "type":"map", 
+                "description":"map gives key to replace with value", 
+                "optional":true
+            },
+            {
+                "name":"replaceKey", 
+                "type":["NaN","int","string","float","etc"], 
+                "description":"what is to be replaced", 
+                "optional":true,
+                "default":"NaN"
+            },
+            {
+                "name":"replaceValue", 
+                "type":["NaN","int","string","float","etc"], 
+                "description":"what is to be replaced with", 
+                "optional":true,
+                "default":"NaN (if neither replaceMap or replaceKey given)"
+            }
+	    ],
+    "params":[
+        {
+            "name":"Axis", 
+            "type":"int", 
+            "description":"(0=vertical/column, 1=horizontal/row)", 
+            "default":"0",
+            "optional":true
+        },
+        {
+            "name":"col", 
+            "type":"int", 
+            "description":"Column to replace values in", 
+            "default":"index",
+            "optional":true
+        }
+    ],
+    "output":["array","map"]
+}

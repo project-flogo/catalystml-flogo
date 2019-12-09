@@ -11,7 +11,7 @@ import (
 func TestInts(t *testing.T) {
 
 	inputs := make(map[string]interface{})
-	inputs["arr0"] = []interface{}{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	inputs["arr0"] = []interface{}{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 2}
 	inputs["arr1"] = []interface{}{2, 4, 6, 8, 10}
 
 	opt := &Operation{logger: log.RootLogger()}

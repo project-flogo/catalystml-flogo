@@ -38,6 +38,9 @@ func (dataFrame *DataFrame) GetLabels() []string {
 func (dataFrame *DataFrame) GetColumn(label string) []interface{} {
 	return dataFrame.data[label]
 }
+func (dataFrame *DataFrame) GetData() map[string][]interface{} {
+	return dataFrame.data
+}
 
 func (dataFrame *DataFrame) AsTable() map[string]interface{} {
 	table := make(map[string]interface{})

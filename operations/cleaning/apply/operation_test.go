@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	_ "github.com/project-flogo/catalystml-flogo/operations/count"
-	"github.com/project-flogo/fps/support/test"
+	"github.com/project-flogo/catalystml-flogo/action/operation"
+	"github.com/project-flogo/catalystml-flogo/action/support/test"
+	_ "github.com/project-flogo/catalystml-flogo/operations/string_processing"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -21,27 +22,25 @@ func TestMap(t *testing.T) {
 	pmap["grrr"] = 2
 	imap := make(map[string]interface{})
 	imap["s0"] = "moo moo moo baa maa neigh neigh"
-	imap["s1"] = "$item"
+	imap["s1"] = "&item"
 
-	// data := []string{"moo", "baa", "maa", "neigh"}
 	data := make(map[interface{}]interface{})
 	data["blah"] = "moo"
 	data["grrr"] = "neigh"
 	data["aho"] = "maa"
 	data["sigh"] = "baa"
-	fn := Config{Operation: "count", Params: pmap, Input: imap}
+	fn := operation.Config{Operation: "count", Params: pmap, Input: imap}
 
 	inputs["data"] = data
-	inputs["func"] = fn
+	inputs["function"] = fn
 
 	optInitConext := test.NewOperationInitContext(p, nil)
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 
 	output, err := opt.Eval(inputs)
-	fmt.Println(output)
+	fmt.Println("OUTPUT:", output)
 	assert.NotNil(t, output)
-	// assert.Equal(t, output, " hotspot ", "two should be the same")
 	assert.Nil(t, err)
 
 }
@@ -58,13 +57,13 @@ func TestArray(t *testing.T) {
 	pmap["grrr"] = 2
 	imap := make(map[string]interface{})
 	imap["s0"] = "moo moo moo baa maa neigh neigh"
-	imap["s1"] = "$item"
+	imap["s1"] = "&item"
 
 	data := []string{"moo", "baa", "maa", "neigh"}
-	fn := Config{Operation: "count", Params: pmap, Input: imap}
+	fn := operation.Config{Operation: "count", Params: pmap, Input: imap}
 
 	inputs["data"] = data
-	inputs["func"] = fn
+	inputs["function"] = fn
 
 	optInitConext := test.NewOperationInitContext(p, nil)
 	opt, err := New(optInitConext)
@@ -78,9 +77,7 @@ func TestArray(t *testing.T) {
 
 	output, err := opt.Eval(inputs)
 	fmt.Println(output)
-	// fmt.Println(output, mcomp, reflect.DeepEqual(output, mcomp))
 	assert.NotNil(t, output)
-	// assert.True(t, reflect.DeepEqual(output, mcomp))
 	assert.Nil(t, err)
 
 }
