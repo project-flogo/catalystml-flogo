@@ -1,83 +1,97 @@
-{   
-    "name":"Sample CML Pipeline",
-    "description":"Demonstrates sample operation in pipeline",
-    "model":{
-      "framework":"Tensorflow",
-      "tags":"serve",
-      "signatureDefs":"def_signature"
-    },
-    "input": [
-      {
-        "type":"string",
-        "label": "input"  
-      },
-      {
-        "type":"list",
-        "label":"blah"
-      }
-    ],
-    "structure": [
-      {
-        "output" : "math1",
-        "operation": "math",
-        "params": {
-          "sample":2,
-          "listOfKeys":["0_0","1_0","2_0","amag_0","0_1","1_1","2_1","amag_1"]
-        },
-        "input": {
-          "inputSample": "$input"
-        }
-
-      },
-      {
-        "output" : "math1",
-        "operation": "math",
-        "params": {
-          "sample":2
-        },
-        "input": {
-          "inputSample": "788",
-          "inputMap": "$math1"
-        }
-      },
-      {
-        "output" : "math1['sample']",
-        "operation": "math",
-        "params": {
-          "sample":3 
-        },
-        "input": {
-          "inputSample": "23",
-          "inputMap": "$math1"
-        }
-      },
-      {
-        "output" : "math2",
-        "operation": "math",
-        "params": {
-          "sample":3 
-        },
-        "input": {
-          "inputSample": "$math1['sample']",
-          "inputMap": "$math1"
-        }
-      },
-      {
-        "output" : "math2",
-        "operation": "math",
-        "params": {
-          "sample":3 
-        },
-        "input": {
-          "inputSample": "$math1['sample']",
-          "inputMap": "$math1"
-        }
-      }      
-    ],
-    "output" :{
-      "type" : "dataframe",
-      "data" : {
-        "feat1":"$math1"
-      }
+{ 
+  "name": "Para2BOW",
+  "description": "Converts a paragraph to a bag of words for NLP",
+  "version": "0.0.1",
+  "createdDate": "20190703",
+  "model": {
+    "framework": "Tensorflow",
+    "tags": "serve",
+    "signatureDefs": "def_signature"
+  },
+  "input": [
+    {
+      "type": "string",
+      "label": "paragraph"
     }
+  ],
+  "structure": [
+    {
+      "operation": "tolower",
+      "input": {
+        "str": "$paragraph"
+      },
+      "output": "lowerwords"
+    },
+    {
+      "operation": "tokenize",
+      "input": {
+        "str": "$lowerwords"
+      },
+      "output": "words"
+    },
+    {
+      "operation": "getstopwords",
+      "params": {
+        "lib": "nltk"
+      },
+      "output": "stopwords"
+    },
+    {
+      "operation": "ifnotin",
+      "input": {
+        "arr0": "$words",
+        "arr1": "$stopwords"
+      },
+      "output": "nostop"
+    },
+    {
+      "operation": "apply",
+      "input": {
+        "data": "$nostop",
+        "function": {
+          "operation": "stem",
+          "input": {
+            "str": "\u0026item"
+          },
+          "params": {
+            "algo": "Snowball"
+          }
+        }
+      },
+      "params": {
+        "mapOrArray": "array"
+      },
+      "output": "stemwords"
+    },
+    {
+      "operation": "set",
+      "input": {
+        "arr": "$stemwords"
+      },
+      "output": "set"
+    },
+    {
+      "operation": "apply",
+      "input": {
+        "data": "$set",
+        "function": {
+          "operation": "count",
+          "input": {
+            "s0": "$lowerwords",
+            "s1": "&item"
+          }
+        }
+      },
+      "params": {
+        "mapOrArray": "map"
+      },
+      "output": "BOWmap"
+    }
+  ],
+  "output": {
+    "type": "map",
+    "data": {
+      "BOW": "$BOWmap"
+    }
+  }
 }
