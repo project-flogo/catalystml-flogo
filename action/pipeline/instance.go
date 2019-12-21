@@ -2,11 +2,9 @@ package pipeline
 
 import (
 	"fmt"
-	"strconv"
 	"time"
 
 	"github.com/project-flogo/catalystml-flogo/action/types"
-
 	"github.com/project-flogo/core/data"
 	"github.com/project-flogo/core/support/log"
 )
@@ -29,13 +27,7 @@ func (inst *Instance) Id() string {
 
 func (inst *Instance) Run(input map[string]interface{}) (output map[string]interface{}, err error) {
 
-	currentInput := make(map[string]interface{})
-
-	scope, err := NewPipelineScope(input, inst.def.labels)
-
-	if err != nil {
-		return nil, err
-	}
+	scope := NewPipelineScope(input)
 
 	start := time.Now()
 
@@ -55,40 +47,11 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 	}
 
-	//Execute the pipeline.
-	for key, stage := range inst.def.stages {
+	for _, task := range inst.def.tasks {
 
-		inst.logger.Debugf("Operation Input Mapper for stage [%v]: [%v]", stage.name+"-"+strconv.Itoa(key), stage.inputMapper)
-		if stage.inputMapper != nil {
-
-			currentInput, err = stage.inputMapper.Apply(scope)
-			if err != nil {
-				return nil, err
-			}
-
-		}
-
-		inst.logger.Debugf("Starting operation [%v] with inputs: [%v]", stage.name+"-"+strconv.Itoa(key), currentInput)
-
-		stageOutput, err := stage.opt.Eval(currentInput)
-
-		if err != nil {
-			return nil, err
-		}
-
-		scope.SetValue(stage.output, stageOutput)
-		inst.logger.Debugf("Setting output for [%v] operation outputs: [%v] ", stage.name+"-"+strconv.Itoa(key), stageOutput)
-
-		_, err = stage.outputMapper.Apply(scope)
-
-		inst.logger.Debugf("Scope after operation [%v] : [%v]", stage.name+"-"+strconv.Itoa(key), scope)
-
-		if err != nil {
-			return nil, err
-		}
+		scope, _ = task.Eval(scope, inst.logger)
 
 	}
-	output = scope.values
 
 	if inst.def.output.Data != nil {
 		mf := GetMapperFactory()

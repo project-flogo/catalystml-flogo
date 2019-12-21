@@ -2,14 +2,11 @@ package pipeline
 
 import (
 	"github.com/project-flogo/core/data/resolve"
-	"github.com/project-flogo/core/data/property"
-	
 )
 
 var pipelineRes = resolve.NewCompositeResolver(map[string]resolve.Resolver{
 	".":   &resolve.ScopeResolver{},
 	"env": &resolve.EnvResolver{},
-	"property" : &property.Resolver{},
 })
 
 func GetDataResolver() resolve.CompositeResolver {

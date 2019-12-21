@@ -1,17 +1,18 @@
 package pipeline
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/project-flogo/core/data/mapper"
-	"github.com/project-flogo/core/data/metadata"
-	"github.com/project-flogo/core/data/resolve"
 	"github.com/project-flogo/core/data"
+	"github.com/project-flogo/core/data/resolve"
+	"github.com/project-flogo/core/data/metadata"
 )
 
 type DefinitionConfig struct {
 	Name   string          `json:"name"`
-	Stages []*StageConfig  `json:"structure"`
+	Tasks  []TaskConfig    `json:"structure"`
 	Input  []PipelineInput `json:"input"`
 	Output PipelineOutput  `json:"output"`
 }
@@ -19,15 +20,17 @@ type DefinitionConfig struct {
 func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve.CompositeResolver) (*Definition, error) {
 
 	def := &Definition{name: config.Name, output: config.Output}
+	for _, Tasks := range config.Tasks {
 
-	for _, sconfig := range config.Stages {
-		stage, err := NewStage(sconfig, mf, resolver)
+		task, err := NewTask(Tasks, mf, resolver)
 
 		if err != nil {
+			fmt.Println("Error initializing stage...", task)
 			return nil, err
 		}
 
-		def.stages = append(def.stages, stage)
+		def.tasks = append(def.tasks, task)
+
 	}
 	def.input = make(map[string]interface{})
 	def.labels = make(map[string]interface{})
@@ -45,7 +48,7 @@ func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve
 
 type Definition struct {
 	name   string
-	stages []*Stage
+	tasks  []Task
 	input  map[string]interface{}
 	labels map[string]interface{}
 	output PipelineOutput
