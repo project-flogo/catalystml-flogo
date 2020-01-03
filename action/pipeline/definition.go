@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/data"
-	"github.com/project-flogo/core/data/resolve"
+	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/data/metadata"
+	"github.com/project-flogo/core/data/resolve"
 )
 
 type DefinitionConfig struct {
@@ -33,6 +33,7 @@ func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve
 
 	}
 	def.input = make(map[string]interface{})
+
 	def.labels = make(map[string]interface{})
 	for key, val := range config.Input {
 		switch t := val.Label.(type) {
@@ -58,12 +59,12 @@ func (d *Definition) Name() string {
 	return d.name
 }
 
-func (d *Definition) MetaData() *metadata.IOMetadata  {
-	
+func (d *Definition) MetaData() *metadata.IOMetadata {
+
 	result := make(map[string]data.TypedValue)
 	for key, _ := range d.input {
 		result[key] = nil
 	}
-	
+
 	return &metadata.IOMetadata{Input: result, Output: nil}
 }

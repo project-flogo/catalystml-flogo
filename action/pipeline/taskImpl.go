@@ -1,7 +1,6 @@
 package pipeline
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/project-flogo/catalystml-flogo/action/operation"
@@ -11,19 +10,25 @@ import (
 	"github.com/project-flogo/core/support/log"
 )
 
-func NewTask(config TaskConfig, mf mapper.Factory, resolver resolve.CompositeResolver) (Task, error) {
+var mf mapper.Factory
+var resolver resolve.CompositeResolver
 
+func NewTask(config TaskConfig, mf mapper.Factory, resolver resolve.CompositeResolver) (Task, error) {
+	mf = mf
+	resolver = resolver
 	taskImp := TaskImpl{}
 
+	/*
+		Need to check the type of params and inputs. Params can either be nil, single value or array.
+		For each of the case, inputs can be either nil, single value or array. The stages are initlaized
+		accordingly and added to the Task.
+
+	*/
 	if config.Params == nil {
 
 		if config.Input == nil {
 
-			stageConfig := &StageConfig{}
-
-			stageConfig.Config = &operation.Config{Operation: config.Operation, Output: config.Output.(string)}
-
-			stage, err := NewStage(stageConfig, mf, resolver)
+			stage, err := getStageWithInputObject(config.Operation, nil, nil, config.Output)
 
 			if err != nil {
 				return nil, err
@@ -42,9 +47,7 @@ func NewTask(config TaskConfig, mf mapper.Factory, resolver resolve.CompositeRes
 
 		if inputType.String() == "object" {
 
-			stageConfig := &StageConfig{}
-			stageConfig.Config = &operation.Config{Operation: config.Operation, Input: config.Input.(map[string]interface{}), Output: config.Output.(string)}
-			stage, err := NewStage(stageConfig, mf, resolver)
+			stage, err := getStageWithInputObject(config.Operation, nil, config.Input, config.Output)
 
 			if err != nil {
 				return nil, err
@@ -57,31 +60,21 @@ func NewTask(config TaskConfig, mf mapper.Factory, resolver resolve.CompositeRes
 		}
 		if inputType.String() == "array" {
 
-			for key, _ := range config.Input.([]interface{}) {
-				stageConfig := &StageConfig{}
+			stages, err := getStagesWithInputArray(config.Operation, nil, config.Input, config.Output, false)
 
-				stageConfig.Config = &operation.Config{Operation: config.Operation, Input: config.Input.([]interface{})[key].(map[string]interface{}), Output: config.Output.([]interface{})[key].(string)}
-				stage, err := NewStage(stageConfig, mf, resolver)
-
-				if err != nil {
-					return nil, err
-				}
-
-				taskImp.stages = append(taskImp.stages, stage)
+			if err != nil {
+				return nil, err
 			}
-			fmt.Println("Len...", len(taskImp.stages))
+
+			taskImp.stages = append(taskImp.stages, stages...)
+
 			return taskImp, nil
 		}
 
 	}
 
 	if config.Input == nil {
-
-		stageConfig := &StageConfig{}
-
-		stageConfig.Config = &operation.Config{Operation: config.Operation, Output: config.Output.(string)}
-
-		stage, err := NewStage(stageConfig, mf, resolver)
+		stage, err := getStageWithInputObject(config.Operation, nil, nil, config.Output)
 
 		if err != nil {
 			return nil, err
@@ -107,42 +100,34 @@ func NewTask(config TaskConfig, mf mapper.Factory, resolver resolve.CompositeRes
 		}
 
 		if inputType.String() == "object" {
-			stageConfig := &StageConfig{}
-			stageConfig.Config = &operation.Config{Operation: config.Operation, Params: config.Params.(map[string]interface{}), Input: config.Input.(map[string]interface{}), Output: config.Output.(string)}
-			stage, err := NewStage(stageConfig, mf, resolver)
+
+			stage, err := getStageWithInputObject(config.Operation, config.Params, config.Input, config.Output)
 
 			if err != nil {
 				return nil, err
 			}
 
 			taskImp.stages = append(taskImp.stages, stage)
+
+			return taskImp, nil
+
 		} else if inputType.String() == "array" {
-			for key, _ := range config.Input.([]interface{}) {
-				stageConfig := &StageConfig{}
 
-				stageConfig.Config = &operation.Config{Operation: config.Operation, Params: config.Params.(map[string]interface{}), Input: config.Input.([]interface{})[key].(map[string]interface{}), Output: config.Output.([]interface{})[key].(string)}
-				stage, err := NewStage(stageConfig, mf, resolver)
-
-				if err != nil {
-					return nil, err
-				}
-
-				taskImp.stages = append(taskImp.stages, stage)
-			}
-		} else {
-			stageConfig := &StageConfig{}
-
-			stageConfig.Config = &operation.Config{Operation: config.Operation, Output: config.Output.(string)}
-			stage, err := NewStage(stageConfig, mf, resolver)
+			stages, err := getStagesWithInputArray(config.Operation, config.Params, config.Input, config.Output, false)
 
 			if err != nil {
 				return nil, err
 			}
 
-			taskImp.stages = append(taskImp.stages, stage)
+			taskImp.stages = append(taskImp.stages, stages...)
+
+			return taskImp, nil
+
 		}
 
-	} else if paramType.String() == "array" {
+	}
+
+	if paramType.String() == "array" {
 		inputType, err := data.GetType(config.Input)
 
 		if err != nil {
@@ -151,9 +136,8 @@ func NewTask(config TaskConfig, mf mapper.Factory, resolver resolve.CompositeRes
 
 		if inputType.String() == "object" {
 			for key, _ := range config.Params.([]interface{}) {
-				stageConfig := &StageConfig{}
-				stageConfig.Config = &operation.Config{Operation: config.Operation, Params: config.Params.([]interface{})[key].(map[string]interface{}), Input: config.Input.(map[string]interface{}), Output: config.Output.(string)}
-				stage, err := NewStage(stageConfig, mf, resolver)
+
+				stage, err := getStageWithInputObject(config.Operation, config.Params.([]interface{})[key], config.Input, config.Output)
 
 				if err != nil {
 					return nil, err
@@ -161,23 +145,26 @@ func NewTask(config TaskConfig, mf mapper.Factory, resolver resolve.CompositeRes
 
 				taskImp.stages = append(taskImp.stages, stage)
 			}
+
+			return taskImp, nil
+
 		} else if inputType.String() == "array" {
-			for key, _ := range config.Input.([]interface{}) {
-				stageConfig := &StageConfig{}
 
-				stageConfig.Config = &operation.Config{Operation: config.Operation, Params: config.Params.([]interface{})[key].(map[string]interface{}), Input: config.Input.([]interface{})[key].(map[string]interface{}), Output: config.Output.([]interface{})[key].(string)}
-				stage, err := NewStage(stageConfig, mf, resolver)
+			stages, err := getStagesWithInputArray(config.Operation, config.Params, config.Input, config.Output, false)
 
-				if err != nil {
-					return nil, err
-				}
-
-				taskImp.stages = append(taskImp.stages, stage)
+			if err != nil {
+				return nil, err
 			}
+
+			taskImp.stages = append(taskImp.stages, stages...)
+
+			return taskImp, nil
+
 		}
+
 	}
 
-	return taskImp, nil
+	return nil, nil
 }
 
 type TaskImpl struct {
@@ -227,4 +214,50 @@ func (t TaskImpl) Eval(scope data.Scope, logger log.Logger) (data.Scope, error) 
 
 func (t TaskImpl) Name() string {
 	return t.stages[0].name
+}
+
+func getStageWithInputObject(config string, params interface{}, inputs interface{}, output interface{}) (*Stage, error) {
+
+	stageConfig := &StageConfig{}
+
+	if params == nil {
+
+		stageConfig.Config = &operation.Config{Operation: config, Output: output.(string), Input: inputs.(map[string]interface{})}
+
+	} else {
+		stageConfig.Config = &operation.Config{Operation: config, Params: params.(map[string]interface{}), Output: output.(string), Input: inputs.(map[string]interface{})}
+	}
+
+	stage, err := NewStage(stageConfig, mf, resolver)
+
+	if err != nil {
+		return nil, err
+	}
+	return stage, nil
+}
+
+func getStagesWithInputArray(config string, params interface{}, inputs interface{}, output interface{}, isSetttingsArray bool) ([]*Stage, error) {
+
+	var stages []*Stage
+
+	for key, _ := range inputs.([]interface{}) {
+		stageConfig := &StageConfig{}
+
+		if isSetttingsArray {
+			stageConfig.Config = &operation.Config{Operation: config, Params: params.([]interface{})[key].(map[string]interface{}), Input: inputs.([]interface{})[key].(map[string]interface{}), Output: output.([]interface{})[key].(string)}
+		} else {
+			stageConfig.Config = &operation.Config{Operation: config, Params: params.(map[string]interface{}), Input: inputs.([]interface{})[key].(map[string]interface{}), Output: output.([]interface{})[key].(string)}
+		}
+
+		stage, err := NewStage(stageConfig, mf, resolver)
+
+		if err != nil {
+			return nil, err
+		}
+
+		stages = append(stages, stage)
+	}
+
+	return stages, nil
+
 }

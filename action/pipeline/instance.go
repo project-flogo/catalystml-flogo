@@ -27,7 +27,11 @@ func (inst *Instance) Id() string {
 
 func (inst *Instance) Run(input map[string]interface{}) (output map[string]interface{}, err error) {
 
-	scope := NewPipelineScope(input)
+	scope, err := NewPipelineScope(input, inst.def.labels)
+
+	if err != nil {
+		return nil, err
+	}
 
 	start := time.Now()
 
