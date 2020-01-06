@@ -1,10 +1,12 @@
 package pipeline
 
 import (
+	"errors"
 	"strconv"
 
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/core/data"
+	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/data/resolve"
 	"github.com/project-flogo/core/support/log"
@@ -150,7 +152,7 @@ func NewTask(config TaskConfig, mf mapper.Factory, resolver resolve.CompositeRes
 
 		} else if inputType.String() == "array" {
 
-			stages, err := getStagesWithInputArray(config.Operation, config.Params, config.Input, config.Output, false)
+			stages, err := getStagesWithInputArray(config.Operation, config.Params, config.Input, config.Output, true)
 
 			if err != nil {
 				return nil, err
@@ -236,17 +238,37 @@ func getStageWithInputObject(config string, params interface{}, inputs interface
 	return stage, nil
 }
 
-func getStagesWithInputArray(config string, params interface{}, inputs interface{}, output interface{}, isSetttingsArray bool) ([]*Stage, error) {
+func getStagesWithInputArray(config string, params interface{}, inputs interface{}, output interface{}, isParamsArray bool) ([]*Stage, error) {
 
 	var stages []*Stage
+
+	in, err := coerce.ToArray(inputs)
+
+	if err != nil {
+		return nil, err
+	}
+	out, err := coerce.ToArray(output)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if len(in) != len(out) {
+		return nil, errors.New("Mismatch number of Inputs and Outputs")
+	}
 
 	for key, _ := range inputs.([]interface{}) {
 		stageConfig := &StageConfig{}
 
-		if isSetttingsArray {
-			stageConfig.Config = &operation.Config{Operation: config, Params: params.([]interface{})[key].(map[string]interface{}), Input: inputs.([]interface{})[key].(map[string]interface{}), Output: output.([]interface{})[key].(string)}
+		if isParamsArray {
+			stageConfig.Config = &operation.Config{Operation: config, Params: params.([]interface{})[key].(map[string]interface{}), Input: in[key].(map[string]interface{}), Output: out[key].(string)}
 		} else {
-			stageConfig.Config = &operation.Config{Operation: config, Params: params.(map[string]interface{}), Input: inputs.([]interface{})[key].(map[string]interface{}), Output: output.([]interface{})[key].(string)}
+			if params != nil {
+				stageConfig.Config = &operation.Config{Operation: config, Params: params.(map[string]interface{}), Input: in[key].(map[string]interface{}), Output: out[key].(string)}
+			} else {
+				stageConfig.Config = &operation.Config{Operation: config, Input: in[key].(map[string]interface{}), Output: out[key].(string)}
+			}
+
 		}
 
 		stage, err := NewStage(stageConfig, mf, resolver)

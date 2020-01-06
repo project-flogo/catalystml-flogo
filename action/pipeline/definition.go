@@ -1,7 +1,6 @@
 package pipeline
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/project-flogo/core/data"
@@ -25,7 +24,6 @@ func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve
 		task, err := NewTask(Tasks, mf, resolver)
 
 		if err != nil {
-			fmt.Println("Error initializing stage...", task)
 			return nil, err
 		}
 

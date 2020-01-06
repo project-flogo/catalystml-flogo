@@ -51,6 +51,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 	}
 
+	//Run the tasks.
 	for _, task := range inst.def.tasks {
 
 		scope, _ = task.Eval(scope, inst.logger)
