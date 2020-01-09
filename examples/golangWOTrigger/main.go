@@ -13,7 +13,7 @@ import (
 
 func main() {
 
-	cfg := api.CatalystmlSettings("file://cml.json")
+	cfg := api.SetURISettings("file://cml.json")
 
 	act, err := api.NewAction(cfg)
 

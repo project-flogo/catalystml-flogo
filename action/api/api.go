@@ -28,7 +28,7 @@ func NewAction(option ...Option) (action.Action, error) {
 
 }
 
-func CatalystmlSettings(path string) Option {
+func SetURISettings(path string) Option {
 	return func(a *action.Config) {
 		a.Settings = make(map[string]interface{})
 		a.Settings["catalystMlURI"] = path
