@@ -20,3 +20,4 @@ require (
 replace github.com/project-flogo/catalystml-flogo/operations/image_processing => ../../operations/image_processing
 
 replace github.com/project-flogo/catalystml-flogo/action v0.0.0-20191016133650-3f39d84d181e => ../../action
+
