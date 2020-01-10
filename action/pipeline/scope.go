@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/project-flogo/core/data"
 	"github.com/project-flogo/core/data/coerce"
-
 	"github.com/project-flogo/core/data/path"
 )
 
@@ -14,7 +14,7 @@ type scopeImpl struct {
 	values map[string]interface{}
 }
 
-func NewPipelineScope(input map[string]interface{}, labels map[string]interface{}) (*scopeImpl, error) {
+func NewPipelineScope(input map[string]interface{}, labels map[string]interface{}) (data.Scope, error) {
 
 	if input != nil {
 		val, err := preProcessInputs(input, labels)
