@@ -32,6 +32,7 @@ github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-2019120320003
 github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20191203200037-9511e7217fc3/go.mod h1:KjME7OdIdCTp8n5BugWJpdrniViq2b5+jmoAfpOma5w=
 github.com/project-flogo/catalystml-flogo/operations/string_processing v0.0.0-20191106183910-855c5fa1b810 h1:5RtnO4tdVIkbtHXizyEhxq+gMBNCc5x5pFIs4xwsEuY=
 github.com/project-flogo/catalystml-flogo/operations/string_processing v0.0.0-20191106183910-855c5fa1b810/go.mod h1:ywBtgWod4G2/k2QV/Rg1i63TeiRbs6n2fomQy7l+2ko=
+github.com/project-flogo/catalystml-flogo/operations/string_processing v0.0.0-20191112152814-dc69f9aae0fd h1:evo73M5h+bvnvg3MgOMJ5FeuFZUfx4hhjiYQvD4wa70=
 github.com/project-flogo/catalystml-flogo/operations/string_processing v0.0.0-20191112152814-dc69f9aae0fd/go.mod h1:ywBtgWod4G2/k2QV/Rg1i63TeiRbs6n2fomQy7l+2ko=
 github.com/project-flogo/core v0.9.0-rc.1 h1:0dALJoxHI/T4Ao340cHfNg5Yf5uM/bT4Y7u+5UYXfIQ=
 github.com/project-flogo/core v0.9.0-rc.1/go.mod h1:dzmBbQfNNC0g0KClKYQxxGJLe53MHafg75Vhmw2TW8U=

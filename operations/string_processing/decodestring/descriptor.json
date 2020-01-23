@@ -1,0 +1,14 @@
+{
+    "title":"decodestring",
+    "desc":"Returns a base64 decoded string from an input string",
+    "input":[
+        {
+            "name":"str", 
+            "type":"string", 
+            "description":"string to be decoded", 
+            "optional":false
+        }
+	],
+    "params":[],
+    "output":"string"
+}
