@@ -16,6 +16,7 @@ var (
 
 var operationLogger = log.ChildLogger(log.RootLogger(), "operation")
 
+// Register Operation.
 func Register(operation Operation, f ...Factory) error {
 
 	if operation == nil {

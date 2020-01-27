@@ -14,6 +14,7 @@ type scopeImpl struct {
 	values map[string]interface{}
 }
 
+// Get the scope from the input and label map.
 func NewPipelineScope(input map[string]interface{}, labels map[string]interface{}) (data.Scope, error) {
 
 	if input != nil {
@@ -70,6 +71,9 @@ func getPath(name string) string {
 	return result
 }
 
+// Map the labels to the data from input.
+// Eg. For input  {"a": "2", "b": 3} and label being ["firstInput", "secondInput"].
+// firstInput maps to "2"
 func preProcessInputs(inputs map[string]interface{}, labels map[string]interface{}) (map[string]interface{}, error) {
 	inputMap := make(map[string]interface{})
 

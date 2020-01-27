@@ -218,6 +218,7 @@ func (t TaskImpl) Name() string {
 	return t.stages[0].name
 }
 
+// Get stage where the input is object.
 func getStageWithInputObject(config string, params interface{}, inputs interface{}, output interface{}) (*Stage, error) {
 
 	stageConfig := &StageConfig{}
@@ -238,6 +239,7 @@ func getStageWithInputObject(config string, params interface{}, inputs interface
 	return stage, nil
 }
 
+// Get stage where the input is array.
 func getStagesWithInputArray(config string, params interface{}, inputs interface{}, output interface{}, isParamsArray bool) ([]*Stage, error) {
 
 	var stages []*Stage

@@ -8,15 +8,16 @@ import (
 
 type Option func(*action.Config)
 
+//Initiliaize the action.
 func NewAction(option ...Option) (action.Action, error) {
-
-	factory := action.GetFactory("github.com/project-flogo/catalystml-flogo/action")
 
 	aConfig := new(action.Config)
 
 	for _, opt := range option {
 		opt(aConfig)
 	}
+
+	factory := action.GetFactory("github.com/project-flogo/catalystml-flogo/action")
 
 	act, err := factory.New(aConfig)
 
@@ -28,6 +29,7 @@ func NewAction(option ...Option) (action.Action, error) {
 
 }
 
+//Set `catalystMlURI` config of action
 func SetURISettings(path string) Option {
 	return func(a *action.Config) {
 		a.Settings = make(map[string]interface{})
@@ -35,6 +37,7 @@ func SetURISettings(path string) Option {
 	}
 }
 
+//Run Sync Action
 func Run(act action.Action, inputs map[string]interface{}) (map[string]interface{}, error) {
 
 	return act.(action.SyncAction).Run(context.Background(), inputs)

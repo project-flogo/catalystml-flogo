@@ -16,6 +16,7 @@ type Instance struct {
 	logger log.Logger
 }
 
+//  Get new instance from defination
 func NewInstance(definition *Definition, id string, logger log.Logger) *Instance {
 
 	return &Instance{def: definition, id: id, logger: logger}
@@ -25,14 +26,18 @@ func (inst *Instance) Id() string {
 	return inst.id
 }
 
+// Run the instance of the CML.
 func (inst *Instance) Run(input map[string]interface{}) (output map[string]interface{}, err error) {
 
+	// Get the Scope of the CML pipeline.
+	// Scope is the collection of the data in the CML
 	scope, err := NewPipelineScope(input, inst.def.labels)
 
 	if err != nil {
 		return nil, err
 	}
 
+	// Log the time
 	start := time.Now()
 
 	//Check the type of the input of the pipeline.
@@ -58,10 +63,13 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 	}
 
+	// Set the output.
+
 	if inst.def.output.Data != nil {
 		mf := GetMapperFactory()
 		mappings := make(map[string]interface{})
 
+		// Type Switch
 		switch t := inst.def.output.Data.(type) {
 		case map[string]interface{}:
 			for key, val := range t {
@@ -71,6 +79,7 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 			mappings["data"] = inst.def.output.Data
 		}
 
+		// Get the data from output expression
 		outMapper, err := mf.NewMapper(mappings)
 		output, err = outMapper.Apply(scope)
 
@@ -78,6 +87,8 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 			return nil, err
 		}
 		var definedType data.Type
+
+		// Check if the output is defined as dataframe or map.
 		if inst.def.output.Type == "dataframe" || inst.def.output.Type == "map" {
 			definedType, _ = data.ToTypeEnum("object")
 
