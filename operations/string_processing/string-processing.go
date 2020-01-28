@@ -4,20 +4,23 @@ import (
 	// "github.com/project-flogo/catalystml-flogo/operations/string_processing/phonenumber"
 	// "github.com/project-flogo/catalystml-flogo/operations/string_processing/geoencoding"
 	"github.com/project-flogo/catalystml-flogo/action/operation"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/concat"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/contains"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/count"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/date"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/decodestring"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/encodestring"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/index"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/lastindex"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/levenshteinDistance"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/levenshteinSimilarity"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/matchregex"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/repeat"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/replace"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/split"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/tolower"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/toupper"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/uuid"
-	"github.com/project-flogo/catalystml-flogo/operations/string_processing/concat"
-	"github.com/project-flogo/catalystml-flogo/operations/string_processing/contains"
-	"github.com/project-flogo/catalystml-flogo/operations/string_processing/index"
-	"github.com/project-flogo/catalystml-flogo/operations/string_processing/lastindex"
-	"github.com/project-flogo/catalystml-flogo/operations/string_processing/matchregex"
 )
 
 func init() {
@@ -37,4 +40,7 @@ func init() {
 	_ = operation.Register(&index.Operation{}, index.New)
 	_ = operation.Register(&lastindex.Operation{}, lastindex.New)
 	_ = operation.Register(&matchregex.Operation{}, matchregex.New)
+	_ = operation.Register(&index.Operation{}, encodestring.New)
+	_ = operation.Register(&lastindex.Operation{}, decodestring.New)
+	_ = operation.Register(&matchregex.Operation{}, date.New)
 }
