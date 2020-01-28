@@ -19,7 +19,7 @@
         {
             "name":"clearWhileStart", 
             "type":"bool",
-            "default":false
+            "default":false,
             "description":"clear log file while starting engine",
             "optional":true
         }
