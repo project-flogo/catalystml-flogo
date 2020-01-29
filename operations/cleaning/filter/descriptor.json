@@ -1,0 +1,43 @@
+{
+    "title":"filter",
+    "desc":"keep/remove rows with certain values",
+    "input":[
+	        {
+                "name":"data", 
+                "type":["array", "map"], 
+                "description":"map key is column name, map value are column values.", 
+                "optional":false
+            },
+            {
+                "name":"value", 
+                "type":["int", "float", "string", "NaN"], 
+                "description":"target value which filter will be applied to.", 
+                "optional":false
+            },
+            {
+                "name":"filterType", 
+                "type":["string"], 
+                "description":"keep or remove target column/row.", 
+                "optional":false,
+                "allowed":["Remove", "Keep"],
+                "default": "Remove"
+            }
+	    ],
+    "params":[
+        {
+            "name":"axis", 
+            "type":"int", 
+            "description":"0=vertical/column, 1=horizontal/row", 
+            "default" : 0,
+            "allowed" : [0, 1],
+            "optional":true
+        },
+        {
+            "name":"col", 
+            "type":"string", 
+            "description":"",
+            "optional":true
+        }
+    ],
+    "output":["array", "map"]
+}

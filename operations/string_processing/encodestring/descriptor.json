@@ -1,0 +1,14 @@
+{
+    "title":"encodestring",
+    "desc":"Returns a base64 encoded string from an input string",
+    "input":[
+        {
+            "name":"str", 
+            "type":"string", 
+            "description":"string to be encoded", 
+            "optional":false
+        }
+	],
+    "params":[],
+    "output":"string"
+}

@@ -1,0 +1,21 @@
+{
+    "title":"date",
+    "desc":"(year,month,day, etc.) extract date information from string",
+    "input":[
+	    {
+            "name":"data", 
+            "type":"string", 
+            "description":"data with date time information", 
+            "optional":false
+        }
+	],
+    "params":[
+        {
+            "name":"format", 
+            "type":"string", 
+            "description":"see https://golang.org/pkg/time/",
+            "optional":false
+        }
+    ],
+    "output":"object"
+}

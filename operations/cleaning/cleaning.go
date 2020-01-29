@@ -3,6 +3,8 @@ package cleaning
 import (
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/catalystml-flogo/operations/cleaning/apply"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/binning"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/filter"
 	"github.com/project-flogo/catalystml-flogo/operations/cleaning/ifin"
 	"github.com/project-flogo/catalystml-flogo/operations/cleaning/ifnotin"
 	"github.com/project-flogo/catalystml-flogo/operations/cleaning/oneHotEncoding"
@@ -17,5 +19,7 @@ func init() {
 	_ = operation.Register(&ifnotin.Operation{}, ifnotin.New)
 	_ = operation.Register(&ifin.Operation{}, ifin.New)
 	_ = operation.Register(&oneHotEncoding.Operation{}, oneHotEncoding.New)
+	_ = operation.Register(&set.Operation{}, binning.New)
+	_ = operation.Register(&set.Operation{}, filter.New)
 
 }

@@ -35,6 +35,10 @@ func (dataFrame *DataFrame) GetLabels() []string {
 	return dataFrame.order
 }
 
+func (dataFrame *DataFrame) SetLabels(order []string) {
+	dataFrame.order = order
+}
+
 func (dataFrame *DataFrame) GetColumn(label string) []interface{} {
 	return dataFrame.data[label]
 }
@@ -500,7 +504,6 @@ func Transpose(dataFrame *DataFrame, newLabels []string) *DataFrame {
 		table[label] = tuple.GetDataArray()
 		if lastTuple {
 			newDataFrame, _ = ToDataFrame(table)
-			fmt.Println(newDataFrame)
 		}
 		index++
 		return nil
@@ -577,7 +580,9 @@ func SortableTupleAppendToDataframe(
 	tuple SortableTuple,
 	dataFrame *DataFrame) error {
 	dataframeSize := -1
-	fmt.Println(tuple)
+	if nil == dataFrame.GetLabels() || 0 == len(dataFrame.GetLabels()) {
+		dataFrame.SetLabels(tuple.order)
+	}
 	for _, columnName := range tuple.order {
 		columnValueArray := (*dataFrame).data[columnName]
 		if nil == columnValueArray {
@@ -604,7 +609,6 @@ func NewSortableTuple(data map[string]interface{}, fieldOrder []string) *Sortabl
 	}
 
 	if nil == fieldOrder || 0 == len(fieldOrder) {
-		//fmt.Println("no predefined order : ", fieldOrder)
 		index := 0
 		for key, value := range data {
 			sTuple.order[index] = key
@@ -612,7 +616,6 @@ func NewSortableTuple(data map[string]interface{}, fieldOrder []string) *Sortabl
 			index++
 		}
 	} else {
-		//fmt.Println("has predefined order : ", fieldOrder)
 		for index, key := range fieldOrder {
 			sTuple.order[index] = key
 			sTuple.Data[key] = data[key]
@@ -641,7 +644,6 @@ func (t SortableTuple) GetDataArray() []interface{} {
 }
 
 func (t SortableTuple) GetByKey(key string) interface{} {
-	//	fmt.Println("Key = ", key, ", Data = ", t.Data)
 	return t.Data[key]
 }
 

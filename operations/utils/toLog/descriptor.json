@@ -1,0 +1,27 @@
+{
+    "title":"toLog",
+    "desc":"Writes input data to stdout by default if path provided write to file",
+    "input":[
+	        {
+                "name":"data", 
+                "type":"any", 
+                "description":"data to be written", 
+                "optional":false
+            }
+	    ],
+    "params":[
+        {
+            "name":"toFilePath", 
+            "type":"string", 
+            "description":"if provided data will be written to file at the provided path",
+            "optional":true
+        },
+        {
+            "name":"clearWhileStart", 
+            "type":"bool",
+            "default":false,
+            "description":"clear log file while starting engine",
+            "optional":true
+        }
+    ]
+}
