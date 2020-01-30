@@ -13,6 +13,7 @@ func NewAction(option ...Option) (action.Action, error) {
 
 	aConfig := new(action.Config)
 
+	//Set the Config options for the action
 	for _, opt := range option {
 		opt(aConfig)
 	}
@@ -31,6 +32,7 @@ func NewAction(option ...Option) (action.Action, error) {
 
 //Set `catalystMlURI` config of action
 func SetURISettings(path string) Option {
+	//Return Option.
 	return func(a *action.Config) {
 		a.Settings = make(map[string]interface{})
 		a.Settings["catalystMlURI"] = path

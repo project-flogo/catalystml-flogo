@@ -72,8 +72,9 @@ func getPath(name string) string {
 }
 
 // Map the labels to the data from input.
-// Eg. For input  {"a": "2", "b": 3} and label being ["firstInput", "secondInput"].
-// firstInput maps to "2"
+// Eg. For input  {"a": "2", "b": 3} and label being ["firstInput", "secondInput"]. firstInput maps to "2"
+// Also is input is [3, 4] and label being ["fInput", "sOutput"] ; fInput maps to 3
+// For more information : //TODO: Add the link to the label issue.
 func preProcessInputs(inputs map[string]interface{}, labels map[string]interface{}) (map[string]interface{}, error) {
 	inputMap := make(map[string]interface{})
 
