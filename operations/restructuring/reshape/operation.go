@@ -18,8 +18,6 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 }
 
 func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
-	// var row, column int
-	// var result [][]interface{}
 	in := &Input{}
 
 	in.FromMap(inputs)
