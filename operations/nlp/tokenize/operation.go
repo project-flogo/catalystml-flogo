@@ -30,7 +30,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 		return nil, err
 	}
 
-	var out []string
+	var out []interface{}
 	for _, tok := range doc.Tokens() {
 		out = append(out, tok.Text)
 	}
