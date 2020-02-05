@@ -28,7 +28,7 @@ type DerefernceStruct struct {
 	Index string // The identifier of the value in the data. Eg math[0] or math['sample'] . 0 and 'sample' will be the Index.
 }
 
-// Get the deference struct (which will help to navigate the data to find the value)
+// NewExpression returns the deference struct (which will help to navigate the data to find the value)
 // from the given string.
 func NewExpression(str string) []DerefernceStruct {
 	var derefStructs []DerefernceStruct
@@ -62,7 +62,7 @@ func NewExpression(str string) []DerefernceStruct {
 	return derefStructs
 }
 
-// This function resolves the value from the data using dereference struct and scope.
+// Resolve resolves the value from the data using dereference struct and scope.
 // scope is the collection of the data.
 func Resolve(deStructs []DerefernceStruct, scope data.Scope) (temp interface{}, err error) {
 

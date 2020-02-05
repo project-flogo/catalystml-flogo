@@ -16,7 +16,7 @@ type DefinitionConfig struct {
 	Output PipelineOutput  `json:"output"`
 }
 
-// Get a defination struct from config.
+// NewDefinition gets a defination struct from config.
 func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve.CompositeResolver) (*Definition, error) {
 
 	def := &Definition{name: config.Name, output: config.Output}

@@ -8,7 +8,8 @@ import (
 
 type Option func(*action.Config)
 
-//Initiliaize the action.
+// NewAction initializes a CML Action.
+// CML Action is a type of Flogo Sync Action
 func NewAction(option ...Option) (action.Action, error) {
 
 	aConfig := new(action.Config)
@@ -30,7 +31,7 @@ func NewAction(option ...Option) (action.Action, error) {
 
 }
 
-//Set `catalystMlURI` config of action
+// SetURISettings sets `catalystMlURI` config of action
 func SetURISettings(path string) Option {
 	//Return Option.
 	return func(a *action.Config) {
@@ -39,7 +40,7 @@ func SetURISettings(path string) Option {
 	}
 }
 
-//Run Sync Action
+// Run runs a CML Action .
 func Run(act action.Action, inputs map[string]interface{}) (map[string]interface{}, error) {
 
 	return act.(action.SyncAction).Run(context.Background(), inputs)

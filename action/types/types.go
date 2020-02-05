@@ -10,6 +10,8 @@ import (
 
 func ValidateType(t string, val interface{}) error {
 
+	// If the defined type is image
+	//Check if you can decode the image.
 	if t == "image" {
 		_, _, err := image.Decode(bytes.NewReader(val.([]byte)))
 		if err != nil {

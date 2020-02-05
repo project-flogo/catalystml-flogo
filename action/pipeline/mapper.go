@@ -54,7 +54,7 @@ func NewDefaultOperationOutputMapper(stage *Stage) mapper.Mapper {
 	return &defaultOperationOutputMapper{mappings: defMapper}
 }
 
-// Get the mapper from the mappings.
+// Newmapper gets the mapper from the mappings.
 func (n *NewDefaultMapperFactory) NewMapper(mappings map[string]interface{}) (mapper.Mapper, error) {
 
 	if len(mappings) == 0 {

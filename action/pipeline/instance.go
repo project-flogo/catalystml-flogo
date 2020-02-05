@@ -16,7 +16,7 @@ type Instance struct {
 	logger log.Logger
 }
 
-//  Get new instance from defination
+// NewInstance gets new instance from defination
 func NewInstance(definition *Definition, id string, logger log.Logger) *Instance {
 
 	return &Instance{def: definition, id: id, logger: logger}
@@ -26,7 +26,7 @@ func (inst *Instance) Id() string {
 	return inst.id
 }
 
-// Run the instance of the CML.
+// Run runs the instance of the CML.
 func (inst *Instance) Run(input map[string]interface{}) (output map[string]interface{}, err error) {
 
 	// Get the Scope of the CML pipeline.
