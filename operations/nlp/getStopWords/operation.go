@@ -20,8 +20,6 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 
 	err := metadata.MapToStruct(ctx.Params(), p, true)
 
-	fmt.Println(p)
-
 	if p.Lang == "" {
 		p.Lang = "en"
 	}
@@ -39,7 +37,6 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 
 func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 
-	fmt.Println(a.params)
 	lib := a.params.Lib
 	lang := a.params.Lang
 	path := a.params.FileLoc
@@ -55,19 +52,21 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	}
 	a.logger.Infof("Lib: %s, Lang: %s, FileLoc: %s, Merge: %t ", lib, lang, pathprint, merge)
 
-	var stoplist []string
-	liblist := []string{}
+	var stoplist []interface{}
+	var liblist []interface{}
 	if lib == "nltk" && lang == "en" {
-		liblist = []string{"wasn", "doesn", "most", "hasn't", "isn", "having", "or", "isn't", "will", "hadn't", "more", "here", "won't", "aren't", "between", "won", "such", "shan", "you'd", "be", "yourselves", "their", "above", "by", "why", "shouldn't", "i", "these", "was", "it", "so", "but", "now", "mustn't", "mightn", "aren", "for", "haven't", "she", "m", "has", "doing", "the", "don't", "she's", "it's", "needn", "against", "not", "ours", "to", "does", "re", "our", "my", "each", "o", "under", "am", "didn", "just", "do", "of", "further", "wasn't", "weren", "hadn", "nor", "hers", "were", "being", "which", "during", "then", "myself", "until", "down", "should've", "hasn", "doesn't", "ma", "didn't", "themselves", "that", "t", "with", "shan't", "how", "have", "him", "again", "who", "at", "they", "her", "only", "a", "itself", "can", "all", "shouldn", "on", "any", "is", "too", "me", "about", "its", "been", "ll", "once", "both", "his", "from", "where", "over", "whom", "you've", "into", "same", "wouldn", "s", "yours", "did", "if", "ain", "your", "and", "than", "out", "are", "them", "an", "few", "y", "ve", "ourselves", "in", "theirs", "herself", "you'll", "what", "because", "off", "you", "should", "while", "before", "below", "haven", "as", "some", "we", "those", "own", "through", "after", "he", "you're", "when", "couldn", "couldn't", "no", "mightn't", "d", "himself", "needn't", "up", "weren't", "yourself", "wouldn't", "had", "don", "that'll", "mustn", "this", "there", "other", "very"}
+		liblist = []interface{}{"wasn", "doesn", "most", "hasn't", "isn", "having", "or", "isn't", "will", "hadn't", "more", "here", "won't", "aren't", "between", "won", "such", "shan", "you'd", "be", "yourselves", "their", "above", "by", "why", "shouldn't", "i", "these", "was", "it", "so", "but", "now", "mustn't", "mightn", "aren", "for", "haven't", "she", "m", "has", "doing", "the", "don't", "she's", "it's", "needn", "against", "not", "ours", "to", "does", "re", "our", "my", "each", "o", "under", "am", "didn", "just", "do", "of", "further", "wasn't", "weren", "hadn", "nor", "hers", "were", "being", "which", "during", "then", "myself", "until", "down", "should've", "hasn", "doesn't", "ma", "didn't", "themselves", "that", "t", "with", "shan't", "how", "have", "him", "again", "who", "at", "they", "her", "only", "a", "itself", "can", "all", "shouldn", "on", "any", "is", "too", "me", "about", "its", "been", "ll", "once", "both", "his", "from", "where", "over", "whom", "you've", "into", "same", "wouldn", "s", "yours", "did", "if", "ain", "your", "and", "than", "out", "are", "them", "an", "few", "y", "ve", "ourselves", "in", "theirs", "herself", "you'll", "what", "because", "off", "you", "should", "while", "before", "below", "haven", "as", "some", "we", "those", "own", "through", "after", "he", "you're", "when", "couldn", "couldn't", "no", "mightn't", "d", "himself", "needn't", "up", "weren't", "yourself", "wouldn't", "had", "don", "that'll", "mustn", "this", "there", "other", "very"}
 	}
 
-	listfromfile := []string{}
+	var listfromfile []interface{}
 	if path != "" {
 		b, err := ioutil.ReadFile(path)
 		if err != nil {
 			return nil, err
 		}
-		listfromfile = strings.Split(string(b), "\n")
+		for  val := range strings.Split(string(b), "\n") {
+			listfromfile = append(listfromfile, val)
+		}
 
 	}
 

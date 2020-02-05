@@ -176,7 +176,7 @@ type TaskImpl struct {
 func (t TaskImpl) Eval(scope data.Scope, logger log.Logger) (data.Scope, error) {
 	currentInput := make(map[string]interface{})
 	var err error
-
+	var stageOutput interface{}
 	for key, stage := range t.stages {
 
 		logger.Debugf("Operation Input Mapper for stage [%v]: [%v]", stage.name+"-"+strconv.Itoa(key), stage.inputMapper)
@@ -191,7 +191,8 @@ func (t TaskImpl) Eval(scope data.Scope, logger log.Logger) (data.Scope, error) 
 		}
 
 		logger.Debugf("Starting operation [%v] with inputs: [%v]", stage.name+"-"+strconv.Itoa(key), currentInput)
-		stageOutput, err := stage.opt.Eval(currentInput)
+
+		stageOutput, err = stage.opt.Eval(currentInput)
 
 		if err != nil {
 			return nil, err
@@ -222,12 +223,17 @@ func getStageWithInputObject(config string, params interface{}, inputs interface
 
 	stageConfig := &StageConfig{}
 
+	cInput, err := coerce.ToObject(inputs)
+	if err != nil {
+		return nil, err
+	}
+
 	if params == nil {
 
-		stageConfig.Config = &operation.Config{Operation: config, Output: output.(string), Input: inputs.(map[string]interface{})}
+		stageConfig.Config = &operation.Config{Operation: config, Output: output.(string), Input: cInput}
 
 	} else {
-		stageConfig.Config = &operation.Config{Operation: config, Params: params.(map[string]interface{}), Output: output.(string), Input: inputs.(map[string]interface{})}
+		stageConfig.Config = &operation.Config{Operation: config, Params: params.(map[string]interface{}), Output: output.(string), Input: cInput}
 	}
 
 	stage, err := NewStage(stageConfig, mf, resolver)

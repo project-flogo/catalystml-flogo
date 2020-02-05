@@ -52,15 +52,15 @@ func NewManager() *Manager {
 }
 
 func (m *Manager) GetPipeline(uri string) (*Definition, error) {
-	
+
 	if m.remotePipelines == nil {
 		m.remotePipelines = make(map[string]*Definition)
 	}
-	
+
 	pDef, exists := m.remotePipelines[uri]
 
 	if !exists {
-		
+
 		pConfig, err := m.pipelineProvider.GetPipeline(uri)
 		if err != nil {
 			return nil, err
@@ -87,7 +87,7 @@ func (*BasicRemotePipelineProvider) GetPipeline(pipelineURI string) (*Definition
 
 	if strings.HasPrefix(pipelineURI, uriSchemeFile) {
 		// File URI
-		logger.Infof("Loading Local Pipeline: %s\n", pipelineURI)
+		logger.Infof("Loading Local Pipeline: %s", pipelineURI)
 		pipelineFilePath, _ := support.URLStringToFilePath(pipelineURI)
 
 		readBytes, err := ioutil.ReadFile(pipelineFilePath)

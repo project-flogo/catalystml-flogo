@@ -1,8 +1,6 @@
 package postag
 
 import (
-	"fmt"
-
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/core/support/log"
 	"gopkg.in/jdkato/prose.v2"
@@ -37,6 +35,6 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	}
 	a.logger.Info("Operation Tokenize posTag.")
 	a.logger.Debug("Output of Operation posTag.", out)
-	fmt.Println(out)
+
 	return out, nil
 }
