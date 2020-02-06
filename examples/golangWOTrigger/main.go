@@ -29,7 +29,7 @@ func main() {
 	out, err := api.Run(act, inputs)
 
 	if err != nil {
-
+		fmt.Println(err)
 	}
 
 	fmt.Println("Output...", out)

@@ -1,4 +1,4 @@
-package tensor2img
+package tensor2image
 
 import (
 	"errors"

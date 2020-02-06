@@ -1,0 +1,20 @@
+{
+    "title":"runcml",
+    "desc":"Runs another CML data preperation structure within the current structure. Allows you to integrate other CML structures into your JSON and pass standardized processing between languages.",
+    "input":[
+	        {
+                "name":"data", 
+                "type":"any", 
+                "description":"the input data for the CML structure", 
+                "optional":false
+            }
+	    ],
+    "params":[
+        {
+            "name":"cmlFileName", 
+            "type":"string",
+            "description":"path to where the json file that contains the CML structure",
+            "optional":false
+        }
+    ]
+}

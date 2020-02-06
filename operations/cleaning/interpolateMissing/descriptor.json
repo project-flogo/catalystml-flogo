@@ -3,13 +3,13 @@
     "desc":"select a numerical column list and convert it into bins",
     "input":[
 	        {
-                "str":"data", 
+                "name":"data", 
                 "type":["array", "map"], 
                 "description":"the array or column of map to be binned", 
                 "optional":false
             },
 	        {
-                "str":"col", 
+                "name":"col", 
                 "type":["int", "string", "array"], 
                 "description":"the column(s) to be filled in", 
                 "optional":false
@@ -17,7 +17,7 @@
 	    ],
     "params":[
             	{
-                "str":"how", 
+                "name":"how", 
                 "type":"string", 
                 "description":"mean: substitutes mean of included values for Missing, linear: interpolates linearly from adjacent values", 
                 "optional":true,
@@ -25,7 +25,7 @@
                 "defalut":"mean"
             },
             	{
-                "str":"edges", 
+                "name":"edges", 
                 "type":"string", 
                 "description":"mean: substitutes mean of included values for Missing, linear: exterpolates linearly from adjacent values", 
                 "optional":true,
