@@ -24,7 +24,6 @@ func NewTask(config TaskConfig, mf mapper.Factory, resolver resolve.CompositeRes
 		Need to check the type of params and inputs. Params can either be nil, single value or array.
 		For each of the case, inputs can be either nil, single value or array. The stages are initlaized
 		accordingly and added to the Task.
-
 	*/
 	if config.Params == nil {
 

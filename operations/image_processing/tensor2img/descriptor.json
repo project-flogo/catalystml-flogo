@@ -1,0 +1,33 @@
+{
+    "title":"tensor2img",
+    "desc":"converts an array of arrays to an image type",
+    "input":[
+	        {
+                "name":"tensor", 
+                "type":"array", 
+                "description":"the image tensor to be converted", 
+                "optional":false
+            }
+	    ],
+    "params":[
+        {
+            "name":"toFileFolder", 
+            "type":"string", 
+            "description":"output folder.", 
+            "optional":true
+        },
+        {
+            "name":"filename", 
+            "type":"string", 
+            "description":"image filename.", 
+            "optional":true
+        },
+        {
+            "name":"extension", 
+            "type":"string", 
+            "description":"jpg(jpeg), png, gif.", 
+            "optional":true
+        }
+    ],
+    "output":"image array"
+}
