@@ -8,7 +8,7 @@ import (
 )
 
 type Operation struct {
-	params *Params
+	params []interface{}
 	logger log.Logger
 }
 
@@ -21,7 +21,13 @@ func New(ctx operation.InitContext) (operation.Operation, error) {
 		return nil, err
 	}
 
-	return &Operation{params: p, logger: ctx.Logger()}, nil
+	params, err := coerce.ToArray(p.Columns)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &Operation{params: params, logger: ctx.Logger()}, nil
 }
 
 func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
@@ -35,7 +41,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	a.logger.Info("Starting Operation Replace Value.")
 	a.logger.Debug("Input of Operation Replace Value.", in.Data)
 
-	for _, val := range a.params.Columns {
+	for _, val := range a.params {
 
 		if arr, ok := in.Data[val.(string)]; ok {
 
