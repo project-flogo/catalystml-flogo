@@ -5,7 +5,7 @@ import (
 )
 
 type Params struct {
-	Columns []interface{} `md:"col"`
+	Columns interface{} `md:"col"`
 }
 
 type Input struct {
