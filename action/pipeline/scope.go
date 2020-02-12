@@ -14,6 +14,7 @@ type scopeImpl struct {
 	values map[string]interface{}
 }
 
+// NewPipelineScope gets the scope from the input and label map.
 func NewPipelineScope(input map[string]interface{}, labels map[string]interface{}) (data.Scope, error) {
 
 	if input != nil {
@@ -36,8 +37,7 @@ func (s *scopeImpl) GetValue(name string) (value interface{}, exists bool) {
 	return val, true
 }
 
-//Check if the name resolves to existing values in scope
-//If not then set a new value
+// SetValue sets a key, value pair in the scope/
 func (s *scopeImpl) SetValue(name string, value interface{}) error {
 
 	if strings.Contains(name, "[") {
@@ -70,6 +70,10 @@ func getPath(name string) string {
 	return result
 }
 
+// PreProcessInput maps the labels to the data from input.
+// Eg. For input  {"a": "2", "b": 3} and label being ["firstInput", "secondInput"]. firstInput maps to "2"
+// Also is input is [3, 4] and label being ["fInput", "sOutput"] ; fInput maps to 3
+// For more information : //TODO: Add the link to the label issue.
 func preProcessInputs(inputs map[string]interface{}, labels map[string]interface{}) (map[string]interface{}, error) {
 	inputMap := make(map[string]interface{})
 

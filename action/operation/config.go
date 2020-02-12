@@ -1,5 +1,6 @@
 package operation
 
+// The struct config of operation.
 type Config struct {
 	Operation string                 `json:"operation"`
 	Params    map[string]interface{} `json:"params,omitempty"`

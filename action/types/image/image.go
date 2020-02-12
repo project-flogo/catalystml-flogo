@@ -2,6 +2,7 @@ package fps
 
 import "github.com/project-flogo/core/data/coerce"
 
+// Note: Not being used currently.
 type Image struct {
 	Data      []byte `md:"data"`
 	ImageType string `md:"imageType"`

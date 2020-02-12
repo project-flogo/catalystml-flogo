@@ -16,23 +16,29 @@ type DefinitionConfig struct {
 	Output PipelineOutput  `json:"output"`
 }
 
+// NewDefinition gets a defination struct from config.
 func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve.CompositeResolver) (*Definition, error) {
 
 	def := &Definition{name: config.Name, output: config.Output}
+
 	for _, Tasks := range config.Tasks {
 
+		// Get a New Task from config.
 		task, err := NewTask(Tasks, mf, resolver)
 
 		if err != nil {
 			return nil, err
 		}
 
+		//Append the task to the array.
 		def.tasks = append(def.tasks, task)
 
 	}
 	def.input = make(map[string]interface{})
 
 	def.labels = make(map[string]interface{})
+
+	// Set the labels from the input
 	for key, val := range config.Input {
 		switch t := val.Label.(type) {
 		case string:
@@ -45,6 +51,7 @@ func NewDefinition(config *DefinitionConfig, mf mapper.Factory, resolver resolve
 	return def, nil
 }
 
+// Defination struct
 type Definition struct {
 	name   string
 	tasks  []Task

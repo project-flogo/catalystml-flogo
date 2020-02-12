@@ -45,6 +45,7 @@ func (ctx *initContextImpl) Logger() log.Logger {
 	return log.ChildLogger(log.RootLogger(), ctx.name)
 }
 
+// NewStage gets the satage from the stage config.
 func NewStage(config *StageConfig, mf mapper.Factory, resolver resolve.CompositeResolver) (*Stage, error) {
 
 	if config.Operation == "" {
@@ -85,12 +86,14 @@ func NewStage(config *StageConfig, mf mapper.Factory, resolver resolve.Composite
 	}
 	var err error
 
+	// Set the input mapper.
 	stage.inputMapper, err = mf.NewMapper(input)
 
 	if err != nil {
 		return nil, err
 	}
 
+	// Set the output mapper.
 	stage.outputMapper = NewDefaultOperationOutputMapper(stage)
 
 	return stage, nil

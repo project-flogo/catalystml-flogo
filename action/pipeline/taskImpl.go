@@ -15,6 +15,7 @@ import (
 var mf mapper.Factory
 var resolver resolve.CompositeResolver
 
+// NewTask returns a Task based on the TaskConfig.
 func NewTask(config TaskConfig, mf mapper.Factory, resolver resolve.CompositeResolver) (Task, error) {
 	mf = mf
 	resolver = resolver
@@ -172,6 +173,7 @@ type TaskImpl struct {
 	stages []*Stage
 }
 
+// Eval runs the Task. A Task is composed of single or multiple stages.
 func (t TaskImpl) Eval(scope data.Scope, logger log.Logger) (data.Scope, error) {
 	currentInput := make(map[string]interface{})
 	var err error
@@ -218,6 +220,7 @@ func (t TaskImpl) Name() string {
 	return t.stages[0].name
 }
 
+// GetStageWithInputObject returns the stages when the input is object.
 func getStageWithInputObject(config string, params interface{}, inputs interface{}, output interface{}) (*Stage, error) {
 
 	stageConfig := &StageConfig{}
@@ -243,6 +246,7 @@ func getStageWithInputObject(config string, params interface{}, inputs interface
 	return stage, nil
 }
 
+// GetStagesWithInputArray returns the stages when the input is array.
 func getStagesWithInputArray(config string, params interface{}, inputs interface{}, output interface{}, isParamsArray bool) ([]*Stage, error) {
 
 	var stages []*Stage

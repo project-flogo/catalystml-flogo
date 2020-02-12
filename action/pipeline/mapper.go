@@ -54,6 +54,7 @@ func NewDefaultOperationOutputMapper(stage *Stage) mapper.Mapper {
 	return &defaultOperationOutputMapper{mappings: defMapper}
 }
 
+// Newmapper gets the mapper from the mappings.
 func (n *NewDefaultMapperFactory) NewMapper(mappings map[string]interface{}) (mapper.Mapper, error) {
 
 	if len(mappings) == 0 {
@@ -94,6 +95,7 @@ type defaultOperationOutputMapper struct {
 	mappings map[string]interface{}
 }
 
+// Apply the mapper using the scope
 func (m *defaultOperationOutputMapper) Apply(scope data.Scope) (map[string]interface{}, error) {
 
 	output := make(map[string]interface{}, len(m.mappings))

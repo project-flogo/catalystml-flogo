@@ -22,6 +22,7 @@ type ResourceLoader struct {
 	resolver      resolve.CompositeResolver
 }
 
+// Load Reasource from the config.
 func (rl *ResourceLoader) LoadResource(config *resource.Config) (*resource.Resource, error) {
 
 	var pipelineCfgBytes []byte

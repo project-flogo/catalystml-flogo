@@ -39,7 +39,6 @@ type Manager struct {
 	remotePipelines map[string]*Definition
 }
 
-//todo fix logger
 var logger = log.RootLogger()
 
 func NewManager() *Manager {
@@ -80,7 +79,6 @@ func (m *Manager) GetPipeline(uri string) (*Definition, error) {
 type BasicRemotePipelineProvider struct {
 }
 
-//todo this can be generalized an shared with flow
 func (*BasicRemotePipelineProvider) GetPipeline(pipelineURI string) (*DefinitionConfig, error) {
 
 	var pDefBytes []byte
