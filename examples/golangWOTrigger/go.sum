@@ -44,6 +44,8 @@ github.com/project-flogo/catalystml-flogo v0.1.0 h1:zE18Ab/o1TxDTLh8GLsXjiS8Zt/h
 github.com/project-flogo/catalystml-flogo/action v0.0.0-20190919183915-24819a1a9a2b/go.mod h1:7LJYrm+cCpK8Z+ENrZDpu9U/rQtflZYyr27YVvSQ8fo=
 github.com/project-flogo/catalystml-flogo/action v0.0.0-20191016133650-3f39d84d181e h1:27jzRgcbaDLOpgcMvjHm2ejnYz3TAhqGmNmkEIAxIg4=
 github.com/project-flogo/catalystml-flogo/action v0.0.0-20191016133650-3f39d84d181e/go.mod h1:8gYruO15JaYFOMh6J/uRk5BVj2ZmfCmmqAc/4i+vmMo=
+github.com/project-flogo/catalystml-flogo/action v0.0.0-20200205173424-7f21c14cfdb1 h1:vvgP8ylDBeKcla29q3SrGjy1snHvYB8e9OhxQQEKRwg=
+github.com/project-flogo/catalystml-flogo/action v0.0.0-20200205173424-7f21c14cfdb1/go.mod h1:UI8xbt/FPKARTIycr6d84CH0BHUiMaP5PTm0WrtasIg=
 github.com/project-flogo/catalystml-flogo/operations/cleaning v0.0.0-20191016133650-3f39d84d181e h1:gmJkLDO4ZymDCjxBT3pXlVbzMR5jXFKduaww6IytCEI=
 github.com/project-flogo/catalystml-flogo/operations/cleaning v0.0.0-20191016133650-3f39d84d181e/go.mod h1:QQ4Ye7LP1p5acwb6cNIzWBfhFEFRYGosaO9Ojcxb4jY=
 github.com/project-flogo/catalystml-flogo/operations/cleaning v0.0.0-20191221100507-49a2889fd614 h1:L8vkkSz6+q/9GyVzOehm+vG1suC2trtySs6H/wn65Qo=
@@ -56,6 +58,9 @@ github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-2019122110050
 github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20191221100507-49a2889fd614/go.mod h1:KjME7OdIdCTp8n5BugWJpdrniViq2b5+jmoAfpOma5w=
 github.com/project-flogo/catalystml-flogo/operations/image_processing v0.0.0-20191106005757-995bf9ac2dd3 h1:d4MDBkUHzx/nheC+OmGiUQdjz6gaazzEHnfMp+vFP3g=
 github.com/project-flogo/catalystml-flogo/operations/image_processing v0.0.0-20191106005757-995bf9ac2dd3/go.mod h1:9r/h6HnJMbKoXTUr3crAMeMDSdxrXdnf9XqNUTInRJU=
+github.com/project-flogo/catalystml-flogo/operations/image_processing v0.0.0-20191221100507-49a2889fd614/go.mod h1:9r/h6HnJMbKoXTUr3crAMeMDSdxrXdnf9XqNUTInRJU=
+github.com/project-flogo/catalystml-flogo/operations/image_processing v0.0.0-20200205173424-7f21c14cfdb1 h1:BIjvezq8Z6qZTw2OX0sFzOYklzpA1Q7p06wkDzN1vbM=
+github.com/project-flogo/catalystml-flogo/operations/image_processing v0.0.0-20200205173424-7f21c14cfdb1/go.mod h1:9r/h6HnJMbKoXTUr3crAMeMDSdxrXdnf9XqNUTInRJU=
 github.com/project-flogo/catalystml-flogo/operations/math v0.0.0-20191221100507-49a2889fd614 h1:4+ddYLXwWPnZ+dK1bDxuuepZzR+FU+Oq4oBdLfsVCpQ=
 github.com/project-flogo/catalystml-flogo/operations/math v0.0.0-20191221100507-49a2889fd614/go.mod h1:N1rUPY8nkb3LjqDHIaxO+yGNoJM1MKOjbxXAkQosyCM=
 github.com/project-flogo/catalystml-flogo/operations/nlp v0.0.0-20191016133650-3f39d84d181e h1:vKtpCAkW1oNfPuwoIuRvZD6q7uR6RTWwB7SxoF7Gfhk=

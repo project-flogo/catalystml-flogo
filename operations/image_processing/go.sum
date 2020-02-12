@@ -6,6 +6,7 @@ github.com/disintegration/imaging v1.6.1 h1:JnBbK6ECIZb1NsWIikP9pd8gIlTIRx7fuDNp
 github.com/disintegration/imaging v1.6.1/go.mod h1:xuIt+sRxDFrHS0drzXUlCJthkJ8k7lkkUojDSR247MQ=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/project-flogo/catalystml-flogo v0.1.0 h1:zE18Ab/o1TxDTLh8GLsXjiS8Zt/h+48vN0UxEOGRmOo=
 github.com/project-flogo/catalystml-flogo/action v0.0.0-20190919183915-24819a1a9a2b h1:09j2K7W/vmjLFQAKnt7xgEOprCHLIW99zKp0Cl63Iq0=
 github.com/project-flogo/catalystml-flogo/action v0.0.0-20190919183915-24819a1a9a2b/go.mod h1:7LJYrm+cCpK8Z+ENrZDpu9U/rQtflZYyr27YVvSQ8fo=
 github.com/project-flogo/core v0.9.0-rc.1 h1:0dALJoxHI/T4Ao340cHfNg5Yf5uM/bT4Y7u+5UYXfIQ=
