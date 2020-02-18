@@ -1,6 +1,7 @@
 package cmlmapper
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -66,6 +67,9 @@ func NewExpression(str string) []DerefernceStruct {
 // scope is the collection of the data.
 func Resolve(deStructs []DerefernceStruct, scope data.Scope) (temp interface{}, err error) {
 
+	if scope == nil {
+		return nil, fmt.Errorf("Scope cannot be nil")
+	}
 	//Iterate over dereference struct.
 	for _, val := range deStructs {
 		//Declare a temporary map and array
@@ -75,7 +79,11 @@ func Resolve(deStructs []DerefernceStruct, scope data.Scope) (temp interface{}, 
 
 		//Get the data from the scope.
 		if temp == nil {
-			temp, _ = scope.GetValue(val.Id)
+			var ok bool
+			temp, ok = scope.GetValue(val.Id)
+			if !ok {
+				return nil, fmt.Errorf("Unable to find value related to %s", val.Id)
+			}
 		}
 		// Try to convert the temp calue to Array.
 		tempArray, err = coerce.ToArray(temp)
@@ -97,7 +105,11 @@ func Resolve(deStructs []DerefernceStruct, scope data.Scope) (temp interface{}, 
 
 		} else {
 			// Convert the index of dereference struct to int
-			index, _ := strconv.Atoi(val.Index)
+			index, err := strconv.Atoi(val.Index)
+			if err != nil {
+				//If error return
+				return nil, err
+			}
 			// Get the value from the array.
 			temp = tempArray[index]
 		}

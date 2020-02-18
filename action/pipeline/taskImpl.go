@@ -14,6 +14,7 @@ import (
 
 var mf mapper.Factory
 var resolver resolve.CompositeResolver
+var position int
 
 // NewTask returns a Task based on the TaskConfig.
 func NewTask(config TaskConfig, mf mapper.Factory, resolver resolve.CompositeResolver) (Task, error) {
@@ -173,6 +174,10 @@ type TaskImpl struct {
 	stages []*Stage
 }
 
+func (t TaskImpl) Position() {
+	position = position + 1
+}
+
 // Eval runs the Task. A Task is composed of single or multiple stages.
 func (t TaskImpl) Eval(scope data.Scope, logger log.Logger) (data.Scope, error) {
 	currentInput := make(map[string]interface{})
@@ -180,7 +185,7 @@ func (t TaskImpl) Eval(scope data.Scope, logger log.Logger) (data.Scope, error) 
 	var stageOutput interface{}
 	for key, stage := range t.stages {
 
-		logger.Debugf("Operation Input Mapper for stage [%v]: [%v]", stage.name+"-"+strconv.Itoa(key), stage.inputMapper)
+		logger.Debugf("Operation Input Mapper for stage [%v]: [%v]", stage.name+"-"+strconv.Itoa(position)+"-"+strconv.Itoa(key), stage.inputMapper)
 
 		if stage.inputMapper != nil {
 
@@ -191,7 +196,7 @@ func (t TaskImpl) Eval(scope data.Scope, logger log.Logger) (data.Scope, error) 
 
 		}
 
-		logger.Debugf("Starting operation [%v] with inputs: [%v]", stage.name+"-"+strconv.Itoa(key), currentInput)
+		logger.Debugf("Starting operation [%v] with inputs: [%v]", stage.name+"-"+strconv.Itoa(position)+"-"+strconv.Itoa(key), currentInput)
 
 		stageOutput, err = stage.opt.Eval(currentInput)
 
@@ -200,11 +205,11 @@ func (t TaskImpl) Eval(scope data.Scope, logger log.Logger) (data.Scope, error) 
 		}
 
 		scope.SetValue(stage.output, stageOutput)
-		logger.Debugf("Setting output for [%v] operation outputs: [%v] ", stage.name+"-"+strconv.Itoa(key), stageOutput)
+		logger.Debugf("Setting output for [%v] operation outputs: [%v] ", stage.name+"-"+strconv.Itoa(position)+"-"+strconv.Itoa(key), stageOutput)
 
 		_, err = stage.outputMapper.Apply(scope)
 
-		logger.Debugf("Scope after operation [%v] : [%v]", stage.name+"-"+strconv.Itoa(key), scope)
+		logger.Debugf("Scope after operation [%v] : [%v]", stage.name+"-"+strconv.Itoa(position)+"-"+strconv.Itoa(key), scope)
 
 		if err != nil {
 			return nil, err

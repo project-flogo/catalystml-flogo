@@ -8,4 +8,5 @@ import (
 type Task interface {
 	Eval(scope data.Scope, logger log.Logger) (data.Scope, error)
 	Name() string
+	Position()
 }
