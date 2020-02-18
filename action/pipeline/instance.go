@@ -57,9 +57,13 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 	}
 
 	//Run the tasks.
-	for _, task := range inst.def.tasks {
+	for key, task := range inst.def.tasks {
+		task.Position()
+		scope, err = task.Eval(scope, inst.logger)
 
-		scope, _ = task.Eval(scope, inst.logger)
+		if err != nil {
+			return nil, fmt.Errorf("Error %s in task \"%s-%v\" ", err.Error(), task.Name(), key)
+		}
 
 	}
 
@@ -81,6 +85,9 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 		// Get the data from output expression
 		outMapper, err := mf.NewMapper(mappings)
+		if err != nil {
+			return nil, err
+		}
 		output, err = outMapper.Apply(scope)
 
 		if err != nil {
@@ -90,9 +97,15 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 		// Check if the output is defined as dataframe or map.
 		if inst.def.output.Type == "dataframe" || inst.def.output.Type == "map" {
-			definedType, _ = data.ToTypeEnum("object")
+			definedType, err = data.ToTypeEnum("object")
+			if err != nil {
+				return nil, err
+			}
 
-			givenType, _ := data.GetType(output)
+			givenType, err := data.GetType(output)
+			if err != nil {
+				return nil, err
+			}
 
 			if definedType != givenType {
 				return nil, fmt.Errorf("Type mismatch in output. Defined type [%s] passed type [%s]", definedType, givenType)
@@ -107,7 +120,10 @@ func (inst *Instance) Run(input map[string]interface{}) (output map[string]inter
 
 		for key, _ := range output {
 
-			givenType, _ := data.GetType(output[key])
+			givenType, err := data.GetType(output[key])
+			if err != nil {
+				return nil, err
+			}
 
 			if definedType != givenType {
 				return nil, fmt.Errorf("Type mismatch in output. Defined type [%s] passed type [%s]", definedType, givenType)
