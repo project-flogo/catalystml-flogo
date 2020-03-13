@@ -2,7 +2,7 @@
     "name": "catalystml",
     "type": "flogo:action",
     "version": "0.1.6",
-    "title": "Simple Catalyst MlAction",
+    "title": "Simple CatalystMl Action",
     "description": "Simple Catalyst ML Action",
     "homepage": "https://github.com/project-flogo/catalystml-flogo",
     "settings":[
