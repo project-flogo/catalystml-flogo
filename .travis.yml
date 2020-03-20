@@ -10,4 +10,4 @@ env:
 install: skip
 
 script:
-  - tests.sh
+  - sh tests.sh
