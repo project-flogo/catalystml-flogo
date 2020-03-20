@@ -7,7 +7,7 @@ then
     echo "The script ran ok"
 else
     echo "operations/$op failed" >&2
-    let "rtn=rtn+1"
+    rtn=$(($rtn+1))
 fi
 cd ..
 cd operations
@@ -20,7 +20,7 @@ do
         echo "The script ran ok"
     else
         echo "operations/$op failed" >&2
-        let "rtn=rtn+1"
+        rtn=$(($rtn+1))
     fi
     go test 
     cd ../..
