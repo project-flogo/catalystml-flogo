@@ -1,17 +1,12 @@
 #!/bin/sh
-​
-pushd action
-​
+cd action
 go test 
-​
-popd
-​
-pushd operations
-​
+cd ..
+cd operations
 for op  in $(ls -d ./* | grep -v sample_README.MD)
 do 
- pushd $op
+ cd $op
 		go test 
- popd
+ cd ../..
 done
 ​
