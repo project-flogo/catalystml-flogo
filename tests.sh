@@ -1,16 +1,28 @@
 #!/bin/sh
 rtn=0
 cd action
-go test 
+go test
+if [ $? -eq 0 ]
+then
+    echo "The script ran ok"
+else
+    echo "operations/$op failed" >&2
+    let "rtn=rtn+1"
+fi
 cd ..
 cd operations
 for op  in $(find . -mindepth 2 -maxdepth 2 -type d)
 do 
     cd $op
-    if ! go test; then
+    go test
+    if [ $? -eq 0 ]
+    then
+        echo "The script ran ok"
+    else
+        echo "operations/$op failed" >&2
         let "rtn=rtn+1"
     fi
     go test 
     cd ../..
 done
-return $rtn
+exit $rtn
