@@ -10,4 +10,5 @@ env:
 install: skip
 
 script:
+  - chmod 644 ./tests.sh
   - ./tests.sh
