@@ -1,27 +1,22 @@
 package runcml
 
 import (
-	"fmt"
-	"github.com/project-flogo/catalystml-flogo/action/support/test"
+	"testing"
+
 	_ "github.com/project-flogo/catalystml-flogo/action"
+	"github.com/project-flogo/catalystml-flogo/action/support/test"
 	_ "github.com/project-flogo/operation/math"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestSample(t *testing.T) {
 	inputs := make(map[string]interface{})
-	data := make(map[string]interface{})
-	data["input"] = "Abc"
-
-	inputs["data"] = data
-
+	inputs["data"] = map[string]interface{}{"paragraph": "Abc"}
 	params := Params{CatalystMlURI: "file://samplecml.json"}
-
 	optInitConext := test.NewOperationInitContext(params, nil)
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)
 	result, err := opt.Eval(inputs)
-	fmt.Println("Result..", result)
+	assert.NotNil(t, result)
 	assert.Nil(t, err)
 }

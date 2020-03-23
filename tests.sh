@@ -1,12 +1,12 @@
 #!/bin/sh
 rtn=0
 cd action
-go test
+go test ./...
 if [ $? -eq 0 ]
 then
     echo "The script ran ok"
 else
-    echo "operations/$op failed" >&2
+    echo "action tests failed" >&2
     rtn=$(($rtn+1))
 fi
 cd ..
