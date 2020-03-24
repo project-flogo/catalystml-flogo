@@ -15,7 +15,7 @@ require (
 
 replace github.com/project-flogo/catalystml-flogo/operations/cleaning => ../operations/cleaning
 replace github.com/project-flogo/catalystml-flogo/operations/common => ../operations/common
-//replace github.com/project-flogo/catalystml-flogo/operations/image_processing => ../operations/image_processing
+replace github.com/project-flogo/catalystml-flogo/operations/image_processing => ../operations/image_processing
 replace github.com/project-flogo/catalystml-flogo/operations/math => ../operations/math
 replace github.com/project-flogo/catalystml-flogo/operations/nlp => ../operations/nlp
 replace github.com/project-flogo/catalystml-flogo/operations/restructuring => ../operations/restructuring
