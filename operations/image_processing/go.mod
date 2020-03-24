@@ -12,4 +12,17 @@ require (
 	go.uber.org/zap v1.11.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/yaml.v2 v2.2.4 // indirect
+	github.com/project-flogo/catalystml-flogo/operations/image_processing/grayscale v0.0.0-20191221100507-49a2889fd614
+	github.com/project-flogo/catalystml-flogo/operations/image_processing/img2tensor v0.0.0-20191221100507-49a2889fd614
+	github.com/project-flogo/catalystml-flogo/operations/image_processing/resize v0.0.0-20191221100507-49a2889fd614
+	github.com/project-flogo/catalystml-flogo/operations/image_processing/subsectiontoimage v0.0.0-20191221100507-49a2889fd614
+	github.com/project-flogo/catalystml-flogo/operations/image_processing/tensor2image v0.0.0-20191221100507-49a2889fd614
+	
 )
+
+replace github.com/project-flogo/catalystml-flogo/operations/image_processing/grayscale => ../operations/image_processing/subsectiontoimage
+replace github.com/project-flogo/catalystml-flogo/operations/image_processing/tensor2image => ../operations/image_processing/tensor2image
+replace github.com/project-flogo/catalystml-flogo/operations/image_processing/resize => ../operations/image_processing/resize
+replace github.com/project-flogo/catalystml-flogo/operations/image_processing/img2tensor => ../operations/image_processing/img2tensor
+replace github.com/project-flogo/catalystml-flogo/operations/image_processing/grayscale => ../operations/image_processing/grayscale
+
