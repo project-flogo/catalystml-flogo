@@ -5,7 +5,7 @@ import (
 	"github.com/project-flogo/catalystml-flogo/operations/image_processing/grayscale"
 	"github.com/project-flogo/catalystml-flogo/operations/image_processing/img2tensor"
 	"github.com/project-flogo/catalystml-flogo/operations/image_processing/resize"
-	"github.com/project-flogo/catalystml-flogo/operations/image_processing/subsectiontoimage"
+	subsectiontoimage "github.com/project-flogo/catalystml-flogo/operations/image_processing/subSectionToImage"
 	"github.com/project-flogo/catalystml-flogo/operations/image_processing/tensor2image"
 )
 

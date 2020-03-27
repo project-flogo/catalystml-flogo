@@ -31,7 +31,7 @@ func Test01(t *testing.T) {
 	}
 
 	params := Params{
-		ToFilePath:      "/Users/steven/Downloads/log01.log",
+		ToFilePath:      "./log01.log",
 		ClearWhileStart: true,
 	}
 
@@ -82,7 +82,7 @@ func Test02(t *testing.T) {
 	}
 
 	params := Params{
-		ToFilePath:      "/Users/steven/Downloads/log01.log",
+		ToFilePath:      "./log01.log",
 		ClearWhileStart: false,
 	}
 
