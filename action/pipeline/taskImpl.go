@@ -204,7 +204,10 @@ func (t TaskImpl) Eval(scope data.Scope, logger log.Logger) (data.Scope, error) 
 			return nil, err
 		}
 
-		scope.SetValue(stage.output, stageOutput)
+		err = scope.SetValue(stage.output, stageOutput)
+		if err != nil {
+			return nil, errors.New("Error while setting scope:  "+ err.Error())
+		}
 		logger.Debugf("Setting output for [%v] operation outputs: [%v] ", stage.name+"-"+strconv.Itoa(position)+"-"+strconv.Itoa(key), stageOutput)
 
 		_, err = stage.outputMapper.Apply(scope)

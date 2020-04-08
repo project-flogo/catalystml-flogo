@@ -22,15 +22,17 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	a.logger.Info("Starting Concat Map operation.")
 	a.logger.Debug("Inputs of Concat Map operation", inputs)
 
-	result := make(map[string][]interface{})
+	result := make(map[string]interface{})
 
 	for i := 0; i < len(in.Data); i++ {
 
 		if in.Data[i] != nil {
 
 			for key, val := range in.Data[i].(map[string]interface{}) {
-
-				result[key] = append(result[key], val)
+				if result[key] == nil {
+					result[key] = make([]interface{},0)
+				}
+				result[key] = append(result[key].([]interface{}), val)
 			}
 		}
 
