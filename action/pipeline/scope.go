@@ -39,10 +39,13 @@ func (s *scopeImpl) GetValue(name string) (value interface{}, exists bool) {
 
 // SetValue sets a key, value pair in the scope/
 func (s *scopeImpl) SetValue(name string, value interface{}) error {
-
+	var err error
 	if strings.Contains(name, "[") {
 
-		path.SetValue(s.values, getPath(name), value)
+		err = path.SetValue(s.values, getPath(name), value)
+		if err != nil {
+			return err
+		}
 
 	} else {
 		s.values[name] = value
