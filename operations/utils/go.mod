@@ -14,4 +14,3 @@ require (
 )
 
 replace github.com/project-flogo/operation/math => ../../action/example/operation
-
