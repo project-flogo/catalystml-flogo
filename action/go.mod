@@ -3,7 +3,7 @@ module github.com/project-flogo/catalystml-flogo/action
 require (
 	github.com/project-flogo/catalystml-flogo/operations/cleaning v0.1.6-hf.1
 	github.com/project-flogo/catalystml-flogo/operations/common v0.1.6-hf.1
-	github.com/project-flogo/catalystml-flogo/operations/image_processing v0.1.6-hf.1
+	github.com/project-flogo/catalystml-flogo/operations/image_processing v0.1.6
 	github.com/project-flogo/catalystml-flogo/operations/math v0.1.6-hf.1
 	github.com/project-flogo/catalystml-flogo/operations/nlp v0.1.6-hf.1
 	github.com/project-flogo/catalystml-flogo/operations/restructuring v0.1.6-hf.1
