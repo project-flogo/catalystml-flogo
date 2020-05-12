@@ -44,6 +44,8 @@ github.com/project-flogo/catalystml-flogo/action v0.0.0-20190919183915-24819a1a9
 github.com/project-flogo/catalystml-flogo/action v0.0.0-20191016133650-3f39d84d181e/go.mod h1:8gYruO15JaYFOMh6J/uRk5BVj2ZmfCmmqAc/4i+vmMo=
 github.com/project-flogo/catalystml-flogo/action v0.0.0-20191016194916-deca785b445d h1:Tx26LgVR1dXXNEmq9OICZ9oLkdJD/SxbHox04lsdwA0=
 github.com/project-flogo/catalystml-flogo/action v0.0.0-20191016194916-deca785b445d/go.mod h1:8gYruO15JaYFOMh6J/uRk5BVj2ZmfCmmqAc/4i+vmMo=
+github.com/project-flogo/catalystml-flogo/action v0.1.6 h1:YuuNZEqeXVbg9PCSWkLew75nTg26BtpG+jcYLwDv+Sw=
+github.com/project-flogo/catalystml-flogo/action v0.1.6/go.mod h1:UI8xbt/FPKARTIycr6d84CH0BHUiMaP5PTm0WrtasIg=
 github.com/project-flogo/catalystml-flogo/operations/cleaning v0.0.0-20191221100507-49a2889fd614 h1:L8vkkSz6+q/9GyVzOehm+vG1suC2trtySs6H/wn65Qo=
 github.com/project-flogo/catalystml-flogo/operations/cleaning v0.0.0-20191221100507-49a2889fd614/go.mod h1:2GcGt1DyJ7cRSzoFRkoN8oAgffkm48xjCdlTSgnR3rA=
 github.com/project-flogo/catalystml-flogo/operations/cleaning v0.1.6-hf.1 h1:5Nl0FXy3KGT9nd9MwxLu2zE9g/K7xMG6WWIzAbqIbLY=

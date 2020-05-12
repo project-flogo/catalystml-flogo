@@ -1,10 +1,12 @@
 module github.com/project-flogo/catalystml-flogo/operations/math
 
+go 1.14
+
 require (
 	github.com/creack/pty v1.1.9 // indirect
 	github.com/kr/pty v1.1.8 // indirect
-	github.com/project-flogo/catalystml-flogo/action v0.0.0-20190919183915-24819a1a9a2b
-	github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20190919183915-24819a1a9a2b
+	github.com/project-flogo/catalystml-flogo/action v0.1.6
+	github.com/project-flogo/catalystml-flogo/operations/common v0.1.6
 	github.com/project-flogo/core v0.9.4
 	github.com/rogpeppe/go-internal v1.5.0 // indirect
 	github.com/stretchr/testify v1.4.0
@@ -20,5 +22,3 @@ require (
 	golang.org/x/xerrors v0.0.0-20191011141410-1b5146add898 // indirect
 	gopkg.in/yaml.v2 v2.2.5 // indirect
 )
-
-replace github.com/project-flogo/catalystml-flogo/operations/common v0.0.0-20190919183915-24819a1a9a2b => ../common
