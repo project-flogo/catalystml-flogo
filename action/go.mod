@@ -1,6 +1,9 @@
 module github.com/project-flogo/catalystml-flogo/action
 
+go 1.14
+
 require (
+	github.com/neurosnap/sentences v1.0.6 // indirect
 	github.com/project-flogo/catalystml-flogo/operations/cleaning v0.1.6-hf.1
 	github.com/project-flogo/catalystml-flogo/operations/common v0.1.6-hf.1
 	github.com/project-flogo/catalystml-flogo/operations/image_processing v0.1.6
