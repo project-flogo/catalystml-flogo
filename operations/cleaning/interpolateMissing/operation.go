@@ -2,7 +2,6 @@ package interpolateMissing
 
 import (
 	"errors"
-	//"fmt"
 
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/catalystml-flogo/operations/common"
