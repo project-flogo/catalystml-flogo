@@ -10,7 +10,7 @@ else
     rtn=$(($rtn+1))
 fi
 cd ..
-cd operations
+cd utils
 for op  in $(find . -mindepth 2 -maxdepth 2 -type d)
 do 
     cd $op
