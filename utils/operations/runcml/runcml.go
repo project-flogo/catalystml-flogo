@@ -2,18 +2,17 @@ package runcml
 
 import (
 	"context"
+
 	"github.com/project-flogo/catalystml-flogo/action/operation"
+	"github.com/project-flogo/core/action"
 	"github.com/project-flogo/core/data/metadata"
 	"github.com/project-flogo/core/support/log"
-	"github.com/project-flogo/core/action"
 )
 
 type Operation struct {
 	logger log.Logger
-	act action.Action
+	act    action.Action
 }
-
-
 
 func New(ctx operation.InitContext) (operation.Operation, error) {
 

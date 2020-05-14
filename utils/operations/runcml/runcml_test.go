@@ -12,7 +12,7 @@ import (
 func TestSample(t *testing.T) {
 	inputs := make(map[string]interface{})
 	inputs["data"] = map[string]interface{}{"paragraph": "Abc"}
-	params := Params{CatalystMlURI: "file://samplecml.json"}
+	params := map[string]interface{}{"catalystMlURI": "file://samplecml.json"}
 	optInitConext := test.NewOperationInitContext(params, nil)
 	opt, err := New(optInitConext)
 	assert.Nil(t, err)

@@ -2,8 +2,8 @@ package utils
 
 import (
 	"github.com/project-flogo/catalystml-flogo/action/operation"
-	"github.com/project-flogo/catalystml-flogo/operations/utils/runcml"
-	"github.com/project-flogo/catalystml-flogo/operations/utils/toLog"
+	"github.com/project-flogo/catalystml-flogo/utils/operations/runcml"
+	"github.com/project-flogo/catalystml-flogo/utils/operations/toLog"
 )
 
 func init() {
