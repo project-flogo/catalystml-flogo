@@ -33,6 +33,6 @@ replace github.com/project-flogo/operation/math => ../../operation
 
 replace github.com/project-flogo/catalystml-flogo/operations/string_processing => ../../../../operations/string_processing
 
-replace github.com/project-flogo/catalystml-flogo/operations/common => ../../../../operations/common
+replace github.com/project-flogo/catalystml-flogo/action/operations/common => ../../../../operations/common
 
 replace github.com/project-flogo/catalystml-flogo/operations/cleaning v0.0.0-20191112152814-dc69f9aae0fd => ../../../../operations/cleaning

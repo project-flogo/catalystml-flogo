@@ -4,13 +4,21 @@ import (
 	"encoding/json"
 	"testing"
 
-	_ "github.com/project-flogo/catalystml-flogo/operations/cleaning"
-	_ "github.com/project-flogo/catalystml-flogo/operations/math"
-	_ "github.com/project-flogo/catalystml-flogo/operations/restructuring"
+	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/data/resolve"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/project-flogo/catalystml-flogo/action/operations/cleaning/oneHotEncoding"
+	"github.com/project-flogo/catalystml-flogo/action/operations/math/normalize"
+	"github.com/project-flogo/catalystml-flogo/action/operations/restructuring/concatMap"
 )
+
+func init() {
+	operation.Register(&concatMap.Operation{}, concatMap.New)
+	operation.Register(&normalize.Operation{}, normalize.New)
+	operation.Register(&oneHotEncoding.Operation{}, oneHotEncoding.New)
+}
 
 var def = `{
 	"input": [
