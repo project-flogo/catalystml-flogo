@@ -15,7 +15,7 @@ import (
 )
 
 func TestFalse(t *testing.T) {
-
+	t.Parallel()
 	inputs := make(map[string]interface{})
 
 	p := Params{RemoveAlpha: false, IncludeBatch: false}
@@ -46,7 +46,7 @@ func TestFalse(t *testing.T) {
 }
 
 func TestTrue(t *testing.T) {
-
+	t.Parallel()
 	inputs := make(map[string]interface{})
 
 	p := Params{RemoveAlpha: true, IncludeBatch: true}

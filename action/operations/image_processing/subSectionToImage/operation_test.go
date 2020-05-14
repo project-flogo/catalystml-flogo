@@ -14,7 +14,7 @@ import (
 )
 
 func TestBorder(t *testing.T) {
-
+	t.Parallel()
 	inputs := make(map[string]interface{})
 
 	p := Params{Size: []int{2000, 2250}, LowerLeftCorner: []int{3500, 2300}}
@@ -39,7 +39,7 @@ func TestBorder(t *testing.T) {
 }
 
 func TestInMiddle(t *testing.T) {
-
+	t.Parallel()
 	inputs := make(map[string]interface{})
 
 	p := Params{Size: []int{1500, 1750}, LowerLeftCorner: []int{500, 700}}

@@ -15,7 +15,7 @@ import (
 )
 
 func Test2PNG(t *testing.T) {
-
+	t.Parallel()
 	var err error
 	inputs := make(map[string]interface{})
 	inputs["tensor"], err = getImageAsSlice(t, "../test_image.jpg", true, false)
@@ -32,7 +32,7 @@ func Test2PNG(t *testing.T) {
 }
 
 func Test2JPG(t *testing.T) {
-
+	t.Parallel()
 	var err error
 	inputs := make(map[string]interface{})
 	inputs["tensor"], err = getImageAsSlice(t, "../test_image.jpg", true, false)
@@ -49,7 +49,7 @@ func Test2JPG(t *testing.T) {
 }
 
 func Test2GIF(t *testing.T) {
-
+	t.Parallel()
 	var err error
 	inputs := make(map[string]interface{})
 	inputs["tensor"], err = getImageAsSlice(t, "../test_image.jpg", true, false)

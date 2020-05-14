@@ -14,6 +14,7 @@ import (
 )
 
 func TestXOnly(t *testing.T) {
+	t.Parallel()
 	inputs := make(map[string]interface{})
 	opt := &Operation{logger: log.RootLogger()}
 

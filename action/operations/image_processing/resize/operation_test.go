@@ -10,7 +10,7 @@ import (
 )
 
 func TestXOnly(t *testing.T) {
-
+	t.Parallel()
 	inputs := make(map[string]interface{})
 
 	p := Params{Xsize: 100, Ysize: 0, Algo: "Linear"}
@@ -36,7 +36,7 @@ func TestXOnly(t *testing.T) {
 }
 
 func TestYOnly(t *testing.T) {
-
+	t.Parallel()
 	inputs := make(map[string]interface{})
 
 	p := Params{Ysize: 150, Xsize: 0, Algo: "Lanczos"}
