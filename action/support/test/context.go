@@ -1,12 +1,12 @@
 package test
 
 import (
+	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/core/data"
 	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/data/metadata"
 	"github.com/project-flogo/core/data/resolve"
 	"github.com/project-flogo/core/support/log"
-	"github.com/project-flogo/catalystml-flogo/action/operation"
 )
 
 type OperationContext struct {
@@ -103,4 +103,14 @@ func (ic *TestOperationInitContext) MapperFactory() mapper.Factory {
 
 func (ic *TestOperationInitContext) Logger() log.Logger {
 	return log.RootLogger()
+}
+
+type TestOperation struct {
+}
+
+func TestNew(ctx operation.InitContext) (operation.Operation, error) {
+	return &TestOperation{}, nil
+}
+func (t *TestOperation) Eval(inputs map[string]interface{}) (interface{}, error) {
+	return nil, nil
 }

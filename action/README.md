@@ -1,6 +1,20 @@
 # Introduction
 
 This is a Flogo Action implementation of the CatalystMl Specification.  It can also act as a standalone Go implementation of the CatalystMl. For more information about [Flogo Action](https://github.com/project-flogo/core/tree/master/action) . 
+
+# Installation
+To get started with building CML apps with flogo install the following plugin.
+
+```shell
+flogo plugin install github.com/project-flogo/catalystml-flogo/plugin
+```
+
+To build the project. Just do normal build.
+
+```shell
+flogo build
+```
+
 # Implementation Details :
 This Flogo Action creates a pipeline of the operations specified in JSON spec and executes it sequentially. One of the challenging aspect of the pipeline is resolving the data in the spec. 
 Mappers, Resolvers and Scope Interfaces provided by Project-Flogo core reposisotiry is used to simplify the resolution of data. For more information please visit [Project-flogo/core](https://github.com/project-flogo/core). 
