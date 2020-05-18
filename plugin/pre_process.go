@@ -1,6 +1,8 @@
 package plugin
 
 import (
+	"fmt"
+
 	"github.com/project-flogo/cli/common"
 	"github.com/project-flogo/cli/util"
 )
@@ -15,7 +17,7 @@ const (
 )
 
 // Operations to be downloaded.
-var operations []string = []string{"cleaning", "common", "math", "nlp", "restructuring", "string_processing", "utils"}
+var operations []string = []string{"cleaning", "common", "math", "nlp", "restructuring", "string_processing"}
 
 type PreProcess struct{}
 
@@ -33,6 +35,7 @@ func (p *PreProcess) DoPreProcessing(project common.AppProject, options common.B
 		return err
 	}
 
+	fmt.Println("Installing Operations.")
 	// Install the imports to the app.
 	return common.CurrentProject().AddImports(false, true, imports...)
 
