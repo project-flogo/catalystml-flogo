@@ -6,6 +6,9 @@ import (
 	"reflect"
 )
 
+// Removing ToArray from core/coerce. Reason being with 1.0.0
+// updated function breaks the code. The current version
+// here is from 0.9.4
 func toArray(val interface{}) ([]interface{}, error) {
 	switch t := val.(type) {
 	case []interface{}:
