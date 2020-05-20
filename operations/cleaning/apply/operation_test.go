@@ -2,6 +2,7 @@ package apply
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/project-flogo/catalystml-flogo/action/operation"
@@ -9,6 +10,10 @@ import (
 	_ "github.com/project-flogo/catalystml-flogo/operations/string_processing"
 	"github.com/stretchr/testify/assert"
 )
+
+func init() {
+	operation.Register(&TestOperation{}, NewTestOp)
+}
 
 func TestMap(t *testing.T) {
 
@@ -29,7 +34,7 @@ func TestMap(t *testing.T) {
 	data["grrr"] = "neigh"
 	data["aho"] = "maa"
 	data["sigh"] = "baa"
-	fn := operation.Config{Operation: "count", Params: pmap, Input: imap}
+	fn := operation.Config{Operation: "apply", Params: pmap, Input: imap}
 
 	inputs["data"] = data
 	inputs["function"] = fn
@@ -60,7 +65,7 @@ func TestArray(t *testing.T) {
 	imap["s1"] = "&item"
 
 	data := []string{"moo", "baa", "maa", "neigh"}
-	fn := operation.Config{Operation: "count", Params: pmap, Input: imap}
+	fn := operation.Config{Operation: "apply", Params: pmap, Input: imap}
 
 	inputs["data"] = data
 	inputs["function"] = fn
@@ -80,4 +85,16 @@ func TestArray(t *testing.T) {
 	assert.NotNil(t, output)
 	assert.Nil(t, err)
 
+}
+
+type TestOperation struct {
+}
+
+func NewTestOp(ctx operation.InitContext) (operation.Operation, error) {
+	return &TestOperation{}, nil
+}
+
+func (a *TestOperation) Eval(inputs map[string]interface{}) (interface{}, error) {
+
+	return strings.Count(inputs["s0"].(string), inputs["s1"].(string)), nil
 }
