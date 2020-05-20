@@ -1,9 +1,5 @@
 package runcml
 
-// Current version of image processing is breaking the tests.
-// TODO: Tag the current operations after PR.
-// And then adding the tests back again.
-/*
 import (
 	"fmt"
 	"io/ioutil"
@@ -124,4 +120,3 @@ func execCmd(dir string, cmd *exec.Cmd) error {
 
 	return err
 }
-*/
