@@ -4,13 +4,16 @@ import (
 	"encoding/json"
 	"testing"
 
-	_ "github.com/project-flogo/catalystml-flogo/operations/cleaning"
-	_ "github.com/project-flogo/catalystml-flogo/operations/math"
-	_ "github.com/project-flogo/catalystml-flogo/operations/restructuring"
+	"github.com/project-flogo/catalystml-flogo/action/operation"
+	"github.com/project-flogo/catalystml-flogo/action/support/test"
 	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/data/resolve"
 	"github.com/stretchr/testify/assert"
 )
+
+func init() {
+	operation.Register(&test.TestOperation{}, test.TestNew)
+}
 
 var def = `{
 	"input": [
@@ -21,14 +24,14 @@ var def = `{
 	],
 	"structure": [
     {
-      "operation":"concatMap",
+      "operation":"test",
       "input":{
         "data":"$dataIn"
       },
       "output":"datatemp"
     },
     {
-      "operation":"normalize",
+      "operation":"test",
       "input":{
         "data":"$datatemp['Age']",
         "value":100,
@@ -61,7 +64,7 @@ var multipleInput = `{
 	],
 	"structure": [
     {
-      "operation":"concatMap",
+      "operation":"test",
       "input":[
 		  {
         	"data":"$dataIn"
@@ -73,7 +76,7 @@ var multipleInput = `{
       "output":["datatemp","datatemp2"]
     },
     {
-      "operation":"normalize",
+      "operation":"test",
       "input":{
         "data":"$datatemp['Age']",
         "value":100,
@@ -106,7 +109,7 @@ var multipleParams = `{
 	],
 	"structure": [
     {
-      "operation":"concatMap",
+      "operation":"test",
       "input":[
 		  {
         	"data":"$dataIn"
@@ -118,7 +121,7 @@ var multipleParams = `{
       "output":["datatemp","datatemp2"]
     },
     {
-      "operation":"normalize",
+      "operation":"test",
       "input":{
         "data":"$datatemp['Age']",
         "value":100,
@@ -127,7 +130,7 @@ var multipleParams = `{
       "output":"datatemp['Age']"
 	},
 	{
-		"operation":"oneHotEncoding",
+		"operation":"test",
 		"input":{"data":"$datatemp"},
 		"params":[
 			{
@@ -166,7 +169,7 @@ var multipleParamsInput = `{
 	],
 	"structure": [
     {
-      "operation":"concatMap",
+      "operation":"test",
       "input":[
 		  {
         	"data":"$dataIn"
@@ -178,7 +181,7 @@ var multipleParamsInput = `{
       "output":["datatemp","datatemp2"]
     },
     {
-      "operation":"normalize",
+      "operation":"test",
       "input":{
         "data":"$datatemp['Age']",
         "value":100,
@@ -187,7 +190,7 @@ var multipleParamsInput = `{
       "output":"datatemp['Age']"
 	},
 	{
-		"operation":"oneHotEncoding",
+		"operation":"test",
 		"input":[{"data":"$datatemp"}, {"data": "$datatemp"} ],
 		"params":[
 			{
@@ -226,7 +229,7 @@ var multipleMisMatchInputOutput = `{
 	],
 	"structure": [
     {
-      "operation":"concatMap",
+      "operation":"test",
       "input":[
 		  {
         	"data":"$dataIn"
@@ -238,7 +241,7 @@ var multipleMisMatchInputOutput = `{
       "output":["datatemp","datatemp2"]
     },
     {
-      "operation":"normalize",
+      "operation":"test",
       "input":{
         "data":"$datatemp['Age']",
         "value":100,
@@ -247,7 +250,7 @@ var multipleMisMatchInputOutput = `{
       "output":"datatemp['Age']"
 	},
 	{
-		"operation":"oneHotEncoding",
+		"operation":"test",
 		"input":[{"data":"$datatemp"}, {"data": "$datatemp"} ],
 		"params":[
 			{
