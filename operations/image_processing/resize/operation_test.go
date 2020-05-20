@@ -10,6 +10,7 @@ import (
 )
 
 func TestXOnly(t *testing.T) {
+	t.Parallel()
 
 	inputs := make(map[string]interface{})
 
@@ -36,6 +37,7 @@ func TestXOnly(t *testing.T) {
 }
 
 func TestYOnly(t *testing.T) {
+	t.Parallel()
 
 	inputs := make(map[string]interface{})
 
@@ -62,6 +64,7 @@ func TestYOnly(t *testing.T) {
 }
 
 func TestBoth(t *testing.T) {
+	t.Parallel()
 
 	inputs := make(map[string]interface{})
 

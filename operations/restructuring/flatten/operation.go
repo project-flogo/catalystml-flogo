@@ -43,7 +43,7 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 func flattenArr(multiArr []interface{}) interface{} {
 	var result []interface{}
 
-	_, err := coerce.ToArray(multiArr[0])
+	_, err := toArray(multiArr[0])
 
 	if err != nil {
 		return multiArr
@@ -51,9 +51,9 @@ func flattenArr(multiArr []interface{}) interface{} {
 
 	for i := 0; i < len(multiArr); i++ {
 
-		temp, _ := coerce.ToArray(multiArr[i])
+		temp, _ := toArray(multiArr[i])
 
-		tempResult, _ := coerce.ToArray(flattenArr(temp))
+		tempResult, _ := toArray(flattenArr(temp))
 
 		result = append(result, tempResult...)
 

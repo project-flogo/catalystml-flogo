@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 
 	"github.com/project-flogo/catalystml-flogo/action/operation"
-	_ "github.com/project-flogo/catalystml-flogo/operations/string_processing/count"
 	"github.com/project-flogo/core/data/coerce"
 )
 

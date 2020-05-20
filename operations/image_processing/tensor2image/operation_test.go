@@ -15,6 +15,7 @@ import (
 )
 
 func Test2PNG(t *testing.T) {
+	t.Parallel()
 
 	var err error
 	inputs := make(map[string]interface{})
@@ -32,6 +33,7 @@ func Test2PNG(t *testing.T) {
 }
 
 func Test2JPG(t *testing.T) {
+	t.Parallel()
 
 	var err error
 	inputs := make(map[string]interface{})
@@ -49,6 +51,7 @@ func Test2JPG(t *testing.T) {
 }
 
 func Test2GIF(t *testing.T) {
+	t.Parallel()
 
 	var err error
 	inputs := make(map[string]interface{})
