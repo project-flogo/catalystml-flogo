@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/project-flogo/core/data"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMapping(t *testing.T) {
@@ -39,7 +40,9 @@ func TestMapping3(t *testing.T) {
 	inputValues["math1"] = map[string]interface{}{"col": "sample"}
 
 	scope := data.NewSimpleScope(inputValues, nil)
-	result, _ := Resolve(deref, scope)
+	result, err := Resolve(deref, scope)
+	assert.Nil(t, err)
+	assert.Equal(t, result, "sample")
 	fmt.Println("Result..", result)
 }
 
@@ -51,7 +54,9 @@ func TestMapping4(t *testing.T) {
 	inputValues["math1"] = map[string]interface{}{"col": temp}
 
 	scope := data.NewSimpleScope(inputValues, nil)
-	result, _ := Resolve(deref, scope)
+	result, err := Resolve(deref, scope)
+	assert.Nil(t, err)
+	assert.Equal(t, result, 3)
 	fmt.Println("Result..", result)
 
 }
