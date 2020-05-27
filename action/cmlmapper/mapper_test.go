@@ -1,7 +1,6 @@
 package cmlmapper
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/project-flogo/core/data"
@@ -16,8 +15,10 @@ func TestMapping(t *testing.T) {
 	inputValues["math1"] = [][]interface{}{{1}, {2, 6}, {3, 4, 5}}
 
 	scope := data.NewSimpleScope(inputValues, nil)
-	result, _ := Resolve(deref, scope)
-	fmt.Println("Result..", result)
+	result, err := Resolve(deref, scope)
+	assert.Nil(t, err)
+	assert.Equal(t, result, 4)
+
 }
 
 func TestMapping2(t *testing.T) {
@@ -28,8 +29,10 @@ func TestMapping2(t *testing.T) {
 	inputValues["math1"] = []interface{}{1, 2, 3, 4, 5}
 
 	scope := data.NewSimpleScope(inputValues, nil)
-	result, _ := Resolve(deref, scope)
-	fmt.Println("Result..", result)
+	result, err := Resolve(deref, scope)
+	assert.Nil(t, err)
+	assert.Equal(t, result, 3)
+
 }
 
 func TestMapping3(t *testing.T) {
@@ -43,7 +46,7 @@ func TestMapping3(t *testing.T) {
 	result, err := Resolve(deref, scope)
 	assert.Nil(t, err)
 	assert.Equal(t, result, "sample")
-	fmt.Println("Result..", result)
+
 }
 
 func TestMapping4(t *testing.T) {
@@ -57,6 +60,5 @@ func TestMapping4(t *testing.T) {
 	result, err := Resolve(deref, scope)
 	assert.Nil(t, err)
 	assert.Equal(t, result, 3)
-	fmt.Println("Result..", result)
 
 }
