@@ -22,15 +22,25 @@ var operations []string = []string{"cleaning", "common", "math", "nlp", "restruc
 type PreProcess struct{}
 
 func (p *PreProcess) DoPreProcessing(project common.AppProject, options common.BuildOptions) error {
-	var importPath []string
+	var importPaths []string
+
+	currImports, err := common.CurrentProject().DepManager().GetAllImports()
+	if err != nil {
+		return err
+	}
 
 	// Build the Import path from the package name and the operations package name
 	for _, val := range operations {
-		importPath = append(importPath, pkgPath+"/"+val)
+
+		importPath := pkgPath + "/" + val
+		if _, ok := currImports[importPath]; !ok {
+			importPaths = append(importPaths, importPath)
+		}
+
 	}
 
 	// Parse the imports.
-	imports, err := util.ParseImports(importPath)
+	imports, err := util.ParseImports(importPaths)
 	if err != nil {
 		return err
 	}
