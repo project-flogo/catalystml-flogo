@@ -14,6 +14,7 @@ import (
 	"github.com/project-flogo/catalystml-flogo/operations/restructuring/reshape"
 	"github.com/project-flogo/catalystml-flogo/operations/restructuring/table2map"
 	"github.com/project-flogo/catalystml-flogo/operations/restructuring/transpose"
+	"github.com/project-flogo/catalystml-flogo/operations/restructuring/valToArray"
 )
 
 func init() {
@@ -29,4 +30,5 @@ func init() {
 	_ = operation.Register(&reshape.Operation{}, reshape.New)
 	_ = operation.Register(&table2map.Operation{}, table2map.New)
 	_ = operation.Register(&transpose.Operation{}, transpose.New)
+	_ = operation.Register(&transpose.Operation{}, valToArray.New)
 }

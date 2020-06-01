@@ -1,8 +1,6 @@
 package string_processing
 
 import (
-	// "github.com/project-flogo/catalystml-flogo/operations/string_processing/phonenumber"
-	// "github.com/project-flogo/catalystml-flogo/operations/string_processing/geoencoding"
 	"github.com/project-flogo/catalystml-flogo/action/operation"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/concat"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/contains"
@@ -11,6 +9,7 @@ import (
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/decodestring"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/encodestring"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/index"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/indexany"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/lastindex"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/levenshteinDistance"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/levenshteinSimilarity"
@@ -20,14 +19,18 @@ import (
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/split"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/tolower"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/toupper"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/trim"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/trimleft"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/trimprefix"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/trimright"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/trimsuffix"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/uuid"
 )
 
 func init() {
-	// _ = operation.Register(&phonenumber.Operation{})
-	// _ = operation.Register(&geoencoding.Operation{}, geoencoding.New)
 	_ = operation.Register(&count.Operation{}, count.New)
 	_ = operation.Register(&replace.Operation{}, replace.New)
+	_ = operation.Register(&replace.Operation{}, indexany.New)
 	_ = operation.Register(&levenshteinDistance.Operation{}, levenshteinDistance.New)
 	_ = operation.Register(&levenshteinSimilarity.Operation{}, levenshteinSimilarity.New)
 	_ = operation.Register(&tolower.Operation{}, tolower.New)
@@ -43,4 +46,9 @@ func init() {
 	_ = operation.Register(&index.Operation{}, encodestring.New)
 	_ = operation.Register(&lastindex.Operation{}, decodestring.New)
 	_ = operation.Register(&matchregex.Operation{}, date.New)
+	_ = operation.Register(&matchregex.Operation{}, trim.New)
+	_ = operation.Register(&matchregex.Operation{}, trimleft.New)
+	_ = operation.Register(&matchregex.Operation{}, trimright.New)
+	_ = operation.Register(&matchregex.Operation{}, trimprefix.New)
+	_ = operation.Register(&matchregex.Operation{}, trimsuffix.New)
 }
