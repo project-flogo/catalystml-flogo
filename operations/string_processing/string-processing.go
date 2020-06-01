@@ -16,6 +16,8 @@ import (
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/matchregex"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/repeat"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/replace"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/replaceall"
+	"github.com/project-flogo/catalystml-flogo/operations/string_processing/replaceregex"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/split"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/tolower"
 	"github.com/project-flogo/catalystml-flogo/operations/string_processing/toupper"
@@ -46,6 +48,8 @@ func init() {
 	_ = operation.Register(&index.Operation{}, encodestring.New)
 	_ = operation.Register(&lastindex.Operation{}, decodestring.New)
 	_ = operation.Register(&matchregex.Operation{}, date.New)
+	_ = operation.Register(&matchregex.Operation{}, replaceall.New)
+	_ = operation.Register(&matchregex.Operation{}, replaceregex.New)
 	_ = operation.Register(&matchregex.Operation{}, trim.New)
 	_ = operation.Register(&matchregex.Operation{}, trimleft.New)
 	_ = operation.Register(&matchregex.Operation{}, trimright.New)
