@@ -7,9 +7,11 @@ import (
 	"github.com/project-flogo/catalystml-flogo/operations/cleaning/filter"
 	"github.com/project-flogo/catalystml-flogo/operations/cleaning/ifin"
 	"github.com/project-flogo/catalystml-flogo/operations/cleaning/ifnotin"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/interpolateMissing"
 	"github.com/project-flogo/catalystml-flogo/operations/cleaning/oneHotEncoding"
 	"github.com/project-flogo/catalystml-flogo/operations/cleaning/replaceValue"
 	"github.com/project-flogo/catalystml-flogo/operations/cleaning/set"
+	"github.com/project-flogo/catalystml-flogo/operations/cleaning/sort"
 )
 
 func init() {
@@ -21,5 +23,7 @@ func init() {
 	_ = operation.Register(&oneHotEncoding.Operation{}, oneHotEncoding.New)
 	_ = operation.Register(&set.Operation{}, binning.New)
 	_ = operation.Register(&set.Operation{}, filter.New)
+	_ = operation.Register(&set.Operation{}, sort.New)
+	_ = operation.Register(&set.Operation{}, interpolateMissing.New)
 
 }
