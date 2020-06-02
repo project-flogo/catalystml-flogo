@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/project-flogo/cli/common"
 	"github.com/project-flogo/cli/util"
@@ -18,6 +19,7 @@ const (
 
 // Operations to be downloaded.
 var operations []string = []string{"cleaning", "common", "math", "nlp", "restructuring", "string_processing"}
+var toInstall bool
 
 type PreProcess struct{}
 
@@ -29,6 +31,15 @@ func (p *PreProcess) DoPreProcessing(project common.AppProject, options common.B
 		return err
 	}
 
+	//Check if the current project is using catalystml action
+	for key, _ := range currImports {
+		if strings.Contains(key, "github.com/project-flogo/catalystml-flogo") {
+			toInstall = true
+		}
+	}
+	if !toInstall {
+		return nil
+	}
 	// Build the Import path from the package name and the operations package name
 	for _, val := range operations {
 
