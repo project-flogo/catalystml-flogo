@@ -30,5 +30,5 @@ func init() {
 	_ = operation.Register(&reshape.Operation{}, reshape.New)
 	_ = operation.Register(&table2map.Operation{}, table2map.New)
 	_ = operation.Register(&transpose.Operation{}, transpose.New)
-	_ = operation.Register(&transpose.Operation{}, valToArray.New)
+	_ = operation.Register(&valToArray.Operation{}, valToArray.New)
 }
