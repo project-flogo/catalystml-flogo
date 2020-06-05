@@ -31,8 +31,9 @@ func (a *Operation) Eval(inputs map[string]interface{}) (interface{}, error) {
 	a.logger.Debug("The inputs of Operation Map to Table.", inputs)
 	for _, ord := range in.ColOrder {
 		if val, ok := in.Map[ord.(string)]; ok {
-			ValLen = len(val.([]interface{}))
-			givenType, _ = data.GetType(val.([]interface{})[0])
+			valArr, _ := coerce.ToArray(val)
+			ValLen = len(valArr)
+			givenType, _ = data.GetType(valArr[0])
 			break
 		}
 	}
