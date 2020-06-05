@@ -21,8 +21,8 @@ func init() {
 	_ = operation.Register(&scale.Operation{}, scale.New)
 	_ = operation.Register(&multPairWise.Operation{}, multPairWise.New)
 	_ = operation.Register(&divPairWise.Operation{}, divPairWise.New)
-	_ = operation.Register(&divPairWise.Operation{}, addPairWise.New)
-	_ = operation.Register(&divPairWise.Operation{}, multi.New)
-	_ = operation.Register(&divPairWise.Operation{}, add.New)
-	_ = operation.Register(&divPairWise.Operation{}, divide.New)
+	_ = operation.Register(&addPairWise.Operation{}, addPairWise.New)
+	_ = operation.Register(&multi.Operation{}, multi.New)
+	_ = operation.Register(&add.Operation{}, add.New)
+	_ = operation.Register(&divide.Operation{}, divide.New)
 }
