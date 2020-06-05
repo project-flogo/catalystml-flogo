@@ -21,9 +21,9 @@ func init() {
 	_ = operation.Register(&ifnotin.Operation{}, ifnotin.New)
 	_ = operation.Register(&ifin.Operation{}, ifin.New)
 	_ = operation.Register(&oneHotEncoding.Operation{}, oneHotEncoding.New)
-	_ = operation.Register(&set.Operation{}, binning.New)
-	_ = operation.Register(&set.Operation{}, filter.New)
-	_ = operation.Register(&set.Operation{}, sort.New)
-	_ = operation.Register(&set.Operation{}, interpolateMissing.New)
+	_ = operation.Register(&binning.Operation{}, binning.New)
+	_ = operation.Register(&filter.Operation{}, filter.New)
+	_ = operation.Register(&sort.Operation{}, sort.New)
+	_ = operation.Register(&interpolateMissing.Operation{}, interpolateMissing.New)
 
 }
