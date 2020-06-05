@@ -8,5 +8,5 @@ import (
 
 func init() {
 	_ = operation.Register(&runcml.Operation{}, runcml.New)
-	_ = operation.Register(&runcml.Operation{}, toLog.New)
+	_ = operation.Register(&toLog.Operation{}, toLog.New)
 }
