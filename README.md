@@ -14,7 +14,7 @@ As discussed above this implementation is written with Golang within the Flogo e
 
 ### Flogo Command Line Interface
 
-[Flogo's Command line interface](https://tibcosoftware.github.io/flogo/flogo-cli/flogo-cli/) is built around a json object that represents the structure of a Flogo application.  Compiling this json ([here is an example of compiling a flogo.json](https://github.com/project-flogo/ml/blob/master/examples/flowsOutlier/README.md)) with the Flogo CLI then creates an executable binary.  Within a flogo.json CatalystML
+[Flogo's Command line interface](https://tibcosoftware.github.io/flogo/flogo-cli/flogo-cli/) is built around a json object that represents the structure of a Flogo application.  Compiling this json ([here is an example of compiling a flogo.json](https://github.com/project-flogo/ml/blob/master/examples/flowsOutlier/README.md)) with the Flogo CLI then creates an executable binary.  Within a flogo.json CatalystML.  The CML [plugin](https://github.com/project-flogo/catalystml-flogo/tree/master/plugin) must be installed into the Flogo CLI. The directions to do this are in the link.
 
 There are multiple ways to embed a CatalystML structure within flogo:
 1) As a flogo action that responds to a trigger.  In this case a trigger responds to input data, while the CatalystML action transforms that data.  An example flogo.json of CatalystML as a flogo action is located [here](https://github.com/project-flogo/catalystml-flogo/tree/master/examples/flogoAction).
